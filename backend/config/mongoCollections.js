@@ -13,6 +13,5 @@ const getCollectionFn = (collection) => {
 };
 
 const users = getCollectionFn("users");
-const projects = getCollectionFn("projects");
 
 export { users, projects };
