@@ -26,9 +26,8 @@ export const loginUser = async ({ email, password }) => {
   else throw { status: 401, msg: "Error: Invalid Username or Password" };
 };
 
-const getUserById = async (id) => {
+export const getUserById = async (id) => {
   const userCollection = await users();
-
   const user = await userCollection.findOne({ _id: new ObjectId(id) });
   return user;
 };
