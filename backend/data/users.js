@@ -14,7 +14,8 @@ export const createUser = async (name, username, password) => {
   let newUser = {
     name: name,
     username: username,
-    password: password
+    password: password,
+    friendList: []
   };
   const newInsertInformation = await userCollection.insertOne(newUser);
   if (newInsertInformation.insertedCount === 0) throw 'Insert failed!';

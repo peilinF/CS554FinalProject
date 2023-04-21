@@ -15,6 +15,10 @@ app.use(session({
   }
 }));
 
+app.get('/check', (req, res) => {
+  res.json({ "Hello": [1, 2, 3, 4, 5] });
+});
+
 app.get('/get-session', (req, res) => {
   const username = req.session.username;
   res.send(`Username: ${username}`);

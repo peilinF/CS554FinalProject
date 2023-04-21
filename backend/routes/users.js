@@ -17,14 +17,14 @@ router
       return res.status(403).json({ error: "User already login" })
     }
     let loginIn;
-    // try {
-    loginIn = await loginUser(usernameInput, passwordInput);
-    req.session.user = { id: loginIn.id, userName: usernameInput };
-    res.status(200).json({ _id: loginIn.id.toString(), "name": loginIn.name, userName: usernameInput });
-    // } catch (e) {
-    //   res.status(400).json({ error: e });
-    //   return;
-    // }
+    try {
+      loginIn = await loginUser(usernameInput, passwordInput);
+      req.session.user = { id: loginIn.id, userName: usernameInput };
+      res.status(200).json({ id: loginIn.id.toString(), "name": loginIn.name, userName: usernameInput });
+    } catch (e) {
+      res.status(400).json({ error: e });
+      return;
+    }
   });
 
 router
