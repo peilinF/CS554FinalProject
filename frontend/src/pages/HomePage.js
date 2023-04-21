@@ -1,7 +1,12 @@
 import React from "react";
+import AddressAutoComplete from "../components/Forms/AddressAutoComplete";
 
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <div>
+      <AddressAutoComplete />
+    </div>
+  );
 };
 
 export default HomePage;
