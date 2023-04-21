@@ -1,11 +1,27 @@
 import express from "express";
+import session from 'express-session';
 import constructRoutes from "./routes/index.js";
 
 import cors from "cors";
 
 const app = express();
 
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 3600000
+  }
+}));
+
+app.get('/get-session', (req, res) => {
+  const username = req.session.username;
+  res.send(`Username: ${username}`);
+});
+
 app.use(cors());
+app.use(express.json());
 
 constructRoutes(app);
 
