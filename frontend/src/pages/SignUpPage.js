@@ -7,14 +7,16 @@ import "./styles.scss";
 const SignUpPage = () => {
   return (
     <MainLayout>
-      <form>
-        <Input placeholder="Email" name="email" />
-        <Input placeholder="Password" name="password" />
-        <Input placeholder="Confirm Password" name="cpassword" />
-        <Button type={"submit"} variant={"contained"}>
-          Create Account
-        </Button>
-      </form>
+      <div className="register">
+        <form>
+          <Input placeholder="Email" name="email" />
+          <Input placeholder="Password" name="password" />
+          <Input placeholder="Confirm Password" name="cpassword" />
+          <Button type={"submit"} variant={"contained"}>
+            Create Account
+          </Button>
+        </form>
+      </div>
     </MainLayout>
   );
 };

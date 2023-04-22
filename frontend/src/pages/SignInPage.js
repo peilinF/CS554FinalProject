@@ -8,11 +8,13 @@ import "./styles.scss";
 const SignInPage = () => {
   return (
     <MainLayout>
-      <form>
-        <Input placeholder="Email" name="email" />
-        <Input placeholder="Password" name="password" />
-        <Button variant={"contained"}>Login</Button>
-      </form>
+      <div className="login">
+        <form>
+          <Input placeholder="Email" name="email" />
+          <Input placeholder="Password" name="password" />
+          <Button variant={"contained"}>Login</Button>
+        </form>
+      </div>
     </MainLayout>
   );
 };
