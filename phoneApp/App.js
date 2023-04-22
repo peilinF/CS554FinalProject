@@ -3,14 +3,14 @@ import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 
-const App = () => {
+export default function App() {
   const [showMap, setShowMap] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [tracking, setTracking] = useState(false);
   const [locationHistory, setLocationHistory] = useState([]);
+  const [watchPosition, setWatchPosition] = useState(null);
 
   useEffect(() => {
-    const getLocationAsync = async () => {
+    (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         console.log('Permission to access location was denied');
@@ -19,24 +19,38 @@ const App = () => {
 
       let location = await Location.getCurrentPositionAsync({});
       setCurrentLocation(location.coords);
-    };
-
-    getLocationAsync();
+    })();
   }, []);
 
-  const toggleMapView = () => {
-    setShowMap(!showMap);
-  };
+  useEffect(() => {
+    console.log('locationHistory:', locationHistory);
+  }, [locationHistory]);
 
-  const startTracking = () => {
-    setTracking(true);
+  const startTracking = async () => {
+    let position = await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.Highest,
+        timeInterval: 1000,
+        distanceInterval: 10,
+      },
+      (location) => {
+        setCurrentLocation(location.coords);
+        setLocationHistory([...locationHistory, location.coords]);
+        console.log('location:', location.coords);
+      }
+    );
+    setWatchPosition(position);
   };
 
   const stopTracking = () => {
-    setTracking(false);
-    const newHistory = [...locationHistory, currentLocation];
-    setLocationHistory(newHistory);
-    console.log(newHistory);
+    if (watchPosition) {
+      watchPosition.remove();
+      setWatchPosition(null);
+    }
+  };
+
+  const toggleMapView = () => {
+    setShowMap(!showMap);
   };
 
   return (
@@ -45,19 +59,14 @@ const App = () => {
         <>
           <MapView
             style={styles.map}
-            initialRegion={{
+            region={{
               latitude: currentLocation?.latitude || 37.78825,
               longitude: currentLocation?.longitude || -122.4324,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
             showsUserLocation={true}
-            followsUserLocation={tracking}
-            onUserLocationChange={(event) => {
-              if (tracking) {
-                setCurrentLocation(event.nativeEvent.coordinate);
-              }
-            }}
+            followsUserLocation={true}
           >
             {locationHistory.length > 0 && (
               <Polyline
@@ -71,29 +80,31 @@ const App = () => {
             )}
           </MapView>
           <TouchableOpacity style={styles.closeButton} onPress={toggleMapView}>
-            <Text style={styles.closeButtonText}>Close Map</Text>
+            <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.controlButton, styles.startButton]}
-            onPress={startTracking}
-            disabled={tracking}
-          >
-            <Text style={styles.controlButtonText}>Start record</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.controlButton, styles.stopButton]}
-            onPress={stopTracking}
-            disabled={!tracking}
-          >
-            <Text style={styles.controlButtonText}>Stop</Text>
-          </TouchableOpacity>
+          {!watchPosition && (
+            <TouchableOpacity
+              style={[styles.controlButton, styles.startButton]}
+              onPress={startTracking}
+            >
+              <Text style={styles.controlButtonText}>Start</Text>
+            </TouchableOpacity>
+          )}
+          {watchPosition && (
+            <TouchableOpacity
+              style={[styles.controlButton, styles.stopButton]}
+              onPress={stopTracking}
+            >
+              <Text style={styles.controlButtonText}>Stop</Text>
+            </TouchableOpacity>
+          )}
         </>
       ) : (
-        <Button title="Map" onPress={toggleMapView} />
+        <Button title="Show Map" onPress={toggleMapView} />
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -120,25 +131,21 @@ const styles = StyleSheet.create({
   },
   controlButton: {
     position: 'absolute',
-    bottom: 30,
-    zIndex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    elevation: 2,
+    bottom: 40,
+    borderRadius: 20,
+    padding: 10,
   },
   startButton: {
-    left: 30,
-    backgroundColor: '#00a3cc',
+    backgroundColor: 'green',
+    left: 20,
   },
   stopButton: {
-    right: 30,
-    backgroundColor: '#ff3300',
+    backgroundColor: 'red',
+    right: 20,
   },
   controlButtonText: {
-    fontSize: 16,
     color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
-
-export default App;
