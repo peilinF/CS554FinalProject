@@ -1,49 +1,44 @@
-import firebase from "firebase/compat/app";
-
-async function doCreateUserWithEmailAndPassword(email, password) {
-  await firebase.auth().createUserWithEmailAndPassword(email, password);
-  firebase.auth().currentUser.updateProfile({ displayName: email });
-}
-
-async function doSignInWithEmailAndPassword(email, password) {
-  await firebase.auth().signInWithEmailAndPassword(email, password);
-}
+import {
+  EmailAuthProvider,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  reauthenticateWithCredential,
+  sendPasswordResetEmail,
+  signInWithPopup,
+  signOut,
+  updatePassword,
+} from "firebase/auth";
 
 async function doSocialSignIn(provider) {
   let socialProvider = null;
   if (provider === "google") {
-    socialProvider = new firebase.auth.GoogleAuthProvider();
+    socialProvider = new GoogleAuthProvider();
   } else if (provider === "facebook") {
-    socialProvider = new firebase.auth.FacebookAuthProvider();
+    socialProvider = new FacebookAuthProvider();
   }
-  await firebase.auth().signInWithPopup(socialProvider);
+  await signInWithPopup(socialProvider);
 }
 
 async function doPasswordReset(email) {
-  await firebase.auth().sendPasswordResetEmail(email);
+  await sendPasswordResetEmail(email);
 }
 
 async function doPasswordUpdate(password) {
-  await firebase.auth().updatePassword(password);
+  await updatePassword(password);
 }
 
 async function doSignOut() {
-  await firebase.auth().signOut();
+  await signOut();
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
-  let credential = firebase.auth.EmailAuthProvider.credential(
-    email,
-    oldPassword
-  );
-  await firebase.auth().currentUser.reauthenticateWithCredential(credential);
-  await firebase.auth().currentUser.updatePassword(newPassword);
+  let credential = EmailAuthProvider.credential(email, oldPassword);
+  await reauthenticateWithCredential(credential);
+  await updatePassword(newPassword);
   await doSignOut();
 }
 
 export {
-  doCreateUserWithEmailAndPassword,
-  doSignInWithEmailAndPassword,
   doSocialSignIn,
   doPasswordReset,
   doPasswordUpdate,

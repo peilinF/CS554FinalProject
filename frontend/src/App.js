@@ -5,7 +5,6 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ChangePassword from "./components/ChangePassword";
 
-
 function App() {
   return (
     <div className="App">

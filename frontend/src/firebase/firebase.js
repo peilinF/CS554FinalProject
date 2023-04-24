@@ -1,5 +1,5 @@
-import * as firebase from "firebase/app";
-import "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 const REACT_APP_FIREBASE_KEY = "AIzaSyBanNTSX4yvX1qqLuYYpsBg4ZMTqxA_h50";
 const REACT_APP_FIREBASE_DOMAIN = "cs554final-141c8.firebaseapp.com";
@@ -9,7 +9,7 @@ const REACT_APP_FIREBASE_STORAGE_BUCKET = "cs554final-141c8.appspot.com";
 const REACT_APP_FIREBASE_MESSAGING_SENDER_ID = "353020124219";
 const REACT_APP_FIREBASE_APP_ID = "1:353020124219:web:509eb01d529139a383501e";
 
-const firebaseApp = firebase.initializeApp({
+const app = initializeApp({
   apiKey: REACT_APP_FIREBASE_KEY,
   authDomain: REACT_APP_FIREBASE_DOMAIN,
   databaseURL: REACT_APP_FIREBASE_DATABASE,
@@ -29,4 +29,5 @@ const firebaseApp = firebase.initializeApp({
 //   appId: process.env.REACT_APP_FIREBASE_APP_ID
 // })
 
-export default firebaseApp;
+export const auth = getAuth(app);
+export default app;
