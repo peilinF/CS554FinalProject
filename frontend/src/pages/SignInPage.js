@@ -1,7 +1,7 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
 import "./styles.scss";
-
+import { Button, Input } from "@mui/material";
 import { doPasswordReset } from "../firebase/FirebaseFunctions";
 import { Navigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
