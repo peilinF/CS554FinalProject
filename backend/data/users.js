@@ -13,6 +13,7 @@ export const createUser = async (name, username, password) => {
   if (usernameDuplication !== null) throw 'Username already exists';
   let newUser = {
     name: name,
+    picture: "",
     username: username,
     password: password,
     friendList: []
@@ -41,5 +42,6 @@ export const loginUser = async (username, password) => {
 export const getUserById = async (id) => {
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: new ObjectId(id) });
-  return user;
+  let user_data = { "_id": user._id, "username": user.username, "picture": user.picture }
+  return user_data;
 };

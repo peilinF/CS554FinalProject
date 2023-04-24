@@ -6,24 +6,23 @@ import FriendOnline from '../components/Messanger/FriendOnline'
 
 const ChatPage = () => {
     const [conversationsId, setConversationsId] = useState([])
-    const user = { "id": "6446b25393f876318ad22d9b", "name": "Bob1", "username": "Bob1" }
+    const user = { "id": "6446fc4cd7172792920794e0", "name": "Bob1", "username": "Bob1" }
 
     useEffect(() => async () => {
         await fetch(`/conversations/${user.id}`, {
             method: 'Get',
             headers: {
                 'Content-Type': 'application/json'
-            },
+            }
         }).then(response => response.json())
             .then(data => {
-                console.log(data)
                 setConversationsId(data)
             });
     }, [user.id]);
     let frinedList = conversationsId.map(i => (
-        <li>
-            <FriendList conversationId={i} userID={user.id} />
-        </li>
+        < li key={i._id}>
+            <FriendList conversation={i.members} userID={user.id} />
+        </li >
     ))
     return (
         <div className="row">
@@ -56,7 +55,7 @@ const ChatPage = () => {
                 </div>
             </div>
             <div className="column right">
-                <h2>chatOnline</h2>
+                <h2>FriendOnline</h2>
                 <FriendOnline />
             </div>
         </div>

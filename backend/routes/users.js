@@ -1,5 +1,5 @@
 import express from "express";
-import { loginUser, createUser } from "../data/users.js";
+import { loginUser, createUser, getUserById } from "../data/users.js";
 
 const router = express.Router();
 
@@ -8,6 +8,16 @@ router.get("/", async (req, res) => {
 });
 
 
+router
+  .route('/:userId')
+  .get(async (req, res) => {
+    try {
+      const user = await getUserById(req.params.userId)
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  })
 router
   .route('/login')
   .post(async (req, res) => {
