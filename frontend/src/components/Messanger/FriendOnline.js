@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
 import "./FriendOnline.css"
-const FriendOnline = ({ conversations }) => {
-    const [user, setUser] = useState(null)
+const FriendOnline = () => {
+
     return (
         <div className="friendOnline">
             <img className="friendImg"

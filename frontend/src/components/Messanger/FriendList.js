@@ -1,6 +1,11 @@
-import "./FriendProfile.css"
+import "./FriendList.css"
+import React, { useEffect, useState } from "react";
 
-const Conversation = () => {
+const Conversation = ({ userID, conversationId }) => {
+  const [user, setUser] = useState(null)
+  console.log(userID)
+  console.log(conversationId)
+
   return (
     <div className="conversation">
       <img className="conversationImg"
