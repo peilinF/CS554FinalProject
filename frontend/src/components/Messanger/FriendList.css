@@ -1,0 +1,14 @@
+.conversation {
+    display: flex;
+    padding: 10px;
+}
+
+.conversation:hover {
+    background-color: rgb(230, 233, 232);
+}
+
+.conversationImg {
+    height: 50px;
+    width: 75px;
+    border-radius: 50%;
+}

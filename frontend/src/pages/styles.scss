@@ -8,6 +8,14 @@
   }
 }
 
+.map-container {
+  height: 400px;
+}
+
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
+
 @media only screen and (max-width: 650px) {
   .login form,
   .register form {

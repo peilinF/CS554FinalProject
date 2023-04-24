@@ -3,8 +3,7 @@ import axios from "axios";
 
 import "./styles.scss";
 
-const AddressAutoComplete = () => {
-  const [obj, setObj] = useState();
+const AddressAutoComplete = ({ latLng, setLatLng }) => {
   useEffect(() => {
     const fsqAPIToken = "fsq3PnhE5Zyd+DmfVJu+uHVFrTf/db8notB4S3S10xBz/JM=";
     let sessionToken = generateRandomSessionToken();
@@ -23,7 +22,6 @@ const AddressAutoComplete = () => {
       "autofill-search-container"
     );
     const findMeButton = document.getElementById("autofill-findme");
-    let latLng = {};
     let isFetching = false;
     form && form.addEventListener("submit", (e) => e.preventDefault(), true);
     const onChangeAutoComplete = debounce(changeAutoComplete);
@@ -50,9 +48,9 @@ const AddressAutoComplete = () => {
     function getCurrentPosition() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          latLng.lat = position.coords.latitude;
-          latLng.lng = position.coords.longitude;
-          setObj({
+          // latLng.lat = position.coords.latitude;
+          // latLng.lng = position.coords.longitude;
+          setLatLng({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
@@ -150,6 +148,11 @@ const AddressAutoComplete = () => {
       if (target.tagName === "BUTTON") {
         const link = target.dataset.object;
         const addressDetail = await fetchAddressDetails(link);
+        setLatLng({
+          lng: addressDetail.geocodes.main.longitude,
+          lat: addressDetail.geocodes.main.latitude,
+        });
+        console.log(addressDetail);
         const { location = {} } = addressDetail;
         const {
           address = "",
