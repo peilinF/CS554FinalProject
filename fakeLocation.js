@@ -37,7 +37,7 @@ function generateLocationHistory(startLatitude, startLongitude, speedKmH, totalD
   const startLatitude = 37.78825;
   const startLongitude = -122.4324;
   const speedKmH = 10; // 10 km/h
-  const totalDistanceKm = 1; // 1 km
+  const totalDistanceKm = 5; // 1 km
   
   const locationHistory = generateLocationHistory(startLatitude, startLongitude, speedKmH, totalDistanceKm);
   console.log(locationHistory);
