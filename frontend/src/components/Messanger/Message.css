@@ -1,0 +1,37 @@
+.message {
+    display: flex;
+    flex-direction: column;
+}
+
+.messageText {
+    width: 200px;
+    padding: 10px;
+    border-radius: 25px;
+    background-color: rgb(228, 255, 255);
+    border-bottom: 2px
+}
+
+.messageTop {
+    display: flex;
+
+}
+
+.messageBot {
+    display: flex;
+}
+
+.messageImg {
+    height: 50px;
+    width: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.message.own {
+    align-items: flex-end;
+}
+
+.message.own .messageText {
+    background-color: antiquewhite;
+    color: black;
+}
