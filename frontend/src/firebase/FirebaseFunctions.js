@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from "firebase/compat/app";
 
 async function doCreateUserWithEmailAndPassword(email, password) {
   await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -11,9 +11,9 @@ async function doSignInWithEmailAndPassword(email, password) {
 
 async function doSocialSignIn(provider) {
   let socialProvider = null;
-  if (provider === 'google') {
+  if (provider === "google") {
     socialProvider = new firebase.auth.GoogleAuthProvider();
-  } else if (provider === 'facebook') {
+  } else if (provider === "facebook") {
     socialProvider = new firebase.auth.FacebookAuthProvider();
   }
   await firebase.auth().signInWithPopup(socialProvider);
@@ -48,5 +48,5 @@ export {
   doPasswordReset,
   doPasswordUpdate,
   doSignOut,
-  doChangePassword
+  doChangePassword,
 };
