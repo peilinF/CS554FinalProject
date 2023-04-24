@@ -10,8 +10,8 @@ const SignInPage = () => {
     <MainLayout>
       <div className="login">
         <form>
-          <Input placeholder="Email" name="email" />
-          <Input placeholder="Password" name="password" />
+          <Input placeholder="Email" name="email" id='email'/>
+          <Input placeholder="Password" name="password" id='password'/>
           <Button variant={"contained"}>Login</Button>
         </form>
       </div>
