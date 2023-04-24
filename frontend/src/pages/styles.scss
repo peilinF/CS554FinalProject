@@ -1,15 +1,24 @@
-form {
+.login form,
+.register form {
   display: flex;
   flex-direction: column;
-  width: 30%;
-
+  width: 300px;
   div {
     margin: 10px 0;
   }
 }
 
+.map-container {
+  height: 400px;
+}
+
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
+
 @media only screen and (max-width: 650px) {
-  form {
+  .login form,
+  .register form {
     width: 90%;
   }
 }
