@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ChatPage.css";
 import FriendProfile from "../components/Messanger/FriendProfile"
 import Message from "../components/Messanger/Message"
 import FriendOnline from '../components/Messanger/FriendOnline'
 
 const ChatPage = () => {
+    const [conversations, setConversations] = useState([])
+    const user = { "id": "123", "name": "Bob1", "username": "Bob1" }
+
     return (
         <div className="row">
             <div className="column left">
