@@ -6,7 +6,11 @@ import cors from "cors";
 
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
 app.use(session({
+  name: 'AuthCookie',
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: false,
@@ -15,17 +19,27 @@ app.use(session({
   }
 }));
 
-app.get('/check', (req, res) => {
-  res.json({ "Hello": [1, 2, 3, 4, 5] });
+let urTrack = {};
+app.use((req, res, next) => {
+  if (!urTrack[req.method + req.originalUrl]) {
+    urTrack[req.method + req.originalUrl] = 0
+  }
+  urTrack[req.method + req.originalUrl] += 1;
+  if (!req.session.user) {
+    console.log("User not Authorized")
+  }
+  else {
+    console.log("User Authorized")
+  }
+  let temp = req.body
+  if (!temp.password) {
+    console.log(req.method + ' ' + req.originalUrl + ' ' + urTrack[req.method + req.originalUrl] + ' ' + JSON.stringify(req.body))
+  }
+  else {
+    console.log(req.method + ' ' + req.originalUrl + ' ' + urTrack[req.method + req.originalUrl] + JSON.stringify(req.body.username))
+  }
+  next();
 });
-
-app.get('/get-session', (req, res) => {
-  const username = req.session.username;
-  res.send(`Username: ${username}`);
-});
-
-app.use(cors());
-app.use(express.json());
 
 constructRoutes(app);
 

@@ -1,14 +1,16 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
 import "./styles.scss";
-
+import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 
 const SignInPage = () => {
   const [nameData, setNameData] = useState('');
   const [passwordData, setPasswordData] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const postData = { "username": nameData, "password": passwordData };
     console.log(postData)
@@ -22,6 +24,12 @@ const SignInPage = () => {
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        if (data.success) {
+          console.log("Success");
+          navigate('/');
+        } else {
+          setError(data.message);
+        }
       });
   }
 
@@ -31,7 +39,6 @@ const SignInPage = () => {
   const handlePasswordChange = (event) => {
     setPasswordData(event.target.value);
   }
-
   return (
     <MainLayout>
       <form onSubmit={handleSubmit}>

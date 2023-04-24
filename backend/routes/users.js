@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
 router
   .route('/login')
   .post(async (req, res) => {
+    console.log(req.body)
     let usernameInput = req.body.username
     let passwordInput = req.body.password
     if (req.session.user != undefined) {

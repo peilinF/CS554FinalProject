@@ -22,6 +22,7 @@ export const createUser = async (name, username, password) => {
   return {
     name: name,
     username: username,
+    friendList: friendList
   };
 };
 
