@@ -2,7 +2,9 @@
 ./frontend/package-lock.json
 ./frontend/yarn.lock
 
+.frontend/src/.env.local
+
 ./backend/node_modules/
 ./backend/package-lock.json
 
-./frontend/src/config.js
+./backend/config/api.js

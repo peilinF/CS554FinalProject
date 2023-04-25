@@ -1,18 +1,23 @@
-import { dbConnection } from "./mongoConnection.js";
+const dbConnection = require('./mongoConnection');
 
+/* This will allow you to have one reference to each collection per app */
+/* Feel free to copy and paste this this */
 const getCollectionFn = (collection) => {
-  let _collection = undefined;
+    let _col = undefined;
 
-  return async () => {
-    if (!_collection) {
-      const db = await dbConnection();
-      _collection = await db.collection(collection);
-    }
-    return _collection;
-  };
+    return async () => {
+        if (!_col) {
+        const db = await dbConnection.dbConnection();
+        _col = await db.collection(collection);
+        }
+
+        return _col;
+    };
 };
 
-const users = getCollectionFn("users");
-const projects = getCollectionFn("projects");
-
-export { users, projects };
+/* Now, you can list your collections here: 
+NOTE: YOU WILL NEED TO CHANGE THE CODE BELOW TO HAVE THE COLLECTION(S) REQUIRED BY THE ASSIGNMENT */
+module.exports = {
+    user: getCollectionFn('user'),
+    recipe: getCollectionFn('recipe'),
+};

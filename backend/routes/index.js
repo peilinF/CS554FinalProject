@@ -1,10 +1,10 @@
-import userRoutes from "./users.js";
+const usersRoutes = require("./users");
 
 const constructRoutes = (app) => {
-  app.use("/users", userRoutes);
+  app.use("/", usersRoutes)
   app.use("*", (req, res) => {
     res.json({ message: "No matching route found" });
   });
 };
 
-export default constructRoutes;
+module.exports = constructRoutes;

@@ -1,0 +1,206 @@
+.App {
+	text-align: center;
+}
+
+.App-logo {
+	animation: App-logo-spin infinite 20s linear;
+	height: 80px;
+}
+
+.App-header {
+	background-color: #28547a;
+	height: 50px;
+	padding: 20px;
+	color: #222;
+	position: relative;
+}
+
+.App-title {
+	font-size: 2.5em;
+	font-weight: bold;
+	color: white;
+	text-align: left;
+	position: absolute;
+	display: inline-block;
+  top: 0%;
+}
+
+cite {
+	font-weight: bold;
+}
+table {
+	align-content: center;
+	margin: auto;
+}
+td {
+	padding: 10px;
+}
+
+.App-intro {
+	font-size: large;
+}
+.cap-first-letter:first-letter {
+	text-transform: capitalize;
+}
+.col-sm-6,
+col-md-4 {
+	border: 1px;
+}
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+ul {
+	list-style: none;
+}
+nav {
+	list-style: none;
+
+	text-align: right;
+	position: absolute;
+	bottom: 20px;
+	right: 10%;
+}
+
+.navlink {
+	padding: 0.4rem 0.8rem;
+	background-color: white;
+	border-radius: 3px;
+	color: #28547a;
+	text-decoration: none !important;
+}
+
+.button {
+	padding: 0.4rem .8rem;
+	background-color: #28547a;
+	border-radius: 3px;
+	color: white;
+	text-decoration: none !important;
+}
+
+.button:hover {
+	padding: 0.4rem 0.8rem;
+	background-color: white;
+	border-radius: 3px;
+	color: #28547a;
+	text-decoration: none !important;
+}
+
+.navlink:hover {
+	background-color: transparent;
+	color: white;
+	border: 1px solid white;
+}
+
+input,
+select {
+	padding: 2px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #28547a;
+}
+
+.card {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	width: 50%;
+	margin: 0 auto 20px;
+	height: auto;
+}
+
+.card-content {
+	display: flex; /* Enable flexbox */
+	justify-content: space-between; /* Distribute space between the elements */
+	align-items: flex-start; /* Align the elements vertically at the top */
+}
+
+.card-body {
+	flex: 1; /* Allow the card-body to grow and take up the remaining space */
+}
+  
+.image {
+	margin: 20px;
+}
+
+.cancel-button {
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+}
+
+.add-button {
+	position: absolute;
+	bottom: 20px;
+}
+
+.like-button {
+	position: absolute;
+	bottom: 20px;
+}
+
+.bottom,
+.three-buttons {
+	display: flex; /* Enable flexbox */
+	justify-content: center; /* Distribute space between the elements */
+	align-items: center; /* Align the elements vertically at the top */
+}
+
+.bottom {
+	gap: 10%;
+	margin: 50px;
+}
+
+.three-buttons {
+	gap: 10px;
+	position: absolute;
+	bottom: 20px;
+}
+
+span {
+	font-weight: bold;
+}
+
+.error-message {
+	margin: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 50%;
+    margin: 0 auto;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+input {
+    width: 100%;
+    padding: 0.5em;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.App-body {
+	display: flex;
+	flex-direction: row;
+}
+
+.left {
+	height: 100vh;
+	width: 75%;
+}
+
+.right {
+	height: 100vh;
+	width: 25%;
+}
