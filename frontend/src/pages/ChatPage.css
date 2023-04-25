@@ -33,6 +33,10 @@
     width: 90%;
 }
 
+.chatBox {
+    height: 94%;
+}
+
 .chatBoxSend {
     background-color: #fac8ae;
 }
