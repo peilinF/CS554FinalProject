@@ -1,5 +1,5 @@
 import express from "express";
-import { getRoute, saveRoute } from "../data/maps";
+import { getRoute, saveRoute } from "../data/maps.js";
 
 const router = express.Router();
 

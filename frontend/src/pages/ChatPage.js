@@ -6,82 +6,95 @@ import FriendOnline from '../components/Messanger/FriendOnline'
 
 const ChatPage = () => {
     const [conversations, setConversations] = useState([])
-    const [chat, setChat] = useState(null)
+    const [chat, setChat] = useState({ _id: null })
     const [messagesList, setMessagesList] = useState([])
+    const [sendMessage, setSendMessage] = useState([])
     const user = { "id": "6446fc4cd7172792920794e0", "name": "Bob1", "username": "Bob1" }
 
-    useEffect(() => async () => {
-        await fetch(`/conversations/${user.id}`, {
-            method: 'Get',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-            .then(data => {
-                setConversations(data)
-            }).catch(e => console.log(e));
+    useEffect(() => {
+        const conversationsData = async () => {
+            await fetch(`/conversations/${user.id}`, {
+                method: 'Get',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    setConversations(data)
+                }).catch(e => console.log(e));
+        }
+        conversationsData()
     }, [user.id]);
-    console.log(chat?._id)
-    useEffect(() => async () => {
-        await fetch(`/messages/${conversations?.id}`, {
-            method: 'Get',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-            .then(data => {
-                setMessagesList(data)
-            }).catch(e => console.log(e));
-    }, [])
-    let frinedList = conversations.map(i => (
-        < li key={i._id} onClick={() => setChat(i)}>
-            <FriendList conversation={i.members} userID={user.id} />
-        </li >
-    ));
-    if (conversations !== null) {
-        let messageBox = messagesList.map(i => (
-            <li>
-                <Message ConversationId={i.ConversationId}
-                    UserdId={i.UserdId}
-                    Text={i.Text}
-                    Time={i.Time}
-                    own={i.UserdId === user.id} />
-            </li>
-        ))
-        return (
-            <div className="row">
-                <div className="column left">
-                    <h2>chatMenu</h2>
-                    <input placeholder="Friend Search" className="FriendSearch"></input>
-                    <ul>
-                        {frinedList}
-                    </ul>
-                </div>
-                <div className="column middle">
-                    {chat ? (
-                        <div className="chatBox">
-                            <div className="chatBoxMessages">
-                                <h2>chatBox</h2>
-                                <ul>
-                                    {messageBox}
-                                </ul>
-                                <Message />
-                            </div>
-                            <div className="chatBoxSend">
-                                <input placeholder="Send message" className="ChatMessageButton"></input>
-                                <button className="messageSubmite">Send</button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="chatNotOpen">No Chat Opened</div>
-                    )}
-                </div>
-                <div className="column right">
-                    <h2>FriendOnline</h2>
-                    <FriendOnline />
-                </div>
-            </div>
-        );
-    };
 
-    export default ChatPage;
+    useEffect(() => {
+        const conversationsData = async () => {
+            if (chat._id !== null) {
+                await fetch(`/messages/${chat._id}`, {
+                    method: 'Get',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json())
+                    .then(data => {
+                        setMessagesList(data)
+                    }).catch(e => console.log(e));
+            }
+        }
+        conversationsData()
+    }, [chat]);
+
+    const handleMessageSubmite = async (event) => {
+        //create message
+        //conversationId, userdId, text
+    }
+
+    const friendList = conversations.map(i => (
+        <div key={i._id} onClick={() => setChat(i)}>
+            <FriendList conversation={i.members} userID={user.id} />
+        </div >
+    ))
+    const messageList = messagesList.map(i => (
+        <li key={i._id}>
+            <Message ConversationId={i.ConversationId}
+                UserdId={i.UserdId}
+                Text={i.Text}
+                Time={i.Time}
+                own={i.UserdId === user.id} />
+        </li>
+    ))
+
+    return (
+        <div className="row">
+            <div className="column left">
+                <h2>chatMenu</h2>
+                <input placeholder="Friend Search" className="FriendSearch"></input>
+                {friendList}
+            </div>
+            <div className="column middle">
+                {chat._id ? (
+                    <div className="chatBox">
+                        <div className="chatBoxMessages">
+                            <ul>
+                                {messageList}
+                            </ul>
+                        </div>
+                        <div className="chatBoxSend">
+                            <form onSubmit={handleMessageSubmite}>
+                                <input placeholder="Send message" className="ChatMessageInpute"></input>
+                                <button type='submit' className="messageSubmite">Send</button>
+                            </form>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="chatNotOpen">No Chat Opened</div>
+                )}
+            </div>
+            <div className="column right">
+                <h2>FriendOnline</h2>
+                <FriendOnline />
+            </div>
+        </div>
+    );
+};
+
+export default ChatPage;
