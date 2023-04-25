@@ -21,12 +21,11 @@ const Map = ({ latLng, setLatLng }) => {
       zoom: zoom,
     });
 
-    const marker = new mapboxgl.Marker({
-      color: "#FFFFFF",
-      draggable: true,
-    })
+    new mapboxgl.Marker()
       .setLngLat([latLng.lng, latLng.lat])
       .addTo(map.current);
+
+    map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
   }, []);
 
   useEffect(() => {
@@ -34,6 +33,9 @@ const Map = ({ latLng, setLatLng }) => {
       center: [latLng.lng, latLng.lat],
       zoom: parseInt(zoom),
     });
+    new mapboxgl.Marker()
+      .setLngLat([latLng.lng, latLng.lat])
+      .addTo(map.current);
   }, [latLng]);
   return <div ref={mapContainer} className="map-container" />;
 };

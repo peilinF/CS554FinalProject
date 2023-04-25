@@ -1,81 +1,81 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .column {
-    float: left;
-    padding: 10px;
-    height: 550px;
+  float: left;
+  padding: 10px;
+  height: 550px;
 }
 
 .left {
-    width: 25%;
-    background-color: antiquewhite;
+  width: 25%;
+  background-color: antiquewhite;
 }
 
 .middle {
-    width: 45%;
-    background-color: rgb(241, 209, 167);
+  width: 45%;
+  background-color: rgb(241, 209, 167);
 }
 
 .right {
-    width: 30%;
-    background-color: rgb(242, 177, 93);
+  width: 30%;
+  background-color: rgb(242, 177, 93);
 }
 
 .row:after {
-    content: "";
-    display: table;
-    clear: both;
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .FriendSearch {
-    width: 90%;
+  width: 90%;
 }
 
 .chatBoxSend {
-    background-color: #fac8ae;
+  background-color: #fac8ae;
 }
 
 .chatBoxMessages {
-    padding-right: 10px;
-    height: 94%;
-    overflow-y: scroll;
+  padding-right: 10px;
+  height: 94%;
+  overflow-y: scroll;
 }
 
 /* https://getcssscan.com/css-buttons-examples */
 .messageSubmite {
-    background: #FF4742;
-    border: 1px solid #FF4742;
-    border-radius: 6px;
-    box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
-    box-sizing: border-box;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    line-height: 16px;
-    min-height: 40px;
-    outline: 0;
-    padding: 12px 14px;
-    text-align: center;
-    text-rendering: geometricprecision;
-    text-transform: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: middle;
+  background: #ff4742;
+  border: 1px solid #ff4742;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 16px;
+  min-height: 40px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  text-rendering: geometricprecision;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
 }
 
 .messageSubmite:hover,
 .messageSubmite:active {
-    background-color: initial;
-    background-position: 0 0;
-    color: #FF4742;
+  background-color: initial;
+  background-position: 0 0;
+  color: #ff4742;
 }
 
 .messageSubmite:active {
-    opacity: .5;
+  opacity: 0.5;
 }
