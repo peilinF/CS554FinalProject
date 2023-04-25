@@ -7,6 +7,7 @@ import ChatPage from "./pages/ChatPage";
 import ChangePassword from "./components/ChangePassword";
 
 function App() {
+  console.log("AJJA");
   return (
     <div className="App">
       <BrowserRouter>

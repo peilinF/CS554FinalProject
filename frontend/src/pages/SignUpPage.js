@@ -26,6 +26,7 @@ const SignUpPage = () => {
   return (
     <MainLayout>
       <div className="register">
+        <h2>Registration</h2>
         <form onSubmit={(e) => handleSignUp(e)}>
           <Input placeholder="Email" name="email" />
           <Input placeholder="Password" name="password" />

@@ -38,6 +38,7 @@ const SignInPage = () => {
   return (
     <MainLayout>
       <div className="login">
+        <h2>Login</h2>
         <form onSubmit={(e) => handleLogin(e)}>
           <Input required placeholder="Email" name="email" id="email" />
           <Input

@@ -1,7 +1,11 @@
 import React from "react";
 
 const Header = () => {
-  return <header>Header</header>;
+  return (
+    <header>
+      <h1>MyRoute</h1>{" "}
+    </header>
+  );
 };
 
 export default Header;
