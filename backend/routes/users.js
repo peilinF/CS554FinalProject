@@ -145,5 +145,107 @@ router
     }
   });
 
+router
+  .route('/addfriend/:userId/:searchTerm')
+  .get(async (req, res) => {
+    
+    let userId = req.params.userId;
+    let searchTerm = req.params.searchTerm;
+
+    // error check
+
+    try {
+      userId = utils.checkId(userId, "userId");
+      searchTerm = utils.checkId(searchTerm, "searchTerm");
+    } catch (e) {
+      res.status(400).json({ error: e });
+      return;
+    }
+
+    // search for users
+
+    let user_db = undefined;
+    let friend_db = undefined;
+
+    try {
+      user_db = await userData.getUserById(userId);
+      friend_db = await userData.getUserById(searchTerm);
+    } catch (e) {
+      res.status(400).json({ error: e });
+      return;
+    }
+
+    // add friend to list
+
+    try {
+      user_db = await userData.addFriend(userId, searchTerm);
+    } catch (e) {
+      res.status(400).json({ error: e });
+      return;
+    }
+
+    // return user status
+
+    try {
+      user_db = await userData.getUserById(userId);
+      return res.status(200).json(user_db);
+    } catch (e) {
+      res.status(400).json({ error: e });
+      return;
+    }
+
+  });
+
+router
+  .route('/removefriend/:userId/:friendId')
+  .get(async (req, res) => {
+      
+      let userId = req.params.userId;
+      let friendId = req.params.friendId;
+  
+      // error check
+  
+      try {
+        userId = utils.checkId(userId, "userId");
+        friendId = utils.checkId(friendId, "friendId");
+      } catch (e) {
+        res.status(400).json({ error: e });
+        return;
+      }
+  
+      // search for users
+  
+      let user_db = undefined;
+      let friend_db = undefined;
+  
+      try {
+        user_db = await userData.getUserById(userId);
+        friend_db = await userData.getUserById(friendId);
+      } catch (e) {
+        res.status(400).json({ error: e });
+        return;
+      }
+  
+      // remove friend from list
+  
+      try {
+        user_db = await userData.removeFriend(userId, friendId);
+      } catch (e) {
+        res.status(400).json({ error: e });
+        return;
+      }
+  
+      // return user status
+  
+      try {
+        user_db = await userData.getUserById(userId);
+        return res.status(200).json(user_db);
+      } catch (e) {
+        res.status(400).json({ error: e });
+        return;
+      }
+  
+  });
+
 module.exports = router;
 

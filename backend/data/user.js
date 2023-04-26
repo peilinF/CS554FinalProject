@@ -31,7 +31,12 @@ const createUser = async (user_info) => {
         name: name,
         username: username,
         password: hashedPassword,
-        avatar: user_info.avatar // Add avatar URL to the user document
+        avatar: user_info.avatar, // Add avatar URL to the user document
+        friends: [],
+        lastPosition: {
+            lat: 40.744838 + (Math.random() - 0.1) * 2,
+            lng: -74.025683 + (Math.random() - 0.1) * 2
+        },
     }
 
     const insertInfo = await userCollection.insertOne(new_user);
@@ -153,11 +158,189 @@ const deleteUser = async (id) => {
 
 };
 
+const addFriend = async (id, friend_id) => {
+
+    // error check
+
+    id = utils.checkId(id);
+    friend_id = utils.checkId(friend_id);
+
+    // check if user exists
+
+    let user_db = await getUserById(id);
+    if (!user_db) {
+        throw "User not found";
+    }
+
+    // check if friend exists
+
+    let friend_db = await getUserById(friend_id);
+    if (!friend_db) {
+        throw "Friend not found";
+    }
+
+    // check if friend already added
+
+    if (user_db.friends.includes(friend_id)) {
+        throw "Friend already added";
+    }
+
+    // check if user is already added as friend
+
+    if (friend_db.friends.includes(id)) {
+        throw "Friend already added";
+    }
+
+    // add friend
+
+    const userCollection = await user();
+    const updateInfo = await userCollection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { friends: friend_id } });
+
+    // add user as friend
+
+    const updateInfo2 = await userCollection.updateOne({ _id: new ObjectId(friend_id) }, { $addToSet: { friends: id } });
+
+    if (updateInfo.modifiedCount === 0 || updateInfo2.modifiedCount === 0) {
+        throw `Could not add friend with id of ${friend_id}`;
+    }
+
+    return await getUserById(id);
+
+};
+
+const removeFriend = async (id, friend_id) => {
+
+    // error check
+
+    id = utils.checkId(id);
+    friend_id = utils.checkId(friend_id);
+
+    // check if user exists
+
+    let user_db = await getUserById(id);
+    if (!user_db) {
+        throw "User not found";
+    }
+
+    // check if friend exists
+
+    let friend_db = await getUserById(friend_id);
+    if (!friend_db) {
+        throw "Friend not found";
+    }
+
+    // check if friend already added
+
+    if (!user_db.friends.includes(friend_id)) {
+        throw "Friend not added";
+    }
+
+    // check if user is already added as friend
+
+    if (!friend_db.friends.includes(id)) {
+        throw "Friend not added";
+    }
+
+    // remove friend
+
+    const userCollection = await user();
+    const updateInfo = await userCollection.updateOne({ _id: new ObjectId(id) }, { $pull: { friends: friend_id } });
+
+    // remove user as friend
+
+    const updateInfo2 = await userCollection.updateOne({ _id: new ObjectId(friend_id) }, { $pull: { friends: id } });
+
+    if (updateInfo.modifiedCount === 0 || updateInfo2.modifiedCount === 0) {
+        throw `Could not remove friend with id of ${friend_id}`;
+    }
+
+    return await getUserById(id);
+};
+
+const getFriendsList = async (id) => {
+
+    // error check
+
+    id = utils.checkId(id);
+
+    // check if user exists
+
+    let user_db = await getUserById(id);
+    if (!user_db) {
+        throw "User not found";
+    }
+
+    // get friends list
+
+    let friends_list = user_db.friends.map(async (friend_id) => {
+        return await getUserById(friend_id);
+    });
+
+    return await Promise.all(friends_list);
+
+};
+
+const getUserPosition = async (id) => {
+
+    // error check
+
+    id = utils.checkId(id);
+
+    // check if user exists
+
+    let user_db = await getUserById(id);
+    if (!user_db) {
+        throw "User not found";
+    }
+
+    // get user position
+
+    return user_db.lastPosition;
+
+};
+
+const updateUserPosition = async (id, position) => {
+
+    // error check
+
+    id = utils.checkId(id);
+
+    // check if user exists
+
+    let user_db = await getUserById(id);
+    if (!user_db) {
+        throw "User not found";
+    }
+
+    // check if position changed
+
+    if (user_db.lastPosition.lat === position.lat && user_db.lastPosition.lng === position.lng) {
+        throw "Position not changed";
+    }
+
+    // update user position
+
+    const userCollection = await user();
+    const updateInfo = await userCollection.updateOne({ _id: new ObjectId(id) }, { $set: { lastPosition: position } });
+
+    if (updateInfo.modifiedCount === 0) {
+        throw `Could not update user with id of ${id}`;
+    }
+
+    return await getUserById(id);
+
+};
+
 module.exports = {
     createUser,
     checkUser,
     getUserById,
     getUserByUsername,
     getAllUsers,
-    deleteUser
+    deleteUser,
+    addFriend,
+    removeFriend,
+    getFriendsList,
+    getUserPosition,
+    updateUserPosition
 }

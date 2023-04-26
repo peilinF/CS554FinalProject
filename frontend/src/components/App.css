@@ -204,3 +204,54 @@ input {
 	height: 100vh;
 	width: 25%;
 }
+
+.right-body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.signup-form,
+.login-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.friends-list-ul {
+	overflow-y:scroll;
+	height: 240px;
+	border: solid 1px #ccc;
+}
+
+.friends-list {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 80%;
+}
+
+.friends-info {
+	display: flex;
+	flex-direction: row;
+	align-items: left;
+}
+
+.function-button {
+	align-items: right;
+}
+
+.add-friend-input {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+}
+
+.submit-btn {
+	margin-left: 10px;
+	white-space: nowrap;
+	height: 35px;
+}

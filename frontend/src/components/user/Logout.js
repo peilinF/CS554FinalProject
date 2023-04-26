@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Logout = () => {
+const Logout = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -10,11 +10,10 @@ const Logout = () => {
             try {
                 const response = await axios.get("http://localhost:4000/logout");
 
-                console.log(response);
-
                 if (response.status === 200 && response.data) {
                     sessionStorage.removeItem("authToken");
                     localStorage.removeItem("userId");
+                    props.updateLoginStatus(false);
                     navigate("/");
                 }
             } catch (error) {

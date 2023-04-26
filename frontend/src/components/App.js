@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -36,9 +36,38 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
-  const updateLoginStatus = (user) => {
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const token = sessionStorage.getItem("authToken");
+
+      if (token) {
+        try {
+          const response = await axios.get("http://localhost:4000/user-info", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          setIsLoggedIn(true);
+          setUserInfo(response.data);
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+        }
+      } else {
+        setIsLoggedIn(false);
+        setUserInfo(null);
+      }
+    };
+
+    fetchUserInfo();
+  }, [isLoggedIn]);
+
+  const updateLoginStatus = (login_status) => {
+    if (login_status) {
+      console.log("user log in");
+    } else {
+      console.log("user log out");
+    }
+
     setIsLoggedIn(true);
-    setUserInfo(user);
   };
 
   let html = (
@@ -47,22 +76,24 @@ function App() {
         <div className='App-body'>
 
           <div className="left">
-            {isLoggedIn && userInfo && <Map userAvatar={userInfo.avatar} />}
+            {isLoggedIn && userInfo && <Map userInfo={userInfo} />}
             {!isLoggedIn && <Map />}
           </div>
 
           <div className="right">
-            <Routes>
-              <Route path="/" element={<Home />} />
+            <div className="right-body">
+              <Routes>
+                <Route path="/" element={<Home/>} />
 
-              <Route path="/login" element={<Login updateLoginStatus={updateLoginStatus}/>} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/logout" element={<Logout />} />
+                <Route path="/login" element={<Login updateLoginStatus={updateLoginStatus} />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/logout" element={<Logout updateLoginStatus={updateLoginStatus} />} />
 
-              <Route path="/404" element={<NotFoundPage />} />
-              <Route path="/error" element={<Error />} />
-              <Route path="*" element={<Error />} />
-            </Routes>
+                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="/error" element={<Error />} />
+                <Route path="*" element={<Error />} />
+              </Routes>
+            </div>
           </div>
 
         </div>

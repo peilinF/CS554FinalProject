@@ -5,7 +5,10 @@ import React, { useState, useEffect } from 'react';
 import  REACT_APP_GOOGLE_MAPS_API_KEY  from '../../api';
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 
-const Map = ({ userAvatar }) => {
+import { useQuery, useMutation } from '@apollo/client';
+import queries from '../../graphql/queries';
+
+const Map = ({ userInfo }) => {
 
     // Current Position
 
@@ -14,13 +17,40 @@ const Map = ({ userAvatar }) => {
         lng: -74.025683
     });
 
+    const [friends, setFriends] = useState([]);
+
+    const [updateUserPosition] = useMutation(queries.UPDATE_USER_POSITION);
+
+    const { loading, error, data } = useQuery(queries.GET_FRIENDS_LIST, {
+        variables: { userId: userInfo?._id },
+        fetchPolicy: 'cache-and-network',
+        skip: !userInfo,
+        onCompleted: (data) => {
+            setFriends(data.getFriendsList);
+        }
+    });
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setCurrentPosition({
+            async (position) => {
+                const random_pos = {
+                    lat: position.coords.latitude + (Math.random() - 0.1) * 2,
+                    lng: position.coords.longitude + (Math.random() - 0.1) * 2,
+                };
+
+                const pos = {
                     lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                });
+                    lng: position.coords.longitude
+                };
+
+                let used_pos = random_pos;
+                
+                setCurrentPosition(used_pos);
+
+                if (userInfo) {
+                    await updateUserPosition({ variables: { userId: userInfo._id, position: used_pos } });
+                }
+
             },
             (error) => console.log(error)
         );
@@ -48,22 +78,47 @@ const Map = ({ userAvatar }) => {
                     zoom={15}
                     center={currentPosition}
                 >
-                    {userAvatar && (
+                    {userInfo && userInfo.avatar && (
                         <MarkerF
                             position={currentPosition}
                             icon={{
-                                url: userAvatar,
-                                scaledSize: new window.google.maps.Size(50, 50)
+                                url: userInfo.avatar,
+                                scaledSize: new window.google.maps.Size(75, 75)
                             }}
                             onClick={() => console.log("You clicked me!")}
                         />
                     )}
-                    {!userAvatar && (
+                    {(!userInfo || !userInfo.avatar) && (
                         <MarkerF
                             position={currentPosition}
                             onClick={() => console.log("You clicked me!")}
                         />
                     )}
+                    {friends !== [] && friends.map((user) => {
+                        if (user.lastPosition.lat && user.lastPosition.lng) {
+                            if (user.avatar) {
+                                return (
+                                    <MarkerF
+                                        key={user._id}
+                                        position={user.lastPosition}
+                                        icon={{
+                                            url: user.avatar,
+                                            scaledSize: new window.google.maps.Size(75, 75)
+                                        }}
+                                        onClick={() => console.log(user.username)}
+                                    />
+                                );
+                            } else {
+                                return (
+                                    <MarkerF
+                                        key={user._id}
+                                        position={user.lastPosition}
+                                        onClick={() => console.log(user.username)}
+                                    />
+                                );
+                            } 
+                        }
+                    })}
                 </GoogleMap>
             </div>
         );

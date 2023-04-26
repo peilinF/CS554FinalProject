@@ -49,11 +49,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   playground: true,
-  context: ({ req }) => {
-    console.log(req.session.user);
-    return { req };
-  },
- });
+});
 
 (async () => {
   await server.start();

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import UserProfile from "./user/UserProfile";
+
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
@@ -36,6 +38,11 @@ const Home = () => {
         <h2>Welcome, {userInfo.username}!</h2>
         <p>You are now logged in.</p>
         <p>Log out here. <a href="/logout">Log out</a></p>
+
+        <br />
+        <br />
+
+        <UserProfile userInfo={userInfo} />
       </div>
     );
   } else {

@@ -35,7 +35,7 @@ const Signup = () => {
     <div>
       <h2>Sign Up</h2>
 
-      <form onSubmit={(event) => handleSignup(event)}>
+      <form onSubmit={(event) => handleSignup(event)} className="signup-form">
         <br />
 
         <label htmlFor="name">Name:</label>
@@ -82,6 +82,7 @@ const Signup = () => {
         <br />
 
         <button type="submit">Sign Up</button>
+        <p>Have an account? <a href="/login">Log in</a></p>
       </form>
     </div>
   );

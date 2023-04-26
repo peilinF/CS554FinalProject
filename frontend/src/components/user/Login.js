@@ -25,7 +25,7 @@ const Login = (props) => {
         localStorage.setItem("userId", response.data.userInfo._id);
         
         // Update the loginStatus in App.js
-        props.updateLoginStatus(response.data.userInfo);
+        props.updateLoginStatus(true);
         
         // Navigate to the home page
         navigate("/");
@@ -33,8 +33,8 @@ const Login = (props) => {
         setErrorMessage("Invalid username or password. Please try again.");
       }
     } catch (error) {
-        console.log(error);
-      setErrorMessage("Invalid username or password. Please try again.");
+      console.log(error);
+      setErrorMessage(error);
     }
   };
 
@@ -44,7 +44,7 @@ const Login = (props) => {
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-      <form onSubmit={(event) => handleLogin(event)}>
+      <form onSubmit={(event) => handleLogin(event)} className="login-form">
         <br />
 
         <label htmlFor="username">Username:</label>
@@ -70,7 +70,8 @@ const Login = (props) => {
         <br />
 
         <button type="submit">Login</button>
-        <a href="/signup">Sign Up</a>
+        <p>New to this website? <a href="/signup">Sign Up</a></p>
+
       </form>
     </div>
   );
