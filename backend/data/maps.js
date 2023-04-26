@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { maps } from "../config/mongoCollections";
+import { maps } from "../config/mongoCollections.js";
 
 export const getRoute = async (id) => {
   const mapsCollection = await maps();

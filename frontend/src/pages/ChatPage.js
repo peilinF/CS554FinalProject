@@ -44,8 +44,26 @@ const ChatPage = () => {
     }, [chat]);
 
     const handleMessageSubmite = async (event) => {
+        event.preventDefault();
         //create message
         //conversationId, userdId, text
+        const newMessage = document.getElementById('newMessage').value;
+        console.log(newMessage)
+        await fetch(`/messages`, {
+            method: 'Post',
+            body: JSON.stringify({
+                conversationId: chat._id,
+                userdId: user.id,
+                text: newMessage
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setSendMessage(data)
+            }).catch(e => console.log(e));
     }
 
     const friendList = conversations.map(i => (
@@ -80,7 +98,17 @@ const ChatPage = () => {
                         </div>
                         <div className="chatBoxSend">
                             <form onSubmit={handleMessageSubmite}>
-                                <input placeholder="Send message" className="ChatMessageInpute"></input>
+                                <div className='form-group'>
+                                    <label>
+                                        <textarea
+                                            id='newMessage'
+                                            name='newMessage'
+                                            placeholder="Send Message"
+                                            className="ChatMessageInpute"
+                                            autoComplete='off'
+                                            required />
+                                    </label>
+                                </div>
                                 <button type='submit' className="messageSubmite">Send</button>
                             </form>
                         </div>
