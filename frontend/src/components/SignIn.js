@@ -8,6 +8,7 @@ import {
 } from "../firebase/FirebaseFunctions";
 
 function SignIn() {
+  const { currentUser } = useContext(AuthContext);
   const handleLogin = async (event) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
@@ -28,6 +29,10 @@ function SignIn() {
       alert("Please enter your email");
     }
   };
+
+  if (currentUser) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <div className="sign-in">
