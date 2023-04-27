@@ -5,10 +5,10 @@ import { Button, Input } from "@mui/material";
 import { doPasswordReset } from "../firebase/FirebaseFunctions";
 import { Navigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebase";
 
 const SignInPage = () => {
   const currentUser = getAuth().currentUser;
+  const auth = getAuth();
 
   const handleLogin = async (event) => {
     event.preventDefault();
