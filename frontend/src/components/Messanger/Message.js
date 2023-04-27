@@ -1,6 +1,6 @@
 import "./Message.css"
 
-const Message = ({ UserdId, Text, Time, own }) => {
+const Message = ({ Text, Time, own }) => {
     return (
         <div className={own ? "message own" : "message"}>
             <div className="messageTop">

@@ -19,13 +19,13 @@ export const getMessageByConversationId = async (ConversationId) => {
     const messageCollection = await messages();
     const messageOfConversation = await messageCollection.find({ "ConversationId": ConversationId }).toArray();
     console.log(messageOfConversation)
-    if (messageOfConversation.length === 0) throw 'Message do not exist';
+    if (messageOfConversation.length === 0) return [];
     return messageOfConversation
 };
 
 export const deleteMessagesByConversationId = async (ConversationId) => {
     const messageCollection = await messages();
     const messageOfConversation = await messageCollection.deleteMany({ "ConversationId": ConversationId });
-    if (messageOfConversation.deletedCount === 0) throw `Could not delete any messages for conversation ${ConversationId}`;
+    if (messageOfConversation.deletedCount === 0) return { error: `Could not delete any messages for conversation ${ConversationId}` };
     return true;
 };

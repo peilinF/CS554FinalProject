@@ -1,16 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./ChatPage.css";
 import FriendList from "../components/Messanger/FriendList"
 import Message from "../components/Messanger/Message"
 import FriendOnline from '../components/Messanger/FriendOnline'
+import io from 'socket.io-client';
 
 const ChatPage = () => {
     const [conversations, setConversations] = useState([])
     const [chat, setChat] = useState({ _id: null })
     const [messagesList, setMessagesList] = useState([])
-    const [sendMessage, setSendMessage] = useState([])
+    const [sendMessage, setSendMessage] = useState("")
     const user = { "id": "6446fc4cd7172792920794e0", "name": "Bob1", "username": "Bob1" }
-
+    const scrollMessageRef = useRef(null);
+    const socketRef = useRef();
+    //connecting to socket
+    useEffect(() => {
+        socketRef.current = io('http://localhost:4000');
+        return () => {
+            socketRef.current.disconnect();
+        };
+    }, []);
+    //add user to socket
+    useEffect(() => {
+        socketRef.current.emit("userJoined", user.id)
+        socketRef.current.on("returnUser", users => {
+            console.log(users)
+        })
+    }, []);
+    //show conversations of user
     useEffect(() => {
         const conversationsData = async () => {
             await fetch(`/conversations/${user.id}`, {
@@ -25,7 +42,7 @@ const ChatPage = () => {
         }
         conversationsData()
     }, [user.id]);
-
+    //show messages of user and his friend
     useEffect(() => {
         const conversationsData = async () => {
             if (chat._id !== null) {
@@ -37,18 +54,25 @@ const ChatPage = () => {
                 }).then(response => response.json())
                     .then(data => {
                         setMessagesList(data)
-                    }).catch(e => console.log(e));
+                    }).catch(e => {
+                        console.log(e)
+                    });
             }
         }
         conversationsData()
     }, [chat]);
-
+    //submite new message to a friend
+    const getFriendId = (userId) => {
+        const pair = chat.members.find(pair => pair.includes(userId));
+        return pair ? chat.members.find(id => id !== userId) : null;
+    };
     const handleMessageSubmite = async (event) => {
         event.preventDefault();
         //create message
         //conversationId, userdId, text
+        const friendId = getFriendId(user.id);
         const newMessage = document.getElementById('newMessage').value;
-        console.log(newMessage)
+        socketRef.current.emit("sendMessage", (user.id, friendId, newMessage));
         await fetch(`/messages`, {
             method: 'Post',
             body: JSON.stringify({
@@ -61,26 +85,36 @@ const ChatPage = () => {
             }
         }).then(response => response.json())
             .then(data => {
-                console.log(data)
-                setSendMessage(data)
+                setMessagesList([...messagesList, data])
+                setSendMessage("")
             }).catch(e => console.log(e));
     }
-
+    //https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+    //current useEffect answering for scrolling down if new message coming in
+    useEffect(() => {
+        if (scrollMessageRef.current) {
+            scrollMessageRef.current.scrollIntoView({ behavior: 'instant' });
+        }
+    }, [messagesList]);
     const friendList = conversations.map(i => (
         <div key={i._id} onClick={() => setChat(i)}>
             <FriendList conversation={i.members} userID={user.id} />
         </div >
     ))
-    const messageList = messagesList.map(i => (
-        <li key={i._id}>
-            <Message ConversationId={i.ConversationId}
-                UserdId={i.UserdId}
-                Text={i.Text}
-                Time={i.Time}
-                own={i.UserdId === user.id} />
-        </li>
-    ))
-
+    let messageList = []
+    if (messagesList.length !== 0) {
+        messageList = messagesList.map(i => (
+            <li key={i._id} ref={scrollMessageRef}>
+                <Message
+                    ConversationId={i.ConversationId}
+                    UserdId={i.UserdId}
+                    Text={i.Text}
+                    Time={i.Time}
+                    own={i.UserdId === user.id}
+                />
+            </li>
+        ))
+    }
     return (
         <div className="row">
             <div className="column left">
@@ -96,16 +130,17 @@ const ChatPage = () => {
                                 {messageList}
                             </ul>
                         </div>
-                        <div className="chatBoxSend">
+                        <div className="chatBoxMessageSend">
                             <form onSubmit={handleMessageSubmite}>
                                 <div className='form-group'>
                                     <label>
                                         <textarea
+                                            value={sendMessage}
+                                            onChange={(event) => setSendMessage(event.target.value)}
                                             id='newMessage'
                                             name='newMessage'
                                             placeholder="Send Message"
                                             className="ChatMessageInpute"
-                                            autoComplete='off'
                                             required />
                                     </label>
                                 </div>
