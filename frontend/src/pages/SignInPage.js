@@ -3,12 +3,12 @@ import MainLayout from "../layouts/MainLayout";
 import "./styles.scss";
 import { Button, Input } from "@mui/material";
 import { doPasswordReset } from "../firebase/FirebaseFunctions";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const SignInPage = () => {
-  const currentUser = getAuth().currentUser;
   const auth = getAuth();
+  const naviagate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -16,7 +16,7 @@ const SignInPage = () => {
 
     signInWithEmailAndPassword(auth, email.value, password.value)
       .then((res) => {
-        console.log(res);
+        if (auth.currentUser) naviagate("/");
       })
       .catch((e) => alert(e));
   };
@@ -32,9 +32,6 @@ const SignInPage = () => {
     }
   };
 
-  if (currentUser) {
-    return <Navigate to="/home" />;
-  }
   return (
     <MainLayout>
       <div className="login">

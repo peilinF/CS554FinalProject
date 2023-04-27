@@ -10,9 +10,11 @@ import {
 } from "firebase/auth";
 import axios from "axios";
 import { apiInstance } from "../utils/apiInstance";
+import { auth } from "../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
-  const auth = getAuth();
+  const navigate = useNavigate();
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -33,7 +35,7 @@ const SignUpPage = () => {
             email: auth.currentUser.email,
             uid: auth.currentUser.uid,
           })
-          .then((res) => console.log(res));
+          .then((res) => navigate("/"));
       })
       .catch((e) => alert(e));
   };
