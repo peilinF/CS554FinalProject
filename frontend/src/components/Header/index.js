@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <header>
-      <h1>MyRoute</h1>{" "}
+      <h1>RunMate</h1>
     </header>
   );
 };

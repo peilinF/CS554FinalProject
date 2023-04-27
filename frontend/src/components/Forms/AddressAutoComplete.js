@@ -229,8 +229,6 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
     }
   }, []);
 
-  if (loading) return <>Loading...</>;
-
   return (
     <form id="autofill-form">
       <div className="autofill--text autofill--heading">Demo</div>
