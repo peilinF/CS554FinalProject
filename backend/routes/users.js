@@ -1,5 +1,5 @@
 import express from "express";
-import { loginUser, createUser } from "../data/users.js";
+import { loginUser, createUser, getUserById } from "../data/users.js";
 import { users } from "../config/mongoCollections.js";
 
 const router = express.Router();
@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
     res.json(error);
   }
 });
+
 
 router.route("/login").post(async (req, res) => {
   try {
