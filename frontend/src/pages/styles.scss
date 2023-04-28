@@ -8,12 +8,12 @@
   }
 }
 
-.map-container {
-  height: 400px;
-}
-
-.mapboxgl-ctrl-bottom-right {
-  display: none;
+.home {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  align-items: stretch;
+  height: 100%;
 }
 
 @media only screen and (max-width: 650px) {

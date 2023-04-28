@@ -157,7 +157,20 @@ const ChatPage = () => {
                 <FriendOnline />
             </div>
         </div>
-    );
+        <div className="chatBoxSend">
+          <input
+            placeholder="Send message"
+            className="ChatMessageButton"
+          ></input>
+          <button className="messageSubmite">Send</button>
+        </div>
+      </div>
+      <div className="column right">
+        <h2>chatOnline</h2>
+        <FriendOnline />
+      </div>
+    </div>
+  );
 };
 
 export default ChatPage;

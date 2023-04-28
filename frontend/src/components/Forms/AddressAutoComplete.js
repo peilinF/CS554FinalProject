@@ -4,6 +4,7 @@ import axios from "axios";
 import "./styles.scss";
 
 const AddressAutoComplete = ({ latLng, setLatLng }) => {
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fsqAPIToken = "fsq3PnhE5Zyd+DmfVJu+uHVFrTf/db8notB4S3S10xBz/JM=";
     let sessionToken = generateRandomSessionToken();
@@ -16,7 +17,7 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
     const regionInput = document.getElementById("autofill-region");
     const countryInput = document.getElementById("autofill-country");
     const postcodeInput = document.getElementById("autofill-postcode");
-    const address2Input = document.getElementById("autofill-address2");
+    // const address2Input = document.getElementById("autofill-address2");
     const form = document.getElementById("autofill-form");
     const searchContainer = document.getElementById(
       "autofill-search-container"
@@ -46,6 +47,7 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
     }
 
     function getCurrentPosition() {
+      setLoading(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           // latLng.lat = position.coords.latitude;
@@ -54,11 +56,14 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
+          setLoading(false);
+          autoComplete();
         },
         (error) => {
           if (error) {
             latLng = {};
             console.warn(error);
+            setLoading(false);
           }
         }
       );
@@ -114,6 +119,8 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           types: "address",
           session_token: sessionToken,
         };
+
+        console.log(params);
         if (latLng.lat && latLng.lng) {
           params.ll = `${latLng.lat},${latLng.lng}`;
         }
@@ -129,6 +136,8 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           }
         );
         const data = await searchResults.json();
+        console.log(data);
+
         return data.results;
       } catch (error) {
         throw error;
@@ -162,7 +171,7 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           region = "",
         } = location;
         addressInput.value = address;
-        address2Input.value = "";
+        // address2Input.value = "";
         countryInput.value = country;
         postcodeInput.value = postcode;
         cityInput.value = locality;
@@ -170,7 +179,7 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
         // generate new session token after a complete search
         sessionToken = generateRandomSessionToken();
 
-        address2Input && address2Input.focus();
+        // address2Input && address2Input.focus();
         dropDownField.style.display = "none";
       }
     }
@@ -252,14 +261,14 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           ></div>
         </div>
       </div>
-      <div className="autofill--row">
+      {/* <div className="autofill--row">
         <input
           type="text"
           id="autofill-address2"
           className="autofill--input autofill--text"
           placeholder="Apt, Suite, etc (optional)"
         />
-      </div>
+      </div> */}
       <div className="autofill--row">
         <input
           type="text"

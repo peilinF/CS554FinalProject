@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
-import SocialSignIn from './SocialSignIn';
-import { AuthContext } from '../firebase/Auth';
-import { Navigate } from 'react-router-dom';
+import React, { useContext } from "react";
+import SocialSignIn from "./SocialSignIn";
+import { AuthContext } from "../firebase/Auth";
+import { Navigate } from "react-router-dom";
 import {
   doSignInWithEmailAndPassword,
   doPasswordReset,
-} from '../firebase/FirebaseFunctions';
+} from "../firebase/FirebaseFunctions";
 
 function SignIn() {
   const { currentUser } = useContext(AuthContext);
@@ -21,38 +21,52 @@ function SignIn() {
 
   const passwordRest = (event) => {
     event.preventDefault();
-    let email = document.getElementById('email');
-    if(email){
+    let email = document.getElementById("email");
+    if (email) {
       doPasswordReset(email.value);
-      alert('Password Reset Email Sent');
+      alert("Password Reset Email Sent");
     } else {
-      alert('Please enter your email');
+      alert("Please enter your email");
     }
   };
 
   if (currentUser) {
-    return <Navigate to='/home' />;
+    return <Navigate to="/home" />;
   }
- 
+
   return (
     <div className="sign-in">
       <h1>Sign In</h1>
       <form onSubmit={handleLogin}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" placeholder='Email' required />
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email"
+            required
+          />
         </div>
 
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" placeholder='Password' required />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
         </div>
 
         <button type="submit">Sign In</button>
-        <button className='forgotPassword' onClick={passwordRest}>Forgot Password?</button>
+        <button className="forgotPassword" onClick={passwordRest}>
+          Forgot Password?
+        </button>
       </form>
 
-      <br/>
+      <br />
       <SocialSignIn />
     </div>
   );
