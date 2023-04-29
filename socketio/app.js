@@ -15,19 +15,28 @@ const userDisconnected = (socketId) => {
         delete onlineUsers[socketId];
     }
 }
-const checkUserIfOnline = (userId) => {
-    return Object.values(onlineUsers).find((user) => user.userId === userId);
+const checkIfUserOnline = (userId) => {
+    if (onlineUsers.hasOwnProperty(userId)) {
+        console.log(`${userId} is online`);
+        return onlineUsers[userId]
+    } else {
+        console.log(`${userId} is not online`);
+        return false
+    }
 }
 io.on("connection", (socket) => {
     console.log("A user connected.");
     socket.on("userJoined", userId => {
         userJoined(userId, socket.id);
-        socket.emit("returnUser", onlineUsers)
+        io.emit("returnUser", onlineUsers)
     })
-    socket.on("sendMessage", (userId, friendID, text) => {
-        const user = checkUserIfOnline(friendID);
-        console.log(userId, friendID, text)
-        socket.to(user.socketId).emit("getMessage", {
+    socket.on("sendMessage", (messageData) => {
+        let userId = messageData.userId
+        let friendId = messageData.friendId
+        let text = messageData.text
+        const user = checkIfUserOnline(friendId);
+        console.log("friendId", onlineUsers[friendId])
+        io.to(user).emit("getMessage", {
             userId,
             text
         })
@@ -35,6 +44,6 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("A user disconnected.")
         userDisconnected(socket.id)
-        socket.emit("returnUser", onlineUsers)
+        io.emit("returnUser", onlineUsers)
     });
 });

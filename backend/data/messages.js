@@ -1,11 +1,11 @@
 import { ObjectId } from "mongodb";
 import { messages } from "../config/mongoCollections.js";
 
-export const createMessage = async (ConversationId, UserdId, Text) => {
+export const createMessage = async (ConversationId, UserId, Text) => {
     const messageCollection = await messages();
     let newMessage = {
         "ConversationId": ConversationId,
-        "UserdId": UserdId,
+        "UserId": UserId,
         "Text": Text,
         "Time": new Date()
     };

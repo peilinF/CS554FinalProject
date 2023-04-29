@@ -1,6 +1,6 @@
 {
   "mongoConfig": {
-    "serverUrl": "mongodb+srv://yash:1234@rm.vmlsznr.mongodb.net/?retryWrites=true&w=majority",
+    "serverUrl": "mongodb://localhost:27017/",
     "database": "rm-db"
   }
 }

@@ -3,7 +3,6 @@ import { conversations } from "../config/mongoCollections.js";
 export const createConversation = async (UserId, FriendId) => {
     const conversationCollection = await conversations();
     const conversation = await conversationCollection.findOne({ $or: [{ members: [UserId, FriendId] }, { members: [FriendId, UserId] }] })
-    console.log(conversation)
     if (conversation !== null) throw 'Conversation already exists';
     let newConversation = {
         members: [UserId, FriendId]
@@ -17,7 +16,7 @@ export const getAllConversationsByUserId = async (UserId) => {
     const conversationCollection = await conversations();
     const conversationsOfUser = await conversationCollection.find({ members: UserId }).toArray();
     console.log(conversationsOfUser)
-    if (conversationsOfUser.length === 0) throw 'Conversations do not exist';
+    if (conversationsOfUser.length === 0) return [];
     return conversationsOfUser
 };
 
