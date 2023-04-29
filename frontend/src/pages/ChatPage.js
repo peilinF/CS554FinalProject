@@ -4,18 +4,28 @@ import FriendList from "../components/Messanger/FriendList"
 import Message from "../components/Messanger/Message"
 import FriendOnline from '../components/Messanger/FriendOnline'
 import io from 'socket.io-client';
+import { getAuth } from "firebase/auth";
 
 const ChatPage = () => {
     const [conversations, setConversations] = useState([])
     const [chat, setChat] = useState({ _id: null })
     const [messagesList, setMessagesList] = useState([])
     const [sendMessage, setSendMessage] = useState("")
-    const user = { "id": "6446fc4cd7172792920794e0", "name": "Bob1", "username": "Bob1" }
+    const [arrivalMessage, setArrivalMessage] = useState(null);
     const scrollMessageRef = useRef(null);
     const socketRef = useRef();
+    const auth = getAuth();
+    const user = { "id": auth.currentUser.uid, "name": auth.currentUser.displayName }
     //connecting to socket
     useEffect(() => {
         socketRef.current = io('http://localhost:4000');
+        // socketRef.current.on("getMessage", data => {
+        //     setArrivalMessage({
+        //         UserId
+        //         Text:
+        //             Time:
+        //     })
+        // })
         return () => {
             socketRef.current.disconnect();
         };
@@ -23,8 +33,9 @@ const ChatPage = () => {
     //add user to socket
     useEffect(() => {
         socketRef.current.emit("userJoined", user.id)
+        console.log("user.id", user.id)
         socketRef.current.on("returnUser", users => {
-            console.log(users)
+            console.log("users", users)
         })
     }, []);
     //show conversations of user
@@ -72,12 +83,20 @@ const ChatPage = () => {
         //conversationId, userdId, text
         const friendId = getFriendId(user.id);
         const newMessage = document.getElementById('newMessage').value;
-        socketRef.current.emit("sendMessage", (user.id, friendId, newMessage));
+        console.log("user.id", user.id)
+        console.log("friendId", friendId)
+
+        socketRef.current.emit("sendMessage", ({
+            userId: user.id,
+            friendId: friendId,
+            text: newMessage
+        }));
+
         await fetch(`/messages`, {
             method: 'Post',
             body: JSON.stringify({
                 conversationId: chat._id,
-                userdId: user.id,
+                userId: user.id,
                 text: newMessage
             }),
             headers: {
@@ -96,21 +115,25 @@ const ChatPage = () => {
             scrollMessageRef.current.scrollIntoView({ behavior: 'instant' });
         }
     }, [messagesList]);
-    const friendList = conversations.map(i => (
-        <div key={i._id} onClick={() => setChat(i)}>
-            <FriendList conversation={i.members} userID={user.id} />
-        </div >
-    ))
+
+    let friendList = []
+    if (conversations.length !== 0) {
+        friendList = conversations.map(i => (
+            <div key={i._id} onClick={() => setChat(i)}>
+                <FriendList conversation={i.members} userID={user.id} />
+            </div >
+        ))
+    }
     let messageList = []
     if (messagesList.length !== 0) {
         messageList = messagesList.map(i => (
             <li key={i._id} ref={scrollMessageRef}>
                 <Message
                     ConversationId={i.ConversationId}
-                    UserdId={i.UserdId}
+                    UserId={i.UserId}
                     Text={i.Text}
                     Time={i.Time}
-                    own={i.UserdId === user.id}
+                    own={i.UserId === user.id}
                 />
             </li>
         ))
@@ -157,20 +180,7 @@ const ChatPage = () => {
                 <FriendOnline />
             </div>
         </div>
-        <div className="chatBoxSend">
-          <input
-            placeholder="Send message"
-            className="ChatMessageButton"
-          ></input>
-          <button className="messageSubmite">Send</button>
-        </div>
-      </div>
-      <div className="column right">
-        <h2>chatOnline</h2>
-        <FriendOnline />
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ChatPage;
