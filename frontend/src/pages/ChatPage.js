@@ -79,8 +79,6 @@ const ChatPage = () => {
     };
     const handleMessageSubmite = async (event) => {
         event.preventDefault();
-        //create message
-        //conversationId, userdId, text
         const friendId = getFriendId(user.id);
         const newMessage = document.getElementById('newMessage').value;
         console.log("user.id", user.id)
