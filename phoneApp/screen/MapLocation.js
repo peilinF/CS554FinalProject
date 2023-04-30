@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { getAuth } from "firebase/auth";
 
-export default function MapLocation() {
+export default function MapLocation({ navigation }) {
   const [showMap, setShowMap] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [locationHistory, setLocationHistory] = useState([]);
   const [watchPosition, setWatchPosition] = useState(null);
+  const auth = getAuth();
+  const user = { "id": auth.currentUser.uid, "email": auth.currentUser.email };
 
   useEffect(() => {
     (async () => {
@@ -23,6 +26,7 @@ export default function MapLocation() {
   }, []);
 
   useEffect(() => {
+    console.log(user);
     console.log('locationHistory:', locationHistory);
   }, [locationHistory]);
 
