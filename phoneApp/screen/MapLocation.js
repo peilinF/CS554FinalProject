@@ -3,7 +3,6 @@ import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { getAuth } from "firebase/auth";
-
 export default function MapLocation({ navigation }) {
   const [showMap, setShowMap] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -53,6 +52,18 @@ export default function MapLocation({ navigation }) {
     }
   };
 
+  const logOutButton = async () => {
+    try{
+      await auth.signOut();
+      navigation.navigate('Login');
+    } catch (e) {
+      console.log(e);
+    }
+   
+
+  };
+
+
   const toggleMapView = () => {
     setShowMap(!showMap);
   };
@@ -93,7 +104,18 @@ export default function MapLocation({ navigation }) {
             >
               <Text style={styles.controlButtonText}>Start</Text>
             </TouchableOpacity>
+            
           )}
+          {!watchPosition && (
+            <TouchableOpacity
+              style={[styles.controlButton, styles.logOutButton]}
+              onPress={logOutButton}
+            >
+              <Text style={styles.controlButtonText}>LogOut</Text>
+            </TouchableOpacity>
+            
+          )}
+
           {watchPosition && (
             <TouchableOpacity
               style={[styles.controlButton, styles.stopButton]}
@@ -151,5 +173,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
+  },
+  logOutButton: {
+    backgroundColor: 'blue',
+    right: 20,
   },
 });

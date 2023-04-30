@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet,Alert } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../firebase/firebaseConfig";
+
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +34,9 @@ export default function RegisterScreen({ navigation }) {
     const auth = getAuth(app);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // Navigate to the main screen after successful registration
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
       navigation.navigate('Map');
       console.log('User registered successfully');
     } catch (error) {

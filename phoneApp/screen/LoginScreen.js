@@ -32,6 +32,8 @@ export default function LoginScreen({ navigation }) {
     const auth = getAuth(app);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      setEmail('');
+      setPassword('');
       navigation.navigate('Map');
     } catch (error) {
       Alert.alert('Error', 'Invalid email or password');
