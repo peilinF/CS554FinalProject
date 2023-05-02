@@ -29,7 +29,7 @@ const SignUpPage = () => {
         console.log(auth.currentUser);
 
         await updateProfile(auth.currentUser, { displayName: name.value });
-        axios
+        apiInstance
           .post("/users/register", {
             name: auth.currentUser.displayName,
             email: auth.currentUser.email,
