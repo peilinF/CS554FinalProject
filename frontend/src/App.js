@@ -48,7 +48,10 @@ function App() {
             />
             <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/mymap" element={<MyMapPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route
+              path="/profile"
+              element={user ? <ProfilePage /> : <Navigate to={"/login"} />}
+            />
           </Routes>
         </BrowserRouter>
       )}
