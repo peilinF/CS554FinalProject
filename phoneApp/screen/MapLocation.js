@@ -3,6 +3,7 @@ import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { getAuth } from "firebase/auth";
+import axios from 'axios';
 export default function MapLocation({ navigation }) {
   const [showMap, setShowMap] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -34,21 +35,31 @@ export default function MapLocation({ navigation }) {
       {
         accuracy: Location.Accuracy.Highest,
         timeInterval: 1000,
-        distanceInterval: 1,
+        distanceInterval: 0.1,
       },
       (location) => {
         setCurrentLocation(location.coords);
-        setLocationHistory([...locationHistory, location.coords]);
-        console.log('location:', location.coords);
+        setLocationHistory((prevLocationHistory) => [...prevLocationHistory, location.coords]);
+
       }
     );
     setWatchPosition(position);
   };
 
-  const stopTracking = () => {
+  const stopTracking = async () => {
     if (watchPosition) {
       watchPosition.remove();
       setWatchPosition(null);
+      const data = {
+        "user": user,
+        "locationHistory": locationHistory
+      }
+
+
+
+      await axios.post('http://192.168.194.157:5001/maps', data);
+
+      setLocationHistory([]);
     }
   };
 
