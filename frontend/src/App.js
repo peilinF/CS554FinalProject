@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,6 +48,10 @@ function App() {
             />
             <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/mymap" element={<MyMapPage />} />
+            <Route
+              path="/profile"
+              element={user ? <ProfilePage /> : <Navigate to={"/login"} />}
+            />
           </Routes>
         </BrowserRouter>
       )}

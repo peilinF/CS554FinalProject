@@ -1,3 +1,6 @@
+//https://github.com/safak/youtube/blob/chat-app/client/src/pages/messenger/Messenger.jsx
+//I looked how to use set and get messages from top url.
+
 import React, { useRef, useEffect, useState } from "react";
 import "./ChatPage.css";
 import FriendList from "../components/Messanger/FriendList"
@@ -19,17 +22,20 @@ const ChatPage = () => {
     //connecting to socket
     useEffect(() => {
         socketRef.current = io('http://localhost:4000');
-        // socketRef.current.on("getMessage", data => {
-        //     setArrivalMessage({
-        //         UserId
-        //         Text:
-        //             Time:
-        //     })
-        // })
-        return () => {
-            socketRef.current.disconnect();
-        };
+        socketRef.current.on("getMessage", data => {
+            setArrivalMessage({
+                UserId: data.userId,
+                Text: data.text,
+                Time: Date.now()
+            })
+        })
     }, []);
+    useEffect(() => {
+        arrivalMessage && chat?.members.includes(arrivalMessage.UserId) &&
+            setMessagesList(prev => [...prev, arrivalMessage])
+    }, [arrivalMessage, chat])
+    console.log("arrivalMessage", arrivalMessage)
+    console.log("messagesList", messagesList)
     //add user to socket
     useEffect(() => {
         socketRef.current.emit("userJoined", user.id)
@@ -79,8 +85,6 @@ const ChatPage = () => {
     };
     const handleMessageSubmite = async (event) => {
         event.preventDefault();
-        //create message
-        //conversationId, userdId, text
         const friendId = getFriendId(user.id);
         const newMessage = document.getElementById('newMessage').value;
         console.log("user.id", user.id)
@@ -127,10 +131,8 @@ const ChatPage = () => {
     let messageList = []
     if (messagesList.length !== 0) {
         messageList = messagesList.map(i => (
-            <li key={i._id} ref={scrollMessageRef}>
+            <li key={i.Time} ref={scrollMessageRef}>
                 <Message
-                    ConversationId={i.ConversationId}
-                    UserId={i.UserId}
                     Text={i.Text}
                     Time={i.Time}
                     own={i.UserId === user.id}

@@ -1,5 +1,7 @@
 //https://makeschool.org/mediabook/oa/tutorials/make-chat/saving-and-destroying-users/
 //looked at ideas from this web (ideas that I looked userJoined, userDisconnected)
+//https://github.com/safak/youtube/blob/chat-app/socket/index.js
+//looked how to "sendMessage"
 const io = require("socket.io")(4000, {
     cors: {
         origin: "http://localhost:3000",
