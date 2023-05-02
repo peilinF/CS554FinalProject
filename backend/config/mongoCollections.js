@@ -13,6 +13,8 @@ const getCollectionFn = (collection) => {
 };
 
 const users = getCollectionFn("users");
-const projects = getCollectionFn("projects");
+const maps = getCollectionFn("maps");
+const conversations = getCollectionFn("conversations");
+const messages = getCollectionFn("messages");
 
-export { users, projects };
+export { users, maps, conversations, messages };

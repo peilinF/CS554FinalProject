@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "phoneApp",
+    "slug": "phoneapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.phoneApp",
+      "config": {
+        "googleMapsApiKey": "AIzaSyA95Rp09C7cR-MsTNCa8OZEwy-_TqEoZpg"
+      },
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA95Rp09C7cR-MsTNCa8OZEwy-_TqEoZpg"
+        }
+      },
+      "package": "com.example.phoneApp",
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "45843dec-5e15-424b-aa9b-6f51c7c97981"
+      }
+    },
+    "owner": "peilin"
+  }
+}

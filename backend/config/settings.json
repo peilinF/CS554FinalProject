@@ -1,6 +1,6 @@
 {
   "mongoConfig": {
-    "serverUrl": "mongodb://localhost:27017/",
-    "database": "FinalDB"
+    "serverUrl": "mongodb+srv://yash:1234@rm.vmlsznr.mongodb.net/?retryWrites=true&w=majority",
+    "database": "rm-db"
   }
 }
