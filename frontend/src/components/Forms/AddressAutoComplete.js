@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import "./styles.scss";
+// import "./styles.scss";
 
 const AddressAutoComplete = ({ latLng, setLatLng }) => {
   const [loading, setLoading] = useState(false);

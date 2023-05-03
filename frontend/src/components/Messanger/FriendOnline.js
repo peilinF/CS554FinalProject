@@ -1,4 +1,4 @@
-import "./FriendOnline.css"
+// import "./FriendOnline.css"
 const FriendOnline = () => {
 
     return (

@@ -2,10 +2,10 @@
 //I looked how to use set and get messages from top url.
 
 import React, { useRef, useEffect, useState } from "react";
-import "./ChatPage.css";
-import FriendList from "../components/Messanger/FriendList";
-import Message from "../components/Messanger/Message";
-import FriendOnline from "../components/Messanger/FriendOnline";
+// import "./ChatPage.css";
+import FriendList from "../Messanger/FriendList";
+import Message from "../Messanger/Message";
+import FriendOnline from "../Messanger/FriendOnline";
 import io from "socket.io-client";
 import { getAuth } from "firebase/auth";
 
