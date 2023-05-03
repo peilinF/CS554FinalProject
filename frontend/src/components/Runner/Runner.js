@@ -39,6 +39,11 @@ const Runner = (props) => {
 
         let new_log = undefined;
 
+        console.log(props.userInfo._id, logInfo._id, {
+            date: logInfo.date,
+            time: logInfo.time,
+            notes: logInfo.notes,
+        });
         try {
             new_log = await editLog({
                 variables: {
@@ -102,9 +107,10 @@ const Runner = (props) => {
                 key={log._id}
                 className="logbook-li"
                 onClick={(event) => {
+                    console.log("clicked log");
                     handleLogInfo(event, log);
-                    props.handleMapLogInfo(log);
                     setEditStatus(false);
+                    props.handleMapLogInfo(log);
                 }}
             >
                 <p>{log.date}</p>

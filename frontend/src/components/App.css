@@ -294,7 +294,7 @@ input {
 .logbook-ul {
 	overflow-y:scroll;
 	height: 400px;
-	width: 300px;
+	width: 350px;
 	border: solid 1px #ccc;
 }
 
@@ -313,8 +313,12 @@ input {
 	width: 100%;
 }
 
+.edit-form input {
+	width: 130%;
+}
+
 .edit-form #notes {
-	width: 95%;
+	width: 127%;
 	min-height: 100px;
 	padding: 10px;
 	font-size: 16px;

@@ -42,7 +42,6 @@ const typeDefs = gql`
     input LogInput {
         date: String
         time: String
-        route: [PositionInput]
         notes: String
     }
 
@@ -92,6 +91,7 @@ const resolvers = {
         },
 
         editLog: async (_, { userId, logId, log }) => {
+            console.log('editLog resolver');
             return await logbookData.updateLog(userId, logId, log);
         },
 

@@ -105,8 +105,8 @@ const EDIT_LOG = gql`
             distance
             pace
             route {
-              lat
-              lng
+                lat
+                lng
             }
             notes
         }

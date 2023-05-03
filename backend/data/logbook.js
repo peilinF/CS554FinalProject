@@ -14,9 +14,10 @@ const createLog = async (userId, log_info) => {
     }
 
     // check log
-    let { date, time, route, notes } = log_info;
+    let { id, date, time, route, notes } = log_info;
 
     try {
+        id = utils.checkId(id);
         date = utils.checkDate(date);
         time = utils.checkTime(time);
         route = utils.checkRoute(route);
@@ -32,7 +33,7 @@ const createLog = async (userId, log_info) => {
 
     // create log
     let log = {
-        _id: new ObjectId(),
+        _id: id,
         date: date,
         time: time,
         distance: distance,
@@ -66,7 +67,7 @@ const getLogById = async (userId, logId) => {
     }
 
     try {
-        let log_db = user_db.logbook.find(log => log._id.toString() === logId);
+        let log_db = user_db.logbook.find(log => log._id.toString() === logId.toString());
         if (!log_db) throw `Log with id ${logId} does not exist`;
 
         return log_db;
@@ -104,17 +105,22 @@ const updateLog = async (userId, logId, log_info) => {
         throw error;
     }
 
+    console.log("finish check user and log");
+
     // check log info
-    let { date, time, route, notes } = log_info;
+    let { date, time, notes } = log_info;
 
     try {
         date = utils.checkDate(date);
         time = utils.checkTime(time);
-        route = utils.checkRoute(route);
         notes = utils.checkNotes(notes);
     } catch (error) {
         throw error;
     }
+
+    // get route
+
+    let route = log_db.route;
 
     // get other info
     let unit = 'mi';
@@ -131,6 +137,8 @@ const updateLog = async (userId, logId, log_info) => {
         route: route,
         notes: notes
     };
+
+    console.log("new log: ", log);
 
     // update log in user
     try {
@@ -152,6 +160,8 @@ const deleteLog = async (userId, logId) => {
     let user_db = null;
     let log_db = null;
 
+    // console.log(typeof userId, typeof logId);
+
     // check user and log
     try {
         user_db = await usersData.getUserById(userId);
@@ -170,6 +180,7 @@ const deleteLog = async (userId, logId) => {
             { _id: userId },
             { $pull: { logbook: { _id: logId } } }
         );
+        console.log(updateInfo);
         if (updateInfo.modifiedCount === 0) throw "Could not delete log";
     } catch (error) {
         throw error;

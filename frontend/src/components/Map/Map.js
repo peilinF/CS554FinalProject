@@ -1,42 +1,35 @@
 import "./map.css";
-
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-
+import React, { useState, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { GoogleMap, useLoadScript, MarkerF, PolylineF } from "@react-google-maps/api";
-
-import { useQuery, useMutation } from '@apollo/client';
-import queries from '../../graphql/queries';
+import { useQuery } from "@apollo/client";
+import queries from "../../graphql/queries";
 
 const Map = ({ userInfo, logInfo }) => {
-
     // console.log(userInfo);
-    // console.log(logInfo);
+    console.log(logInfo);
 
     const [page, setPage] = useState("home");
-
     const location = useLocation();
 
     const [friends, setFriends] = useState([]);
 
     const [currentPosition, setCurrentPosition] = useState({
         lat: 40.744838,
-        lng: -74.025683
+        lng: -74.025683,
     });
 
     useQuery(queries.GET_FRIENDS_LIST, {
         variables: { userId: userInfo?._id },
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: "cache-and-network",
         skip: !userInfo,
         onCompleted: (data) => {
             setFriends(data.getFriendsList);
-        }
+        },
     });
 
     useEffect(() => {
-
         const fetchPage = () => {
-
             if (location.pathname === "/") {
                 setPage("home");
             } else if (location.pathname === "/runner") {
@@ -46,11 +39,9 @@ const Map = ({ userInfo, logInfo }) => {
             if (userInfo && userInfo.lastPosition) {
                 setCurrentPosition(userInfo.lastPosition);
             }
-
         };
 
         fetchPage();
-
     }, [userInfo, location.pathname]);
 
     useEffect(() => {
@@ -61,10 +52,38 @@ const Map = ({ userInfo, logInfo }) => {
     }, [logInfo]);
 
     // Google Map
-
     const { isLoaded, error } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     });
+
+    const userIcon = useMemo(() => {
+        return userInfo && userInfo.avatar
+            ? {
+                url: userInfo.avatar,
+                scaledSize: new window.google.maps.Size(75, 75),
+            }
+            : null;
+    }, [userInfo]);
+
+    const friendIcons = useMemo(() => {
+        return friends.map((user) => {
+            let res = user.lastPosition.lat &&
+                user.lastPosition.lng &&
+                user.avatar
+                ? {
+                    id: user._id,
+                    position: user.lastPosition,
+                    icon: {
+                        url: user.avatar,
+                        scaledSize: new window.google.maps.Size(75, 75),
+                    },
+                }
+                : null;
+
+            console.log("friendIcons: ", res);
+            return res;
+        });
+    }, [friends]);
 
     let html = undefined;
 
@@ -76,18 +95,15 @@ const Map = ({ userInfo, logInfo }) => {
         );
     } else {
         let user_avator_html = (
-            <div className='user-avator'>
-                {userInfo && userInfo.avatar && (
+            <div className="user-avator">
+                {userIcon && (
                     <MarkerF
                         position={userInfo.lastPosition}
-                        icon={{
-                            url: userInfo.avatar,
-                            scaledSize: new window.google.maps.Size(75, 75)
-                        }}
+                        icon={userIcon}
                         onClick={() => console.log("You clicked me!")}
                     />
                 )}
-                {(!userInfo || !userInfo.avatar) && (
+                {(!userInfo || !userIcon) && (
                     <MarkerF
                         position={currentPosition}
                         onClick={() => console.log("You clicked me!")}
@@ -97,51 +113,35 @@ const Map = ({ userInfo, logInfo }) => {
         );
 
         let frineds_avator_html = (
-            <div className='friends-avator'>
-                {friends !== [] && friends.map((user) => {
-                    if (user.lastPosition.lat && user.lastPosition.lng) {
-                        if (user.avatar) {
-                            return (
-                                <MarkerF
-                                    key={user._id}
-                                    position={user.lastPosition}
-                                    icon={{
-                                        url: user.avatar,
-                                        scaledSize: new window.google.maps.Size(75, 75)
-                                    }}
-                                    onClick={() => console.log(user.username)}
-                                />
-                            );
-                        } else {
-                            return (
-                                <MarkerF
-                                    key={user._id}
-                                    position={user.lastPosition}
-                                    onClick={() => console.log(user.username)}
-                                />
-                            );
-                        } 
-                    } else {
-                        return (
-                            <div key={user._id}></div>
-                        );
-                    }
-                })}
+            <div className="friends-avator">
+                {friends !== [] &&
+                    friendIcons.map((friendIcon) =>
+                        friendIcon ? (
+                            <MarkerF
+                                key={friendIcon.id}
+                                position={friendIcon.position}
+                                icon={friendIcon.icon}
+                                onClick={() => console.log(userInfo.username)}
+                            />
+                        ) : (
+                            <div key={userInfo._id}></div>
+                        ),
+                    )}
             </div>
         );
 
         if (logInfo) {
             console.log("logInfo: ", logInfo);
         }
-        
+
         let log_html = (
-            <div className='loginfo-map'>
+            <div className="loginfo-map">
                 {logInfo && (logInfo.route.length !== 0) && (
                     <div>
                         <PolylineF
                             path={logInfo.route}
                             options={{
-                                strokeColor: '#007FFF',
+                                strokeColor: "#007FFF",
                                 strokeOpacity: 1,
                                 strokeWeight: 6,
                             }}
@@ -163,25 +163,23 @@ const Map = ({ userInfo, logInfo }) => {
             html = (
                 <div className="map">
                     <GoogleMap
-                        mapContainerClassName='map-container'
+                        mapContainerClassName="map-container"
                         zoom={15}
                         center={currentPosition}
                     >
                         {user_avator_html}
-    
-                        {(page === 'home') && frineds_avator_html}
-                        {(page === 'runner') && log_html}
+
+                        {(page === "home") && frineds_avator_html}
+                        {(page === "runner") && log_html}
                     </GoogleMap>
                 </div>
             );
         } catch (error) {
             console.log("Error: Occured when rendering map.");
         }
-        
     }
 
     return html;
-
 };
 
 export default Map;

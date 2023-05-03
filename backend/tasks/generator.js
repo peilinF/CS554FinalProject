@@ -1,3 +1,5 @@
+import {v4 as uuid} from 'uuid';
+
 const randomCoordinatesAround = (center = { lat: 40.744838, lng: -74.025683 }, radius = 0.5) => {
     const randomAngle = Math.random() * 2 * Math.PI;
     const randomRadius = Math.sqrt(Math.random()) * radius;
@@ -23,7 +25,9 @@ const generateFakeRoute = (user, numberOfPoints = 20, radius = 0.5) => {
 
 const generateFakeLogbook = () => {
 
-    // log_info = { date, time, route, notes }
+    // log_info = { id, date, time, route, notes }
+
+    let id = uuid(); // random id
 
     // random date and time
 
@@ -44,7 +48,7 @@ const generateFakeLogbook = () => {
     let route = generateFakeRoute({ lastPosition });
     let notes = "This is a fake logbook " + Math.random();
 
-    let log_info = { date, time, route, notes };
+    let log_info = { id, date, time, route, notes };
 
     return log_info;
 

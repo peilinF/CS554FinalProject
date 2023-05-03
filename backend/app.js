@@ -58,25 +58,26 @@ app.use((req, res, next) => {
     // log requests
     let temp = req.body;
     if (!temp.password) {
-        console.log(
-            req.method +
-            " " +
-            req.originalUrl +
-            " " +
-            urTrack[req.method + req.originalUrl] +
-            " " +
-            JSON.stringify(req.body)
-        );
+        // console.log(
+        //     req.method +
+        //     " " +
+        //     req.originalUrl +
+        //     " " +
+        //     urTrack[req.method + req.originalUrl] +
+        //     " " +
+        //     JSON.stringify(req.body)
+        // );
     } else {
-        console.log(
-            req.method +
-            " " +
-            req.originalUrl +
-            " " +
-            urTrack[req.method + req.originalUrl] +
-            JSON.stringify(req.body.username)
-        );
+        // console.log(
+        //     req.method +
+        //     " " +
+        //     req.originalUrl +
+        //     " " +
+        //     urTrack[req.method + req.originalUrl] +
+        //     JSON.stringify(req.body.username)
+        // );
     }
+    console.log(req.originalUrl);
     next();
 });
 

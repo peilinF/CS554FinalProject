@@ -133,7 +133,7 @@ const Home = (props) => {
     if (props.runner_page && userInfo) {
         return (
             <div>
-                <Runner userInfo={userInfo} />
+                <Runner userInfo={userInfo} handleMapLogInfo={props.handleMapLogInfo} />
             </div>
         );
     }

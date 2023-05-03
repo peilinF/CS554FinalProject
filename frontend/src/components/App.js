@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Navigate, NavLink, Route, Routes } from "react-router-dom";
 
 import Map from "./Map/Map";
@@ -38,23 +38,33 @@ function App() {
         setUserInfo(userInfo);
     };
 
-    const handleMapLogInfo = (logInfo) => {
+    const handleMapLogInfo = useCallback((logInfo) => {
+        console.log("handleMapLogInfo in App.js");
         setLogInfo(logInfo);
-    };
+    });
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const uid = user.uid;
-            setUser(user);
-            setLoading(false);
-        } else {
-            setLoading(false);
-            setUser(null);
-        }
-    });
+    useEffect(() => {
+        const auth = getAuth();
+
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+                setUser(user);
+                setLoading(false);
+            } else {
+                setLoading(false);
+                setUser(null);
+            }
+        });
+
+        // Clean up the listener when the component is unmounted
+        return () => {
+            unsubscribe();
+        };
+    }, []);
 
     // console.log("App page, ", userInfo);
     if (loading) {
@@ -75,7 +85,7 @@ function App() {
                                     <Route path="/" element={<Home updateUserInfo={updateUserInfo} userInfo={userInfo} />} />
 
                                     <Route path="/runner" element={user ? (
-                                        <Home updateUserInfo={updateUserInfo} userInfo={userInfo} runner_page={true} />
+                                        <Home updateUserInfo={updateUserInfo} userInfo={userInfo} runner_page={true} handleMapLogInfo={handleMapLogInfo} />
                                     ) : (
                                         <Navigate to={"/"} />
                                     )} />
