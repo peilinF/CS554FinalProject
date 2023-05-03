@@ -13,7 +13,25 @@
   flex-direction: row;
   flex: 1;
   align-items: stretch;
-  height: 100%;
+  width: 100%;
+  justify-content: flex-end;
+
+  .bg {
+    position: absolute;
+    height: 100%;
+    width: 600px;
+    top: 0;
+    left: 0;
+    text-align: right;
+  }
+  .intro {
+    display: flex;
+    flex: 0.45;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 200px;
+  }
 }
 
 @media only screen and (max-width: 650px) {

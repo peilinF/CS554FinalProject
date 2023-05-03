@@ -269,8 +269,17 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           placeholder="Apt, Suite, etc (optional)"
         />
       </div> */}
+
       <div className="autofill--row">
         <input
+          type="text"
+          className="autofill--input autofill--text"
+          placeholder="Radius"
+        />
+      </div>
+      <div className="autofill--row">
+        <input
+          hidden
           type="text"
           id="autofill-city"
           className="autofill--input autofill--text"
@@ -279,6 +288,7 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
       </div>
       <div className="autofill--row">
         <input
+          hidden
           type="text"
           id="autofill-region"
           className="autofill--input autofill--text"
@@ -287,6 +297,7 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
       </div>
       <div className="autofill--row">
         <input
+          hidden
           type="text"
           id="autofill-postcode"
           className="autofill--input autofill--text"
@@ -295,12 +306,14 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
       </div>
       <div className="autofill--row">
         <input
+          hidden
           type="text"
           id="autofill-country"
           className="autofill--input autofill--text"
           placeholder="Country"
         />
       </div>
+
       <div className="autofill--row">
         <input
           type="reset"
@@ -309,7 +322,7 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
         />
         <input
           type="submit"
-          value="Done"
+          value="Generate"
           className="autofill-button autofill--text"
         />
       </div>
