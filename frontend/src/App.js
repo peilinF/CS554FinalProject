@@ -47,6 +47,9 @@ function App() {
               element={user ? <ChatPage /> : <Navigate to={"/login"} />}
             />
             <Route path="/changePassword" element={<ChangePassword />} />
+            {/* Do not change this route 
+            Make seperate route map for
+            implementation or merging */}
             <Route path="/mymap" element={<MyMapPage />} />
             <Route
               path="/profile"
