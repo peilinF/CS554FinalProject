@@ -3,7 +3,7 @@ import AddressAutoComplete from "../components/Forms/AddressAutoComplete";
 
 import "./styles.scss";
 
-import Map from "../components/Map";
+import Map from "../components/YashMap";
 import MainLayout from "../layouts/MainLayout";
 
 const MyMapPage = () => {
