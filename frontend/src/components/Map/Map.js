@@ -7,6 +7,8 @@ import queries from "../../graphql/queries";
 
 import { useSelector } from "react-redux";
 
+const REACT_APP_GOOGLE_MAPS_API_KEY = "AIzaSyBKF_-Lj9BeBzJ1SyMRq0b5qfgdZB3je9o"
+
 const Map = ({ userInfo }) => {
 
     // console.log(userInfo);
@@ -68,7 +70,7 @@ const Map = ({ userInfo }) => {
 
     // Google Map
     const { isLoaded, error } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+        googleMapsApiKey: REACT_APP_GOOGLE_MAPS_API_KEY,
     });
 
     const userIcon = useMemo(() => {

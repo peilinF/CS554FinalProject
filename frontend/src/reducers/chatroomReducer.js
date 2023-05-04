@@ -1,6 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import arraysAreEqual from './utils';
 
+import { useQuery, useMutation } from '@apollo/client';
+import queries from '../graphql/queries';
+
 const initialState = {
     chatrooms: [],
     selectedChatroom: null,
