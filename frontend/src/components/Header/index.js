@@ -3,13 +3,16 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import "./styles.scss";
+import { Typography } from "@mui/material";
 
 const Header = () => {
   const { currentUser } = getAuth();
 
   return (
     <header>
-      <h1>RunMate</h1>
+      <Typography variant={"h1"} fontStyle={"italic"}>
+        RunMate
+      </Typography>
 
       {currentUser ? (
         <NavLink to={"/profile"}>Profile</NavLink>
