@@ -54,7 +54,7 @@ const generateFakeLogbook = () => {
 
 };
 
-// console.log(generateFakeLogbook());
+console.log(generateFakeLogbook());
 
 export {
     randomCoordinatesAround,

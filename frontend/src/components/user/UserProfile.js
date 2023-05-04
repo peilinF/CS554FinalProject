@@ -1,15 +1,20 @@
 import '../App.css';
 
 import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useQuery, useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 
 import { apiInstance } from '../../utils/apiInstance';
 
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { chatroomActions } from '../../actions';
 
 const UserProfile = (props) => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // console.log("user profile props", props.userInfo);
 
@@ -59,12 +64,16 @@ const UserProfile = (props) => {
 
         console.log("start chat between ", userId, friendId);
 
+        dispatch(chatroomActions.joinChatroom([userId, friendId]));
+
+        // navigate('/chat', { state: { userId: userId, friendId: friendId } });
+
     };
 
     // create a list of the user's friends
 
     let friends_list = data.getFriendsList.map((friend) => {
-        console.log("friend", friend);
+        // console.log("friend", friend);
         return (
             <li key={friend._id} className="friends-list" onClick={() => {
                 startChat(props.userInfo._id, friend._id);

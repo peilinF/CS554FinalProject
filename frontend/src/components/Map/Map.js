@@ -5,9 +5,24 @@ import { GoogleMap, useLoadScript, MarkerF, PolylineF } from "@react-google-maps
 import { useQuery } from "@apollo/client";
 import queries from "../../graphql/queries";
 
-const Map = ({ userInfo, logInfo }) => {
+import { useSelector } from "react-redux";
+
+const Map = ({ userInfo }) => {
+
     // console.log(userInfo);
-    console.log(logInfo);
+    // console.log(logInfo);
+
+    const logInfo = useSelector((state) => {
+        if (state.logbook.logbook !== [] && state.logbook.selectedLog !== null) {
+            let logbook = state.logbook.logbook;
+            let selectedLog = state.logbook.selectedLog;
+            return logbook.find((log) => log._id === selectedLog);
+        } else {
+            return null;
+        }
+    });
+
+    // console.log("selectedLog: ", logInfo);
 
     const [page, setPage] = useState("home");
     const location = useLocation();
@@ -80,7 +95,7 @@ const Map = ({ userInfo, logInfo }) => {
                 }
                 : null;
 
-            console.log("friendIcons: ", res);
+            // console.log("friendIcons: ", res);
             return res;
         });
     }, [friends]);
@@ -131,7 +146,7 @@ const Map = ({ userInfo, logInfo }) => {
         );
 
         if (logInfo) {
-            console.log("logInfo: ", logInfo);
+            // console.log("logInfo: ", logInfo);
         }
 
         let log_html = (

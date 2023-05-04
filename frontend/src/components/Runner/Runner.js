@@ -6,9 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from "@apollo/client";
 import queries from '../../graphql/queries';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { logActions } from '../../actions';
+
 const Runner = (props) => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [logbook, setLogbook] = useState(null);
     const [logInfo, setLogInfo] = useState(null);
@@ -31,7 +35,11 @@ const Runner = (props) => {
     const handleLogInfo = (event, log_info) => {
         event.preventDefault();
 
+        console.log("clicked log: ", log_info._id);
+
         setLogInfo(log_info);
+        setEditStatus(false);
+        dispatch(logActions.addLog(log_info));
     };
 
     const handleEditLog = async (event) => {
@@ -92,6 +100,8 @@ const Runner = (props) => {
             console.log(error);
         }
 
+        dispatch(logActions.deleteLog(logInfo._id));
+
         if (deleted_log && deleted_log.data.deleteLog.deleted) {
             refetch();
             setLogInfo(null);
@@ -107,10 +117,7 @@ const Runner = (props) => {
                 key={log._id}
                 className="logbook-li"
                 onClick={(event) => {
-                    console.log("clicked log");
                     handleLogInfo(event, log);
-                    setEditStatus(false);
-                    props.handleMapLogInfo(log);
                 }}
             >
                 <p>{log.date}</p>

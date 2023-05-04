@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Navigate, NavLink, Route, Routes } from "react
 
 import Map from "./Map/Map";
 import Home from "./Home";
+import Runner from "./Runner/Runner";
 import ChatPage from "./Chat/ChatPage";
 
 import NotFoundPage from "./NotFoundPage";
@@ -31,17 +32,23 @@ function App() {
     const auth = getAuth();
 
     const [userInfo, setUserInfo] = useState(null);
-    const [logInfo, setLogInfo] = useState(null);
+
+    const [chatState, setChatStatus] = useState({
+        userId: null,
+        friendId: null,
+    });
+
+    const handleChatStatus = useCallback((userId, friendId) => {
+        setChatStatus({
+            userId: userId,
+            friendId: friendId,
+        });
+    });
 
     const updateUserInfo = (userInfo) => {
         // console.log("update user info in App.js");
         setUserInfo(userInfo);
     };
-
-    const handleMapLogInfo = useCallback((logInfo) => {
-        console.log("handleMapLogInfo in App.js");
-        setLogInfo(logInfo);
-    });
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -76,16 +83,22 @@ function App() {
                     <div className="App-body">
 
                         <div className="left">
-                            <Map userInfo={userInfo} logInfo={logInfo} />
+                            <Map userInfo={userInfo} />
                         </div>
 
                         <div className="right">
                             <div className="right-body">
                                 <Routes>
-                                    <Route path="/" element={<Home updateUserInfo={updateUserInfo} userInfo={userInfo} />} />
+                                    <Route path="/" element={<Home updateUserInfo={updateUserInfo} userInfo={userInfo} handleChatStatus={handleChatStatus} />} />
 
-                                    <Route path="/runner" element={user ? (
-                                        <Home updateUserInfo={updateUserInfo} userInfo={userInfo} runner_page={true} handleMapLogInfo={handleMapLogInfo} />
+                                    <Route path="/runner" element={userInfo ? (
+                                        <Runner userInfo={userInfo} />
+                                    ) : (
+                                        <Navigate to={"/"} />
+                                    )} />
+
+                                    <Route path="/chat" element={user ? (
+                                        <ChatPage usersId={chatState} />
                                     ) : (
                                         <Navigate to={"/"} />
                                     )} />
@@ -104,7 +117,7 @@ function App() {
                                 <div className="footer">
                                     <div className="footer-body">
 
-                                        <NavLink to="/" onClick={(event) => { handleMapLogInfo(null) }}>
+                                        <NavLink to="/">
                                             <button>Home</button>
                                         </NavLink>
 

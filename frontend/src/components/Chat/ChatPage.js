@@ -2,6 +2,7 @@
 //I looked how to use set and get messages from top url.
 
 import React, { useRef, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 // import "./ChatPage.css";
 import FriendList from "../Messanger/FriendList";
 import Message from "../Messanger/Message";
@@ -9,7 +10,12 @@ import FriendOnline from "../Messanger/FriendOnline";
 import io from "socket.io-client";
 import { getAuth } from "firebase/auth";
 
-const ChatPage = () => {
+const ChatPage = ( props ) => {
+
+  const { userId, friendId } = props.
+
+  console.log(userId, friendId);
+  
   const [conversations, setConversations] = useState([]);
   const [chat, setChat] = useState({ _id: null });
   const [messagesList, setMessagesList] = useState([]);
