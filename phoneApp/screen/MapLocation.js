@@ -4,6 +4,7 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { getAuth } from "firebase/auth";
 import axios from 'axios';
+import uuid  from 'react-native-uuid';
 export default function MapLocation({ navigation }) {
   const [showMap, setShowMap] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -50,14 +51,35 @@ export default function MapLocation({ navigation }) {
     if (watchPosition) {
       watchPosition.remove();
       setWatchPosition(null);
+
+      let route = [];
+      for( let location of locationHistory){
+        route.push({"lat":location.latitude,"lng":location.longitude});
+      }
+      console.log(route);
+      const log_info = {
+        id:uuid.v4(),
+        date : new Date().toISOString().split('T')[0],
+        time : new Date().toISOString().split('T')[1].split('.')[0],
+        route : route,
+        notes : "This is real user route data"
+      }
       const data = {
-        "user": user,
-        "locationHistory": locationHistory
+        "id": user.id,
+        "log_info": log_info,
       }
 
 
+      try{
+        await axios.post('http://192.168.194.157:5001/maps', data)
+        .catch((error) => {
+          console.log(error);
+        });
 
-      await axios.post('http://192.168.194.157:5001/maps', data);
+      } catch (e) {
+        console.log(e);
+      }
+      
 
       setLocationHistory([]);
     }

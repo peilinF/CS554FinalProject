@@ -1,14 +1,16 @@
 import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet,Alert } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import app from "../firebase/firebaseConfig";
+import axios from 'axios';
 
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [disabledRegister, setDisabledRegister] = useState(true);
-
+  const[avatarUrl, setAvatarUrl] = useState('');
+  const [userName, setUserName] = useState('');
   const validateEmail = (email) => {
     // Use a simple regex to validate email format
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -33,7 +35,22 @@ export default function RegisterScreen({ navigation }) {
 
     const auth = getAuth(app);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        await updateProfile(auth.currentUser, { displayName: userName});
+    });
+
+    await axios.post('http://192.168.194.157:5001/users/register', {
+          name: userName,
+          email: email,
+          uid: auth.currentUser.uid,
+          avatarUrl: avatarUrl,
+        }).catch((error) => {
+        console.log(error);
+      });
+
+      setUserName('');
+      setAvatarUrl('');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -49,11 +66,24 @@ export default function RegisterScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="User Name"
+        value={userName}
+        onChangeText={setUserName}
+      />
       <TextInput
         style={styles.input}
         placeholder="User Email"
         value={email}
         onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="avatarUrl (optional)"
+        value={avatarUrl}
+        onChangeText={setAvatarUrl}
       />
       
       <TextInput
