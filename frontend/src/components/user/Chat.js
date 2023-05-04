@@ -18,6 +18,9 @@ const Chat = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
+
     const [usersInfo, setUsersInfo] = useState(null);
     const chatroomState = useSelector((state) => state.chatroom);
 
