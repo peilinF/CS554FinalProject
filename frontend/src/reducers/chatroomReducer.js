@@ -22,6 +22,7 @@ const chatroomReducer = (state = initialState, action) => {
 
     switch (type) {
         case 'JOIN_CHATROOM':
+            
             // chatroom = {
             //     id: uuid(),
             //     users: [],
