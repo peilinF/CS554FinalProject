@@ -31,7 +31,10 @@ const Home = (props) => {
                             },
                         })
                         .then((response) => {
-                            updateLocation(response.data);
+                            if (response.data) {
+                                updateLocation(response.data);
+                            }
+                            
                             // setUserInfo(response.data);
                         })
                         .catch((error) => {
