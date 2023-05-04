@@ -27,7 +27,7 @@ const ChatPage = ( props ) => {
   const user = { id: auth.currentUser.uid, name: auth.currentUser.displayName };
   //connecting to socket
   useEffect(() => {
-    socketRef.current = io("http://localhost:5000");
+    socketRef.current = io("http://localhost:5001");
     socketRef.current.on("getMessage", (data) => {
       setArrivalMessage({
         UserId: data.userId,

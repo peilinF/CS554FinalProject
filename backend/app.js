@@ -176,8 +176,8 @@ const startServer = async () => {
 
     constructRoutes(app);
 
-    server.listen(5000, () => {
-        console.log("Server started at http://localhost:5000/");
+    server.listen(5001, () => {
+        console.log("Server started at http://localhost:5001/");
     });
 }
 
