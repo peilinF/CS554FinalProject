@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Navigate, NavLink, Route, Routes } from "react
 import Map from "./Map/Map";
 import Home from "./Home";
 import Runner from "./Runner/Runner";
+import Chat from "./user/Chat";
 import ChatPage from "./Chat/ChatPage";
 
 import NotFoundPage from "./NotFoundPage";
@@ -32,18 +33,6 @@ function App() {
     const auth = getAuth();
 
     const [userInfo, setUserInfo] = useState(null);
-
-    const [chatState, setChatStatus] = useState({
-        userId: null,
-        friendId: null,
-    });
-
-    const handleChatStatus = useCallback((userId, friendId) => {
-        setChatStatus({
-            userId: userId,
-            friendId: friendId,
-        });
-    });
 
     const updateUserInfo = (userInfo) => {
         // console.log("update user info in App.js");
@@ -89,7 +78,7 @@ function App() {
                         <div className="right">
                             <div className="right-body">
                                 <Routes>
-                                    <Route path="/" element={<Home updateUserInfo={updateUserInfo} userInfo={userInfo} handleChatStatus={handleChatStatus} />} />
+                                    <Route path="/" element={<Home updateUserInfo={updateUserInfo} userInfo={userInfo} />} />
 
                                     <Route path="/runner" element={userInfo ? (
                                         <Runner userInfo={userInfo} />
@@ -98,7 +87,7 @@ function App() {
                                     )} />
 
                                     <Route path="/chat" element={user ? (
-                                        <ChatPage usersId={chatState} />
+                                        <Chat />
                                     ) : (
                                         <Navigate to={"/"} />
                                     )} />

@@ -47,6 +47,7 @@ const typeDefs = gql`
 
     type Query {
         getUserInfo(userId: ID!): User
+        getUsersInfo(usersId: [ID!]!): [User]
         getFriendsList(userId: ID!): [User]
         getUserPosition(userId: ID!): Position
         getLogbook(userId: ID!): [Log]
@@ -65,6 +66,12 @@ const resolvers = {
     Query: {
         getUserInfo: async (_, { userId }) => {
             return await userData.getUserById(userId);
+        },
+
+        getUsersInfo: async (_, { usersId }) => {
+            return await usersId.map(async (userId) => {
+                return await userData.getUserById(userId);
+            });
         },
 
         getFriendsList: async (_, { userId }) => {

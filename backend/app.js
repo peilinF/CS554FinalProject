@@ -8,7 +8,7 @@ import constructRoutes from "./routes/index.js";
 import http from "http";
 
 import cors from "cors";
-import { Server } from "socket.io";
+import { socketIo } from "socket.io";
 
 import { ApolloServer } from "apollo-server-express";
 import { typeDefs, resolvers } from "./schema.js";
@@ -113,9 +113,9 @@ app.use("/users/user-info", verifyFirebaseToken);
 const server = http.createServer(app);
 
 // Socket.io
-const io = new Server(server, {
+const io = new socketIo(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "http://localhost:4000",
         methods: ["GET", "POST"],
     },
 });
@@ -176,8 +176,8 @@ const startServer = async () => {
 
     constructRoutes(app);
 
-    server.listen(5001, () => {
-        console.log("Server started at http://localhost:5001/");
+    server.listen(5000, () => {
+        console.log("Server started at http://localhost:5000/");
     });
 }
 

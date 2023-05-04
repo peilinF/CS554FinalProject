@@ -66,7 +66,7 @@ const UserProfile = (props) => {
 
         dispatch(chatroomActions.joinChatroom([userId, friendId]));
 
-        // navigate('/chat', { state: { userId: userId, friendId: friendId } });
+        navigate('/chat');
 
     };
 

@@ -15,6 +15,21 @@ const GET_USER_INFO = gql`
   }
 `;
 
+const GET_USERS_INFO = gql`
+    query GetUsersInfo($usersId: [ID!]!) {
+        getUsersInfo(usersId: $usersId) {
+            _id
+            name
+            email
+            avatar
+            lastPosition {
+                lat
+                lng
+            }
+        }
+    }
+`;
+
 const ADD_FRIEND = gql`
     mutation AddFriend($userId: ID!, $friendId: ID!) {
         addFriend(userId: $userId, friendId: $friendId) {
@@ -124,6 +139,7 @@ const DELETE_LOG = gql`
 
 const export_obj = {
     GET_USER_INFO,
+    GET_USERS_INFO,
     ADD_FRIEND,
     GET_FRIENDS_LIST,
     GET_USER_POSITION,
