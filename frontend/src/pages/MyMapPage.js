@@ -5,15 +5,24 @@ import "./styles.scss";
 
 import Map from "../components/YashMap";
 import MainLayout from "../layouts/MainLayout";
+import { mapApiInstance } from "../utils/mapApiInstance";
 
 const MyMapPage = () => {
-  const [latLng, setLatLng] = useState({ lng: -74, lat: 40.7123 });
+  //Default at Stevens
+  const [latLng, setLatLng] = useState({ lng: -74.025435, lat: 40.74696 });
 
-  console.log(latLng);
+  const [destLatLng, setDestLatLng] = useState(null);
+
   return (
-    <MainLayout className="home">
-      <Map latLng={latLng} setLatLng={setLatLng} />
-      <AddressAutoComplete latLng={latLng} setLatLng={setLatLng} />
+    <MainLayout>
+      <div className="home">
+        <Map latLng={latLng} setLatLng={setLatLng} destLatLng={destLatLng} />
+        <AddressAutoComplete
+          latLng={latLng}
+          setLatLng={setLatLng}
+          setDestLatLng={setDestLatLng}
+        />
+      </div>
     </MainLayout>
   );
 };

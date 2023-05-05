@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import "./styles.scss";
+import { Button, TextField } from "@mui/material";
 
-const AddressAutoComplete = ({ latLng, setLatLng }) => {
+const AddressAutoComplete = ({ latLng, setLatLng, setDestLatLng }) => {
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fsqAPIToken = "fsq3PnhE5Zyd+DmfVJu+uHVFrTf/db8notB4S3S10xBz/JM=";
     let sessionToken = generateRandomSessionToken();
@@ -120,23 +122,20 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           session_token: sessionToken,
         };
 
-        console.log(params);
         if (latLng.lat && latLng.lng) {
           params.ll = `${latLng.lat},${latLng.lng}`;
         }
         const searchParams = new URLSearchParams(params).toString();
-        const searchResults = await fetch(
+        const searchResults = await axios.get(
           `https://api.foursquare.com/v3/autocomplete?${searchParams}`,
           {
-            method: "get",
-            headers: new Headers({
+            headers: {
               Accept: "application/json",
               Authorization: fsqAPIToken,
-            }),
+            },
           }
         );
-        const data = await searchResults.json();
-        console.log(data);
+        const data = await searchResults.data;
 
         return data.results;
       } catch (error) {
@@ -161,7 +160,6 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           lng: addressDetail.geocodes.main.longitude,
           lat: addressDetail.geocodes.main.latitude,
         });
-        console.log(addressDetail);
         const { location = {} } = addressDetail;
         const {
           address = "",
@@ -230,38 +228,42 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
   }, []);
 
   return (
-    <form id="autofill-form">
-      <div className="autofill--text autofill--heading">Demo</div>
-      <div className="autofill--row">
-        <p className="autofill--text">Center search on my currrent location.</p>
-        <div className="autofill--text autofill--findme" id="autofill-findme">
-          <img src="https://files.readme.io/0d519df-image.png" />
-          Find me
-        </div>
-      </div>
-      <div className="autofill--row" id="autofill-search-container">
-        <input
-          type="text"
-          id="autofill-search"
-          className="autofill--input autofill--text"
-          placeholder="Address"
-        />
-        <br />
-        <div id="autofill-dropdown" className="autofill--text">
-          <ul id="autofill-suggestions"></ul>
-          <div
-            id="autofill-error"
-            className="autofill--error autofill--background-icon"
-          >
-            Something went wrong. Please refresh and try again.
+    <>
+      <form id="autofill-form">
+        <div className="autofill--text autofill--heading">Generate</div>
+        <div className="autofill--row">
+          <p className="autofill--text">
+            Center search on my currrent location.
+          </p>
+          <div className="autofill--text autofill--findme" id="autofill-findme">
+            <img src="https://files.readme.io/0d519df-image.png" />
+            Find me
           </div>
-          <div
-            id="autofill-not-found"
-            className="autofill--error autofill--background-icon"
-          ></div>
         </div>
-      </div>
-      {/* <div className="autofill--row">
+        <div className="autofill--row" id="autofill-search-container">
+          <TextField
+            label="Address"
+            fullWidth
+            type="text"
+            id="autofill-search"
+            placeholder="Address"
+          />
+          <br />
+          <div id="autofill-dropdown" className="autofill--text">
+            <ul id="autofill-suggestions"></ul>
+            <div
+              id="autofill-error"
+              className="autofill--error autofill--background-icon"
+            >
+              Something went wrong. Please refresh and try again.
+            </div>
+            <div
+              id="autofill-not-found"
+              className="autofill--error autofill--background-icon"
+            ></div>
+          </div>
+        </div>
+        {/* <div className="autofill--row">
         <input
           type="text"
           id="autofill-address2"
@@ -269,64 +271,83 @@ const AddressAutoComplete = ({ latLng, setLatLng }) => {
           placeholder="Apt, Suite, etc (optional)"
         />
       </div> */}
-
+        {/* 
       <div className="autofill--row">
         <input
           type="text"
           className="autofill--input autofill--text"
           placeholder="Radius"
         />
-      </div>
-      <div className="autofill--row">
-        <input
-          hidden
-          type="text"
-          id="autofill-city"
-          className="autofill--input autofill--text"
-          placeholder="City"
-        />
-      </div>
-      <div className="autofill--row">
-        <input
-          hidden
-          type="text"
-          id="autofill-region"
-          className="autofill--input autofill--text"
-          placeholder="State/Province"
-        />
-      </div>
-      <div className="autofill--row">
-        <input
-          hidden
-          type="text"
-          id="autofill-postcode"
-          className="autofill--input autofill--text"
-          placeholder="Zip/Postal Code"
-        />
-      </div>
-      <div className="autofill--row">
-        <input
-          hidden
-          type="text"
-          id="autofill-country"
-          className="autofill--input autofill--text"
-          placeholder="Country"
-        />
-      </div>
+      </div> */}
 
-      <div className="autofill--row">
-        <input
-          type="reset"
-          value="Clear"
-          className="autofill-button autofill--text"
-        />
-        <input
-          type="submit"
-          value="Generate"
-          className="autofill-button autofill--text"
-        />
-      </div>
-    </form>
+        <div className="autofill--row">
+          <TextField
+            label="Radius"
+            fullWidth
+            type="text"
+            placeholder="Radius"
+          />
+        </div>
+
+        <div className="autofill--row">
+          <input
+            hidden
+            type="text"
+            id="autofill-city"
+            className="autofill--input autofill--text"
+            placeholder="City"
+          />
+        </div>
+        <div className="autofill--row">
+          <input
+            hidden
+            type="text"
+            id="autofill-region"
+            className="autofill--input autofill--text"
+            placeholder="State/Province"
+          />
+        </div>
+        <div className="autofill--row">
+          <input
+            hidden
+            type="text"
+            id="autofill-postcode"
+            className="autofill--input autofill--text"
+            placeholder="Zip/Postal Code"
+          />
+        </div>
+        <div className="autofill--row">
+          <input
+            hidden
+            type="text"
+            id="autofill-country"
+            className="autofill--input autofill--text"
+            placeholder="Country"
+          />
+        </div>
+
+        <div className="autofill--row">
+          <Button
+            style={{ margin: "10px" }}
+            variant={"outlined"}
+            type="reset"
+            value="Clear"
+          >
+            Clear
+          </Button>
+          <Button
+            onClick={() => setDestLatLng(latLng)}
+            style={{ margin: "10px" }}
+            variant={"contained"}
+            type="submit"
+            value="Generate"
+            className="autofill-button autofill--text"
+          >
+            Generate
+          </Button>
+        </div>
+      </form>
+    </>
   );
 };
 

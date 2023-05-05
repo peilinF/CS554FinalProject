@@ -1,14 +1,17 @@
 import "./App.scss";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import SignInPage from "./pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
-import ChatPage from "./pages/ChatPage";
+
 import ChangePassword from "./components/ChangePassword";
 import MyMapPage from "./pages/MyMapPage";
 import HomePage from "./pages/HomePage";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
 import { useState } from "react";
+
+//Pages
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import ChatPage from "./pages/ChatPage";
 import ProfilePage from "./pages/ProfilePage";
 
 function App() {
