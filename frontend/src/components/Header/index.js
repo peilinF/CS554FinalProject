@@ -15,7 +15,11 @@ const Header = () => {
       </Typography>
 
       {currentUser ? (
-        <NavLink to={"/profile"}>Profile</NavLink>
+        window.location.pathname != "/profile" ? (
+          <NavLink to={"/profile"}>Profile</NavLink>
+        ) : (
+          <NavLink to={"/"}>Home</NavLink>
+        )
       ) : (
         <NavLink to={"/login"}>Login</NavLink>
       )}

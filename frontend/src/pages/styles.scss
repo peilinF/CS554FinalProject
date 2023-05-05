@@ -33,6 +33,30 @@
     padding: 200px;
   }
 }
+.profile {
+  min-width: 400px;
+  border-radius: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  .pimage {
+    width: 50%;
+    height: auto;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      overflow: hidden;
+      border-radius: 2em;
+    }
+    #a_icon {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
 
 @media only screen and (max-width: 650px) {
   .login form,
