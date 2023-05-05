@@ -7,7 +7,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import queries from '../../graphql/queries';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { logActions } from '../../actions';
+import { logActions } from '../../redux/actions';
 
 const Runner = (props) => {
 

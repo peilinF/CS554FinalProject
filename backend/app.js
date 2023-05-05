@@ -8,7 +8,7 @@ import constructRoutes from "./routes/index.js";
 import http from "http";
 
 import cors from "cors";
-import { socketIo } from "socket.io";
+import { Server as socketIo } from "socket.io";
 
 import { ApolloServer } from "apollo-server-express";
 import { typeDefs, resolvers } from "./schema.js";
@@ -110,55 +110,91 @@ const verifyFirebaseToken = async (req, res, next) => {
 
 app.use("/users/user-info", verifyFirebaseToken);
 
-const server = http.createServer(app);
+// Socket.io
+// const io = new socketIo(server, {
+//     cors: {
+//         origin: "http://localhost:4000",
+//         methods: ["GET", "POST"],
+//     },
+// });
+
+// let onlineUsers = {};
+// const userJoined = (userId, socketId) => {
+//     onlineUsers[userId] = socketId;
+// };
+// const userDisconnected = (socketId) => {
+//     if (onlineUsers.hasOwnProperty(socketId)) {
+//         delete onlineUsers[socketId];
+//     }
+// };
+// const checkIfUserOnline = (userId) => {
+//     if (onlineUsers.hasOwnProperty(userId)) {
+//         console.log(`${userId} is online`);
+//         return onlineUsers[userId];
+//     } else {
+//         console.log(`${userId} is not online`);
+//         return false;
+//     }
+// };
+// io.on("connection", (socket) => {
+//     console.log("A user connected.");
+//     socket.on("userJoined", (userId) => {
+//         userJoined(userId, socket.id);
+//         io.emit("returnUser", onlineUsers);
+//     });
+//     socket.on("sendMessage", (messageData) => {
+//         let userId = messageData.userId;
+//         let friendId = messageData.friendId;
+//         let text = messageData.text;
+//         const user = checkIfUserOnline(friendId);
+//         console.log("friendId", onlineUsers[friendId]);
+//         io.to(user).emit("getMessage", {
+//             userId,
+//             text,
+//         });
+//     });
+//     socket.on("disconnect", () => {
+//         console.log("A user disconnected.");
+//         userDisconnected(socket.id);
+//         io.emit("returnUser", onlineUsers);
+//     });
+// });
 
 // Socket.io
+
+const server = http.createServer(app);
+
 const io = new socketIo(server, {
     cors: {
-        origin: "http://localhost:4000",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"],
     },
 });
 
-let onlineUsers = {};
-const userJoined = (userId, socketId) => {
-    onlineUsers[userId] = socketId;
-};
-const userDisconnected = (socketId) => {
-    if (onlineUsers.hasOwnProperty(socketId)) {
-        delete onlineUsers[socketId];
-    }
-};
-const checkIfUserOnline = (userId) => {
-    if (onlineUsers.hasOwnProperty(userId)) {
-        console.log(`${userId} is online`);
-        return onlineUsers[userId];
-    } else {
-        console.log(`${userId} is not online`);
-        return false;
-    }
-};
 io.on("connection", (socket) => {
-    console.log("A user connected.");
-    socket.on("userJoined", (userId) => {
-        userJoined(userId, socket.id);
-        io.emit("returnUser", onlineUsers);
+    console.log("New client connected. Id: ", socket.id);
+    // console.log(socket);
+
+    // Join a chatroom
+    socket.on("join room", (roomId) => {
+        socket.join(roomId);
+        console.log(`Socket ${socket.id} joined room ${roomId}`);
     });
-    socket.on("sendMessage", (messageData) => {
-        let userId = messageData.userId;
-        let friendId = messageData.friendId;
-        let text = messageData.text;
-        const user = checkIfUserOnline(friendId);
-        console.log("friendId", onlineUsers[friendId]);
-        io.to(user).emit("getMessage", {
-            userId,
-            text,
-        });
+
+    // Leave the room if the user closes the socket
+    socket.on("leave room", (roomId) => {
+        socket.leave(roomId);
+        console.log(`Socket ${socket.id} left room ${roomId}`);
     });
+
+    // Listen for new messages
+    socket.on("newMessage", (data) => {
+        console.log("new message", data);
+        io.in(data.roomId).emit("newMessage", data.info);
+    });    
+
     socket.on("disconnect", () => {
-        console.log("A user disconnected.");
-        userDisconnected(socket.id);
-        io.emit("returnUser", onlineUsers);
+        console.log("Client disconnected. Id: ", socket.id);
     });
 });
 

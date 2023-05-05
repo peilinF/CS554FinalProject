@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js';
+
 const arraysAreEqual = (arr1, arr2) => {
     // Check if both arrays have the same length
     if (arr1.length !== arr2.length) {
@@ -20,4 +22,18 @@ const arraysAreEqual = (arr1, arr2) => {
     return true;
 }
 
-export default arraysAreEqual;
+const createRoomId = (users) => {
+
+    // create hash id from users id array
+
+    const idString = users.sort().join('');
+    const hashedIdString = CryptoJS.SHA256(idString).toString();
+
+    return hashedIdString;
+    
+};
+
+export default {
+    arraysAreEqual,
+    createRoomId,
+};

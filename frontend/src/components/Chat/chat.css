@@ -1,0 +1,10 @@
+.messages {
+    height: 500px;
+    width: 350px;
+    overflow-y: scroll;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff;
+}

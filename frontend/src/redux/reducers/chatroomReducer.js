@@ -1,8 +1,4 @@
-import { v4 as uuid } from 'uuid';
-import arraysAreEqual from './utils';
-
-import { useQuery, useMutation } from '@apollo/client';
-import queries from '../graphql/queries';
+import utils from './utils';
 
 const initialState = {
     chatrooms: [],
@@ -18,20 +14,20 @@ const chatroomReducer = (state = initialState, action) => {
         console.log("payload:", payload);
     };
 
-    log(state, payload);
+    // log(state, payload);
 
     switch (type) {
         case 'JOIN_CHATROOM':
             
             // chatroom = {
-            //     id: uuid(),
+            //     id: hash id create from users id array,
             //     users: [],
             //     messages: [],
             // }
 
             if (state.chatrooms.length !== 0) {
                 let chatroom = state.chatrooms.find((chatroom) => {
-                    return arraysAreEqual(chatroom.users, payload);
+                    return utils.arraysAreEqual(chatroom.users, payload);
                 });
 
                 // console.log("chatroom: ", chatroom);
@@ -39,19 +35,21 @@ const chatroomReducer = (state = initialState, action) => {
                 if (chatroom) {
                     return {
                         ...state,
-                        selectedChatroom: chatroom.id,
+                        selectedChatroom: chatroom,
                     };
                 }
             }
 
-            let id = uuid();
+            let id = utils.createRoomId(payload);
+            let new_chatroom = {
+                id: id,
+                users: payload,
+                messages: [],
+            };
+
             return {
-                chatrooms: [...state.chatrooms, {
-                    id: id,
-                    users: payload,
-                    messages: [],
-                }],
-                selectedChatroom: id,
+                chatrooms: [...state.chatrooms, new_chatroom],
+                selectedChatroom: new_chatroom,
             };
         case 'SEND_MESSAGE':
             return {

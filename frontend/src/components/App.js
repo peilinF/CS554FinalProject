@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Navigate, NavLink, Route, Routes } from "react
 import Map from "./Map/Map";
 import Home from "./Home";
 import Runner from "./Runner/Runner";
-import Chat from "./user/Chat";
-import ChatPage from "./Chat/ChatPage";
+import Chat from "./Chat/Chat";
 
 import NotFoundPage from "./NotFoundPage";
 import Error from "./Error";
@@ -72,7 +71,7 @@ function App() {
                     <div className="App-body">
 
                         <div className="left">
-                            <Map userInfo={userInfo} />
+                            <Map />
                         </div>
 
                         <div className="right">

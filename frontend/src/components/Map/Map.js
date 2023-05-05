@@ -9,10 +9,14 @@ import { useSelector } from "react-redux";
 
 const REACT_APP_GOOGLE_MAPS_API_KEY = "AIzaSyBKF_-Lj9BeBzJ1SyMRq0b5qfgdZB3je9o"
 
-const Map = ({ userInfo }) => {
+const Map = () => {
 
-    // console.log(userInfo);
-    // console.log(logInfo);
+    // get userInfo and logInfo from redux store
+
+    const userInfo = useSelector((state) => {
+        // console.log(state.userInfo.userInfo);
+        return state.userInfo.userInfo;
+    });
 
     const logInfo = useSelector((state) => {
         if (state.logbook.logbook !== [] && state.logbook.selectedLog !== null) {
@@ -73,17 +77,23 @@ const Map = ({ userInfo }) => {
         googleMapsApiKey: REACT_APP_GOOGLE_MAPS_API_KEY,
     });
 
-    const userIcon = useMemo(() => {
-        return userInfo && userInfo.avatar
+    let html = undefined;
+
+    if (!isLoaded) {
+        html = (
+            <div>
+                <h3>Loading map...</h3>
+            </div>
+        );
+    } else {
+        const userIcon = userInfo && userInfo.avatar
             ? {
                 url: userInfo.avatar,
                 scaledSize: new window.google.maps.Size(75, 75),
             }
             : null;
-    }, [userInfo]);
 
-    const friendIcons = useMemo(() => {
-        return friends.map((user) => {
+        const friendIcons = friends ? friends.map((user) => {
             let res = user.lastPosition.lat &&
                 user.lastPosition.lng &&
                 user.avatar
@@ -99,18 +109,8 @@ const Map = ({ userInfo }) => {
 
             // console.log("friendIcons: ", res);
             return res;
-        });
-    }, [friends]);
+        }) : [];
 
-    let html = undefined;
-
-    if (!isLoaded) {
-        html = (
-            <div>
-                <h3>Loading map...</h3>
-            </div>
-        );
-    } else {
         let user_avator_html = (
             <div className="user-avator">
                 {userIcon && (
@@ -200,3 +200,4 @@ const Map = ({ userInfo }) => {
 };
 
 export default Map;
+

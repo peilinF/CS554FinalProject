@@ -13,14 +13,26 @@ import { getAuth, signOut } from "firebase/auth";
 
 import { apiInstance } from '../utils/apiInstance';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { userInfoActions } from '../redux/actions';
+
 const Home = (props) => {
 
     const auth = getAuth();
+    const dispatch = useDispatch();
+
     const [updateUserPosition] = useMutation(queries.UPDATE_USER_POSITION);
 
     const [userInfo, setUserInfo] = useState(null);
 
+    useEffect(() => {
+        if (userInfo) {
+            dispatch(userInfoActions.setUserInfo(userInfo));
+        }
+    }, [userInfo]);
+
     const getUserInfo = async (auth) => {
+        console.log("getting user info called");
         if (auth.currentUser) {
             await auth.currentUser.getIdToken(true)
                 .then(async (idToken) => {
@@ -44,14 +56,7 @@ const Home = (props) => {
         }
     };
 
-    const [userId, setUserId] = useState(() => {
-        if (auth && auth.currentUser) {
-            getUserInfo(auth);
-            return auth.currentUser.uid;
-        } else {
-            return null;
-        } 
-    });
+    const [userId, setUserId] = useState(null);
 
     if (auth.currentUser) {
         if (auth.currentUser.uid !== userId) {
@@ -109,6 +114,7 @@ const Home = (props) => {
     };
 
     useEffect(() => {
+        console.log('useEffect called');
         const fetchUserData = async () => {
             if (auth && auth.currentUser) {
                 if (auth.currentUser.uid !== userId) {
@@ -169,3 +175,4 @@ const Home = (props) => {
 };
 
 export default Home;
+

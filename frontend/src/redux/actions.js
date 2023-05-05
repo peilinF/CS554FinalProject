@@ -22,6 +22,13 @@ const sendMessage = (message) => ({
     payload: message,
 });
 
+// userInfoReducer
+
+const setUserInfo = (userInfo) => ({
+    type: 'SET_USER_INFO',
+    payload: userInfo,
+});
+
 // export
 
 const logActions = {
@@ -34,7 +41,12 @@ const chatroomActions = {
     sendMessage,
 };
 
+const userInfoActions = {
+    setUserInfo,
+};
+
 export {
     logActions,
     chatroomActions,
+    userInfoActions,
 };

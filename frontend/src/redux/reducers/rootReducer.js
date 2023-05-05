@@ -2,8 +2,10 @@ import {combineReducers} from '@reduxjs/toolkit';
 
 import logbookReducer from './logbookReducer.js';
 import chatroomReducer from './chatroomReducer.js';
+import userInfoReducer from './userInfoReducer.js';
 
 const rootReducer = combineReducers({
+    userInfo: userInfoReducer,
     chatroom: chatroomReducer,
     logbook: logbookReducer,
 });

@@ -9,7 +9,7 @@ import queries from '../../graphql/queries';
 import { apiInstance } from '../../utils/apiInstance';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { chatroomActions } from '../../actions';
+import { chatroomActions } from '../../redux/actions';
 
 const UserProfile = (props) => {
 
