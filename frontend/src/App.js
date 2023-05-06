@@ -4,7 +4,11 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ChatPage from "./pages/ChatPage";
 import ChangePassword from "./components/ChangePassword";
-import MyMapPage from "./pages/MyMapPage";
+
+// import MyMapPage from "./pages/MyMapPage";
+
+import MyMapPage from "./pages/Map";
+
 import HomePage from "./pages/HomePage";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
