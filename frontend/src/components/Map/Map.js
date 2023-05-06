@@ -48,7 +48,7 @@ const Directions = ({ locations, handleDistance }) => {
                 ),
                 waypoints: waypoints,
                 optimizeWaypoints: true,
-                travelMode: google.maps.TravelMode.DRIVING,
+                travelMode: google.maps.TravelMode.WALKING,
             },
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
@@ -89,8 +89,10 @@ const Map = () => {
         setTotalDistance(distance);
     };
 
-    const [numLocations, setNumLocations] = useState(0);
-    const [radius, setRadius] = useState(0);
+    const [counter, setCounter] = useState(0);
+
+    const [numLocations, setNumLocations] = useState(2);
+    const [distance, setDistance] = useState(0);
     const [randomLocations, setRandomLocations] = useState([]);
 
     const [mapCenter, setMapCenter] = useState({ lat: 37.7749, lng: -122.4194 });
@@ -99,7 +101,22 @@ const Map = () => {
     // generate random locations
 
     const generateRandomLocations = () => {
+
+        if (Math.abs(distance - totalDistance) < (distance / 10)) {
+            setCounter(0);
+            return;
+        }; 
+
+        if (counter > 20) {
+            alert("No locations found. Try adjusting the starting point or radius, or try update random location.");
+            setCounter(0);
+            return;
+        } else {
+            setCounter(counter + 1);
+        }
+
         const locations = [];
+        const radius = distance / 3;
         const radiusInKm = radius * 1.60934; // Convert miles to kilometers
 
         for (let i = 0; i < numLocations; i++) {
@@ -117,7 +134,7 @@ const Map = () => {
 
     useEffect(() => {
         generateRandomLocations();
-    }, [numLocations, radius]);
+    }, [numLocations, distance, totalDistance]);
 
     // Google Maps API
     const { isLoaded, loadError } = useLoadScript({
@@ -127,9 +144,9 @@ const Map = () => {
 
     const onPlaceSelected = () => {
 
-        setNumLocations(0);
-        setRadius(0);
-        document.querySelector("#num-locations").value = "";
+        // setNumLocations(0);
+        setDistance(0);
+        // document.querySelector("#num-locations").value = "";
         document.querySelector("#radius").value = "";
 
         if (autocompleteRef.current) {
@@ -146,12 +163,12 @@ const Map = () => {
 
         // empty all inputs
 
-        setNumLocations(0);
-        setRadius(0);
+        // setNumLocations(0);
+        setDistance(0);
         document.querySelector(".autocomplete input").value = "";
         document.querySelector(".autocomplete input").placeholder = "Search location";
 
-        document.querySelector("#num-locations").value = "";
+        // document.querySelector("#num-locations").value = "";
         document.querySelector("#radius").value = "";
 
         navigator.geolocation.getCurrentPosition(
@@ -177,7 +194,7 @@ const Map = () => {
             center={mapCenter}
         >
             {/* <Directions /> */}
-            {(randomLocations.length > 0) && (radius > 0) && <Directions locations={[mapCenter, ...randomLocations, mapCenter]} handleDistance={handleDistance} />}
+            {(randomLocations.length > 0) && (distance > 0) && <Directions locations={[mapCenter, ...randomLocations, mapCenter]} handleDistance={handleDistance} />}
             <MarkerF
                 position={mapCenter}
                 onClick={() => {
@@ -213,7 +230,7 @@ const Map = () => {
             <h3>Generate random locations: </h3>
 
             <div>
-                <div>
+                {/* <div>
                     <label>
                         Number of locations:
                         <input
@@ -223,20 +240,24 @@ const Map = () => {
                             onChange={(e) => setNumLocations(parseInt(e.target.value))}
                         />
                     </label>
-                </div>
+                </div> */}
                 <div>
                     <label>
-                        Radius (miles):
+                        Distance (miles):
                         <input
                             id="radius"
                             type="number"
-                            placeholder="Radius (mi)"
-                            onChange={(e) => setRadius(parseFloat(e.target.value))}
+                            placeholder="Distance (mi)"
+                            onChange={(e) => setDistance(parseFloat(e.target.value))}
                         />
                     </label>
                 </div>
 
-                <button onClick={generateRandomLocations}>Update</button>
+                <button onClick={() => {
+                    setCounter(0);
+                    setTotalDistance(0);
+                    generateRandomLocations();
+                }}>Update</button>
 
                 <br />
                 <br />
