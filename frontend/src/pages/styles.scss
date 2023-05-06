@@ -1,3 +1,10 @@
+.login,
+.register {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-self: center;
+}
 .login form,
 .register form {
   display: flex;
@@ -13,7 +20,7 @@
   flex-direction: row;
   flex: 1;
   align-items: stretch;
-  width: 100%;
+  width: 100vw;
   justify-content: flex-end;
 
   .bg {
@@ -33,6 +40,7 @@
     padding: 200px;
   }
 }
+
 .profile {
   min-width: 400px;
   border-radius: 2em;
