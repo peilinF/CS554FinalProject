@@ -27,6 +27,20 @@ const Directions = ({ input_distance, locations, handleDistance }) => {
 
     const [distance, setDistance] = useState(0);
 
+    const checkIfLegIsWalking = (leg) => {
+        return leg.steps.every((step) => step.travel_mode === google.maps.TravelMode.WALKING);
+    };    
+
+    const processDirectionsResult = (result) => {
+        const filteredLegs = result.routes[0].legs.filter(checkIfLegIsWalking);
+    
+        if (filteredLegs.length === result.routes[0].legs.length) {
+            return result; // All legs are walkable, return the original result
+        } else {
+            return null;
+        }
+    };
+
     useEffect(() => {
         if (google) {
             directionsService.current = new google.maps.DirectionsService();
@@ -57,6 +71,13 @@ const Directions = ({ input_distance, locations, handleDistance }) => {
             },
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
+
+                    const preocessedResult = processDirectionsResult(result);
+
+                    if (!preocessedResult) {
+                        return;
+                    }
+
                     setDirections(result);
 
                     // Calculate total distance
@@ -86,7 +107,7 @@ const Directions = ({ input_distance, locations, handleDistance }) => {
     if (directions) {
         console.log(input_distance, distance, Math.abs(input_distance - distance))
         if (input_distance > 0 && Math.abs(input_distance - distance) < (input_distance / 10)) {
-            console.log("render path")
+            console.log("render path");
             return <DirectionsRenderer directions={directions} />
         }
     }
