@@ -5,9 +5,11 @@ import React, { useRef, useEffect, useState } from "react";
 import "./ChatPage.css";
 import FriendList from "../components/Messanger/FriendList";
 import Message from "../components/Messanger/Message";
+import FriendOnline from "../components/Messanger/FriendOnline";
 import io from "socket.io-client";
 import { getAuth } from "firebase/auth";
 import MainLayout from "../layouts/MainLayout";
+import Map from "../components/YashMap";
 
 const ChatPage = () => {
   const [conversations, setConversations] = useState([]);
@@ -19,6 +21,7 @@ const ChatPage = () => {
   const socketRef = useRef();
   const auth = getAuth();
   const user = { id: auth.currentUser.uid, name: auth.currentUser.displayName };
+  const [latLng, setLatLng] = useState({ lng: -74, lat: 40.7123 });
   //connecting to socket
   useEffect(() => {
     socketRef.current = io("http://localhost:5000");
@@ -38,8 +41,9 @@ const ChatPage = () => {
   //add user to socket
   useEffect(() => {
     socketRef.current.emit("userJoined", user.id);
+    // console.log("user.id", user.id);
     socketRef.current.on("returnUser", (users) => {
-      console.log("users", users);
+      // console.log("users", users);
     });
   }, []);
   //show conversations of user
@@ -123,7 +127,6 @@ const ChatPage = () => {
       scrollMessageRef.current.scrollIntoView({ behavior: "instant" });
     }
   }, [messagesList]);
-
   let friendList = [];
   if (conversations.length !== 0) {
     friendList = conversations.map((i) => (
@@ -142,6 +145,7 @@ const ChatPage = () => {
   }
   return (
     <MainLayout>
+      <Map latLng={latLng} setLatLng={setLatLng} />
       <div className="row">
         <div className="column left">
           <h2>chatMenu</h2>
@@ -152,7 +156,7 @@ const ChatPage = () => {
           {chat._id ? (
             <div className="chatBox">
               <div className="chatBoxMessages">
-                <ul>{messageList}</ul>
+                <ul className="no-bullets">{messageList}</ul>
               </div>
               <div className="chatBoxMessageSend">
                 <form onSubmit={handleMessageSubmite}>
@@ -166,6 +170,8 @@ const ChatPage = () => {
                         placeholder="Send Message"
                         className="ChatMessageInpute"
                         required
+                        rows="4"
+                        cols="30"
                       />
                     </label>
                   </div>
@@ -177,6 +183,14 @@ const ChatPage = () => {
             </div>
           ) : (
             <div className="chatNotOpen">No Chat Opened</div>
+          )}
+        </div>
+        <div className="column right">
+          <h2>Friend</h2>
+          {chat?._id ? (
+            <FriendOnline conversation={chat.members} friendId={chat._id} />
+          ) : (
+            <div>Shmallo</div>
           )}
         </div>
       </div>

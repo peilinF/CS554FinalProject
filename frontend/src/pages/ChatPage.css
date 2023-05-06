@@ -5,22 +5,53 @@
 .column {
   float: left;
   padding: 10px;
-  height: 550px;
+  height: 100%;
+}
+
+.mapBackground {
+  /* Set the position and size of the map container */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Set the z-index so that it is behind the other content */
+  z-index: -1;
+}
+
+.row {
+  border-radius: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1300px;
+  height: 80%;
+  border: 1px solid #333;
+  box-shadow: 8px 8px 5px #444;
+  padding: 8px 12px;
+  background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);
 }
 
 .left {
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
   width: 25%;
-  background-color: antiquewhite;
+  background-color: #EAF6F6;
 }
 
 .middle {
   width: 45%;
-  background-color: rgb(241, 209, 167);
+  background-color: #FFFFFF;
 }
 
 .right {
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
   width: 30%;
-  background-color: rgb(242, 177, 93);
+  background-color: #66BFBF;
 }
 
 .row:after {
@@ -34,17 +65,18 @@
 }
 
 .chatBox {
-    height: 94%;
-}
-
-.chatBoxMessageSend {
-    background-color: #fac8ae;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .chatBoxMessages {
-  padding-right: 10px;
-  height: 94%;
-  overflow-y: scroll;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.chatBoxMessageSend {
+  margin-top: auto;
 }
 
 /* https://getcssscan.com/css-buttons-examples */
@@ -52,7 +84,6 @@
   background: #ff4742;
   border: 1px solid #ff4742;
   border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
@@ -78,8 +109,28 @@
   background-color: initial;
   background-position: 0 0;
   color: #ff4742;
+  opacity: 0.5;
 }
 
-.messageSubmite:active {
-  opacity: 0.5;
+.chatBoxMessageSend form {
+  background-color: #ffe6e6;
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
+
+.chatBoxMessageSend form .form-group {
+  flex: 1;
+  height: 40px;
+}
+
+.chatBoxMessageSend form textarea {
+  width: 80%;
+  height: 40px;
+  resize: both;
+}
+
+.chatBoxMessageSend form .messageSubmite {
+  flex: none;
+  height: 40px;
 }

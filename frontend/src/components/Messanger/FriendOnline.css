@@ -1,0 +1,16 @@
+.FriendBio {
+    display: flex;
+    padding: 10px;
+}
+
+.FriendImg {
+    height: 100px;
+    width: 150px;
+    border-radius: 20%;
+}
+
+ul.no-bullets {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
