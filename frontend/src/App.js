@@ -3,9 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import ChangePassword from "./components/ChangePassword";
 
-// import MyMapPage from "./pages/MyMapPage";
-
 import MyMapPage from "./pages/Map";
+// import MyMapPage from "./pages/MyMapPage";
 
 import HomePage from "./pages/HomePage";
 import { onAuthStateChanged } from "firebase/auth";
