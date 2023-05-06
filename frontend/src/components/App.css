@@ -304,6 +304,7 @@ input {
 	align-items: left;
 	justify-content: space-between;
 	width: 80%;
+	margin: 10px;
 }
 
 .edit-form {
