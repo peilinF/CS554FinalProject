@@ -20,10 +20,12 @@ function useGoogle() {
     return map ? window.google : null;
 }
 
-const Directions = ({ locations, handleDistance }) => {
+const Directions = ({ input_distance, locations, handleDistance }) => {
     const [directions, setDirections] = useState(null);
     const directionsService = useRef(null);
     const google = useGoogle();
+
+    const [distance, setDistance] = useState(0);
 
     useEffect(() => {
         if (google) {
@@ -65,6 +67,7 @@ const Directions = ({ locations, handleDistance }) => {
                     }
                     distance = distance / 1000 / 1.60934; // Convert to miles
                     handleDistance(distance);
+                    setDistance(distance);
                 } else {
                     console.error(`Error fetching directions: ${status}`);
                     if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
@@ -80,7 +83,15 @@ const Directions = ({ locations, handleDistance }) => {
         getDirections();
     }, [locations]);
 
-    return directions ? <DirectionsRenderer directions={directions} /> : null;
+    if (directions) {
+        console.log(input_distance, distance, Math.abs(input_distance - distance))
+        if (input_distance > 0 && Math.abs(input_distance - distance) < (input_distance / 10)) {
+            console.log("render path")
+            return <DirectionsRenderer directions={directions} />
+        }
+    }
+
+    return null;
 };
 
 
@@ -197,16 +208,16 @@ const Map = () => {
             center={mapCenter}
         >
             {/* <Directions /> */}
-            {(randomLocations.length > 0) && (distance > 0) && <Directions locations={[mapCenter, ...randomLocations, mapCenter]} handleDistance={handleDistance} />}
+            {(randomLocations.length > 0) && (distance > 0) && <Directions input_distance={distance} locations={[mapCenter, ...randomLocations, mapCenter]} handleDistance={handleDistance} />}
             <MarkerF
                 position={mapCenter}
                 onClick={() => {
                     console.log("You are here");
                 }}
             />
-            {randomLocations.map((location, index) => (
+            {/* {randomLocations.map((location, index) => (
                 <MarkerF key={index} position={location} />
-            ))}
+            ))} */}
 
         </GoogleMap>
     );
