@@ -1,0 +1,262 @@
+import "./map.css";
+
+import React, { useState, useEffect, useRef } from "react";
+
+import {
+    GoogleMap,
+    useLoadScript,
+    MarkerF,
+    DirectionsRenderer,
+    useGoogleMap,
+    Autocomplete,
+} from "@react-google-maps/api";
+
+const REACT_APP_GOOGLE_MAPS_API_KEY = "AIzaSyBKF_-Lj9BeBzJ1SyMRq0b5qfgdZB3je9o";
+const libraries = ["places"];
+
+// Custom hook to access the 'google' object
+function useGoogle() {
+    const map = useGoogleMap();
+    return map ? window.google : null;
+}
+
+const Directions = ({ locations, handleDistance }) => {
+    const [directions, setDirections] = useState(null);
+    const directionsService = useRef(null);
+    const google = useGoogle();
+
+    useEffect(() => {
+        if (google) {
+            directionsService.current = new google.maps.DirectionsService();
+        }
+    }, [google]);
+
+    const getDirections = () => {
+        if (!google || !directionsService.current || locations.length < 2) return;
+
+        const waypoints = locations.slice(1, -1).map((location) => ({
+            location: new google.maps.LatLng(location.lat, location.lng),
+            stopover: true,
+        }));
+
+        directionsService.current.route(
+            {
+                origin: new google.maps.LatLng(locations[0].lat, locations[0].lng),
+                destination: new google.maps.LatLng(
+                    locations[locations.length - 1].lat,
+                    locations[locations.length - 1].lng
+                ),
+                waypoints: waypoints,
+                optimizeWaypoints: true,
+                travelMode: google.maps.TravelMode.DRIVING,
+            },
+            (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    setDirections(result);
+
+                    // Calculate total distance
+                    let distance = 0;
+                    const myroute = result.routes[0];
+                    for (let i = 0; i < myroute.legs.length; i++) {
+                        distance += myroute.legs[i].distance.value;
+                    }
+                    distance = distance / 1000 / 1.60934; // Convert to miles
+                    handleDistance(distance);
+                } else {
+                    console.error(`Error fetching directions: ${status}`);
+                    if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
+                        alert("No directions found. Try adjusting the starting point or radius, or try update random location.");
+                    }
+                }
+            }
+        );
+    };
+
+
+    useEffect(() => {
+        getDirections();
+    }, [locations]);
+
+    return directions ? <DirectionsRenderer directions={directions} /> : null;
+};
+
+
+const Map = () => {
+
+    const [totalDistance, setTotalDistance] = useState(0);
+
+    const handleDistance = (distance) => {
+        setTotalDistance(distance);
+    };
+
+    const [numLocations, setNumLocations] = useState(0);
+    const [radius, setRadius] = useState(0);
+    const [randomLocations, setRandomLocations] = useState([]);
+
+    const [mapCenter, setMapCenter] = useState({ lat: 37.7749, lng: -122.4194 });
+    const autocompleteRef = useRef(null);
+
+    // generate random locations
+
+    const generateRandomLocations = () => {
+        const locations = [];
+        const radiusInKm = radius * 1.60934; // Convert miles to kilometers
+
+        for (let i = 0; i < numLocations; i++) {
+            const lat =
+                mapCenter.lat +
+                (Math.random() * 2 - 1) * (radiusInKm / 111.32);
+            const lng =
+                mapCenter.lng +
+                (Math.random() * 2 - 1) *
+                (radiusInKm / (111.32 * Math.cos((mapCenter.lat * Math.PI) / 180)));
+            locations.push({ lat, lng });
+        }
+        setRandomLocations(locations);
+    };
+
+    useEffect(() => {
+        generateRandomLocations();
+    }, [numLocations, radius]);
+
+    // Google Maps API
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey: REACT_APP_GOOGLE_MAPS_API_KEY,
+        libraries,
+    });
+
+    const onPlaceSelected = () => {
+
+        setNumLocations(0);
+        setRadius(0);
+        document.querySelector("#num-locations").value = "";
+        document.querySelector("#radius").value = "";
+
+        if (autocompleteRef.current) {
+            const place = autocompleteRef.current.getPlace();
+
+            if (place && place.geometry) {
+                const location = place.geometry.location;
+                setMapCenter({ lat: location.lat(), lng: location.lng() });
+            }
+        }
+    };
+
+    const findMe = () => {
+
+        // empty all inputs
+
+        setNumLocations(0);
+        setRadius(0);
+        document.querySelector(".autocomplete input").value = "";
+        document.querySelector(".autocomplete input").placeholder = "Search location";
+
+        document.querySelector("#num-locations").value = "";
+        document.querySelector("#radius").value = "";
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setMapCenter({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                });
+            },
+            () => {
+                alert("Error: Unable to fetch your location.");
+            }
+        );
+    };
+
+    if (loadError) return "Error loading maps";
+    if (!isLoaded) return "Loading Maps";
+
+    let map_html = (
+        <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+            zoom={13}
+            center={mapCenter}
+        >
+            {/* <Directions /> */}
+            {(randomLocations.length > 0) && (radius > 0) && <Directions locations={[mapCenter, ...randomLocations, mapCenter]} handleDistance={handleDistance} />}
+            <MarkerF
+                position={mapCenter}
+                onClick={() => {
+                    console.log("You are here");
+                }}
+            />
+            {randomLocations.map((location, index) => (
+                <MarkerF key={index} position={location} />
+            ))}
+
+        </GoogleMap>
+    );
+
+    let input_html = (
+        <div>
+            <h3>Select your start point: </h3>
+            <Autocomplete
+                className="autocomplete"
+                onLoad={(autocomplete) => {
+                    autocompleteRef.current = autocomplete;
+                }}
+                onPlaceChanged={onPlaceSelected}
+            >
+                <input type="text" placeholder="Search location" />
+            </Autocomplete>
+
+            <h3>Or use your own location: </h3>
+
+            <button onClick={findMe}>Find me</button>
+
+            <br />
+
+            <h3>Generate random locations: </h3>
+
+            <div>
+                <div>
+                    <label>
+                        Number of locations:
+                        <input
+                            id="num-locations"
+                            type="number"
+                            placeholder="Number of locations"
+                            onChange={(e) => setNumLocations(parseInt(e.target.value))}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Radius (miles):
+                        <input
+                            id="radius"
+                            type="number"
+                            placeholder="Radius (mi)"
+                            onChange={(e) => setRadius(parseFloat(e.target.value))}
+                        />
+                    </label>
+                </div>
+
+                <button onClick={generateRandomLocations}>Update</button>
+
+                <br />
+                <br />
+
+                {totalDistance > 0 && (
+                    <div>Total distance: {totalDistance.toFixed(2)} mi</div>
+                )}
+            </div>
+        </div>
+    );
+
+    let html = (
+        <div className="map-page">
+            <div className="map-container">{map_html}</div>
+            <div className="input-container">{input_html}</div>
+        </div>
+    );
+
+    return html;
+};
+
+export default Map;
+
