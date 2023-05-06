@@ -17,10 +17,15 @@ const Map = ({ latLng, setLatLng, destLatLng }) => {
     // make a directions request using cycling profile
     // an arbitrary start will always be the same
     // only the end or destination will change
+
+    let wayptsStr = "";
+    destLatLng.forEach((o) => {
+      wayptsStr = wayptsStr.concat(o.lng + "," + o.lat + ";");
+    });
+    console.log(wayptsStr);
     const query = await mapApiInstance.get(
       `/${latLng.lng},${latLng.lat};
-      ${latLng.lng + latLng.lng / 6000},${latLng.lat};
-      ${latLng.lng},${latLng.lat - latLng.lat / 6000};
+      ${wayptsStr}
       ${latLng.lng},${latLng.lat}
       ?steps=true&geometries=geojson`
     );
@@ -108,12 +113,16 @@ const Map = ({ latLng, setLatLng, destLatLng }) => {
     if (map.current) {
       // make an initial directions request that
       // starts and ends at the same location
-      getRoute(latLng);
+      getRoute(destLatLng);
 
       if (map.current.getLayer("point")) {
         map.current.removeLayer("point");
         map.current.removeSource("point");
       }
+
+      map.current.jumpTo({
+        zoom: zoom + 1,
+      });
 
       // Add starting point to the map
       map.current.addLayer({
