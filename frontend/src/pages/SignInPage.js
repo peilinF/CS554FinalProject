@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import { Button, Input } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -6,6 +6,7 @@ import { doSocialSignIn } from "../firebase/FirebaseFunctions";
 import "./styles.scss";
 
 const SignInPage = () => {
+  const [isSocialSignInDisabled, setIsSocialSignInDisabled] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
 
@@ -21,15 +22,27 @@ const SignInPage = () => {
   };
 
   const handleSocialSignIn = async (provider) => {
+    if (isSocialSignInDisabled) return; // Prevent multiple requests
+  
+    setIsSocialSignInDisabled(true); // Disable the buttons
+  
     try {
       await doSocialSignIn(provider, auth);
       if (auth.currentUser) navigate("/");
     } catch (error) {
       console.error("Social sign in error:", error);
-      alert("Social sign in error: " + error.message);
+  
+      // Provide a user-friendly message for specific errors
+      if (error.code === "auth/popup-closed-by-user") {
+        alert("Sign in was cancelled. Please try again.");
+      } else {
+        alert("Social sign in error: " + error.message);
+      }
+    } finally {
+      setIsSocialSignInDisabled(false); // Enable the buttons
     }
   };  
-
+   
   return (
     <div className="login">
       <h2>Login</h2>
@@ -46,12 +59,14 @@ const SignInPage = () => {
           alt="Sign in with Google"
           onClick={() => handleSocialSignIn("google")}
           style={{ cursor: "pointer", display: "block", maxWidth: "250px", marginBottom: "5px" }}
+          disabled={isSocialSignInDisabled}
         />
         <img
           src="/imgs/facebook_signin.png"
           alt="Sign in with Facebook"
           onClick={() => handleSocialSignIn("facebook")}
           style={{ cursor: "pointer", display: "block", maxWidth: "250px" }}
+          disabled={isSocialSignInDisabled}
         />
       </div>
     </div>

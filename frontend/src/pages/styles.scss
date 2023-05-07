@@ -1,9 +1,16 @@
+:root {
+  --primary-color: #006be0;
+  --bg-color: #f3f3f3;
+  --font-family: "Roboto", sans-serif;
+}
+
 .login,
 .register {
   display: flex;
   flex-direction: column;
   height: 100%;
   align-self: center;
+  color: var(--primary-color);
 }
 .login form,
 .register form {
@@ -86,8 +93,9 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #f3f3f3;
+  background-color: var(--bg-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--primary-color);
 }
 
 .auth-links {
