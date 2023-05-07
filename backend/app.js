@@ -61,8 +61,8 @@ app.use((req, res, next) => {
 
 constructRoutes(app);
 
-// app.listen(5000, () => {
-//   console.log("Server started at http://localhost:5000/");
+// app.listen(0400, () => {
+//   console.log("Server started at http://localhost:4000/");
 // });
 
 const server = http.createServer(app);
@@ -115,4 +115,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000);
+server.listen(4000);
