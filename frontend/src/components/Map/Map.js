@@ -165,7 +165,7 @@ const Map = () => {
       const lng =
         mapCenter.lng +
         (Math.random() * 2 - 1) *
-          (radiusInKm / (111.32 * Math.cos((mapCenter.lat * Math.PI) / 180)));
+        (radiusInKm / (111.32 * Math.cos((mapCenter.lat * Math.PI) / 180)));
       locations.push({ lat, lng });
     }
     setRandomLocations(locations);
@@ -253,7 +253,7 @@ const Map = () => {
 
   let input_html = (
     <div>
-      <h3>Select your start point: </h3>
+      <h1>Select your start point:</h1>
       <Autocomplete
         className="autocomplete"
         onLoad={(autocomplete) => {
@@ -261,10 +261,12 @@ const Map = () => {
         }}
         onPlaceChanged={onPlaceSelected}
       >
-        <input type="text" placeholder="Search location" />
+        <label htmlFor="Search">
+          <input id="Search" type="text" placeholder="Search location" />
+        </label>
       </Autocomplete>
 
-      <h3>Or use your own location: </h3>
+      <h2>Or use your own location: </h2>
 
       <Button variant={"contained"} onClick={findMe}>
         Find me
