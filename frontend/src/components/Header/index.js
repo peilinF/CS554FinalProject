@@ -1,6 +1,6 @@
 import { getAuth } from "firebase/auth";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "./styles.scss";
 import { Typography } from "@mui/material";
@@ -8,10 +8,12 @@ import { Typography } from "@mui/material";
 const Header = () => {
   const { currentUser } = getAuth();
 
+  const navigate = useNavigate();
+
   return (
     <header>
       <div className="htxt" onClick={() => navigate("/")}>
-        <Typography variant={"h1"} fontStyle={"italic"}>
+        <Typography fontSize={"2em"} variant={"h1"} fontStyle={"italic"}>
           RunMate
         </Typography>
       </div>
