@@ -27,27 +27,39 @@ const FriendsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const auth = getAuth();
 
+  const [populate, setPopulate] = useState(0);
+
   useEffect(() => {
     const fetchPeople = async () => {
-      let { data } = await apiInstance.get("/friends");
+      let { data } = await apiInstance.get("/friends", {
+        headers: {
+          Authorization: auth.currentUser.uid,
+        },
+      });
       console.log(data);
-      data = data.filter((o) => o._id !== auth.currentUser.uid);
       setSearchData(data);
       setLoading(false);
     };
 
     const fetchRequests = async () => {
       const { data } = await apiInstance.get(
-        `/friends/requests/${auth.currentUser.uid}`
+        `/friends/requests/${auth.currentUser.uid}`,
+        {
+          headers: {
+            Authorization: auth.currentUser.uid,
+          },
+        }
       );
       setRequestsData(data);
       setLoading(false);
     };
 
     const fetchfriends = async () => {
-      const { data } = await apiInstance.get(
-        `/friends/friends/${auth.currentUser.uid}`
-      );
+      const { data } = await apiInstance.get(`/friends/friends`, {
+        headers: {
+          Authorization: auth.currentUser.uid,
+        },
+      });
       setFriendsData(data);
       setLoading(false);
     };
@@ -55,7 +67,7 @@ const FriendsPage = () => {
     fetchPeople();
     fetchRequests();
     fetchfriends();
-  }, []);
+  }, [populate]);
 
   const sendRequest = async (id) => {
     const res = await apiInstance.post("/friends", {
@@ -63,9 +75,19 @@ const FriendsPage = () => {
       uid: id,
     });
     console.log(res);
+    setPopulate(2);
   };
 
-  console.log(friendsData);
+  const acceptRequest = async (id) => {
+    const res = await apiInstance.post("/friends/accept", {
+      targetId: auth.currentUser.uid,
+      uid: id,
+    });
+    console.log(res);
+    setPopulate(3);
+  };
+
+  console.log(requestsData);
 
   if (loading) return <div className="loader"></div>;
 
@@ -102,12 +124,14 @@ const FriendsPage = () => {
                     primary={o.name}
                     secondary={
                       <React.Fragment>
-                        <Button
-                          onClick={() => sendRequest(o._id)}
-                          variant={"contained"}
-                        >
-                          Add
-                        </Button>
+                        {o.status == -1 && (
+                          <Button
+                            onClick={() => sendRequest(o._id)}
+                            variant={"contained"}
+                          >
+                            Add
+                          </Button>
+                        )}
                       </React.Fragment>
                     }
                   />
@@ -119,36 +143,60 @@ const FriendsPage = () => {
         </div>
         <div className="requests-f">
           <h2>Requests</h2>
-          {Array.isArray(requestsData) && requestsData.length == 0 ? (
-            <>No pending requests</>
-          ) : (
-            requestsData.map((o, i) => (
-              <div key={i}>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={o.name}
-                    secondary={
-                      <React.Fragment>
-                        <Button
-                          onClick={() => sendRequest(o._id)}
-                          variant={"contained"}
-                        >
-                          Accept
-                        </Button>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                <Divider variant="inset" />
-              </div>
-            ))
-          )}
+          {Array.isArray(requestsData) &&
+            (requestsData.length == 0 ? (
+              <>No pending requests</>
+            ) : (
+              requestsData.map((o, i) => (
+                <div key={i}>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={o.name}
+                      secondary={
+                        <React.Fragment>
+                          <Button
+                            onClick={() => acceptRequest(o._id)}
+                            variant={"contained"}
+                          >
+                            Accept
+                          </Button>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                  <Divider variant="inset" />
+                </div>
+              ))
+            ))}
         </div>
         <div className="my-f">
-          <h2>My Friends</h2>{" "}
+          <h2>My Friends</h2>
+          {Array.isArray(requestsData) &&
+            (friendsData.length == 0 ? (
+              <>No friends to show</>
+            ) : (
+              friendsData.map((o, i) => (
+                <div key={i}>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={o.name}
+                      secondary={
+                        <React.Fragment>
+                          <Button variant={"contained"}>Message</Button>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                  <Divider variant="inset" />
+                </div>
+              ))
+            ))}
         </div>
       </div>
     </MainLayout>
