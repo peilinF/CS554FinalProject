@@ -15,14 +15,14 @@
 }
 
 
-  h1 {
-    font-size: 2em !important;
-    font-weight: bolder !important;
-  }
-  .htxt {
-    cursor: pointer;
-    z-index: 10;
-  }
+h1 {
+  font-size: 2em !important;
+  font-weight: bolder !important;
+}
+
+.htxt {
+  cursor: pointer;
+  z-index: 10;
 }
 
 .auth-links {
@@ -30,7 +30,7 @@
 }
 
 .nav-link {
-  margin-right: 0.2rem; 
+  margin-right: 0.2rem;
   color: #006be0;
   text-decoration: none;
 }
@@ -38,4 +38,3 @@
 .nav-link:hover {
   text-decoration: underline;
 }
-
