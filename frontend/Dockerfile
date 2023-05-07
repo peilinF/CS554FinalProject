@@ -13,18 +13,15 @@ RUN npm install
 # 复制项目文件到工作目录（注意.dockerignore文件）
 COPY . .
 
-
 # 构建React应用程序
 RUN npm run build
 
-# 使用Nginx作为Web服务器托管构建的React应用程序
-FROM nginx:stable-alpine
-
-# 复制构建的React应用程序到Nginx中
-COPY --from=0 /usr/src/app/build /usr/share/nginx/html
+# 安装serve
+RUN npm install -g serve
 
 # 暴露容器将侦听的端口
-EXPOSE 80
+EXPOSE 3000
 
-# 启动Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# 启动React应用程序
+CMD ["serve", "-s", "build", "-l", "3000"]
+

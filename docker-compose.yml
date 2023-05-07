@@ -4,9 +4,9 @@ services:
   backend:
     build: ./backend
     ports:
-      - "5001:5001"
+      - "5001:5000"
 
   frontend:
     build: ./frontend
     ports:
-      - "8000:80"
+      - "8000:3000"
