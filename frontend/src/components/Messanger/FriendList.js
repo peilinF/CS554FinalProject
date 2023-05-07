@@ -13,6 +13,7 @@ const Conversation = ({ conversation, userID }) => {
       }
     }).then(response => response.json())
       .then(data => {
+        console.log("data", data)
         setUser(data)
       });
   }, [])
