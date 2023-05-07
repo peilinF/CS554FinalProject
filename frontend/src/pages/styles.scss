@@ -11,11 +11,13 @@
   height: 100%;
   align-self: center;
 }
+
 .login form,
 .register form {
   display: flex;
   flex-direction: column;
   width: 300px;
+
   div {
     margin: 10px 0;
   }
@@ -28,6 +30,7 @@
   justify-content: space-evenly;
   width: 50%;
   margin: 10px;
+
   svg {
     cursor: pointer;
   }
@@ -50,6 +53,7 @@
     left: 0;
     text-align: right;
   }
+
   .intro {
     display: flex;
     flex: 0.45;
@@ -60,6 +64,31 @@
   }
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* This centers the content horizontally */
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.logBook,
+.profile,
+.friendList {
+  border-radius: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--bg-color);
+  padding: 20px;
+}
+
 .profile {
   min-width: 400px;
   border-radius: 2em;
@@ -67,6 +96,7 @@
   flex-direction: column;
   align-items: center;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
   .pimage {
     width: 50%;
     height: auto;
@@ -78,6 +108,7 @@
       overflow: hidden;
       border-radius: 2em;
     }
+
     #a_icon {
       height: 100%;
       width: 100%;
@@ -86,6 +117,7 @@
 }
 
 @media only screen and (max-width: 650px) {
+
   .login form,
   .register form {
     width: 90%;
