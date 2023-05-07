@@ -29,8 +29,9 @@ const FriendsPage = () => {
 
   useEffect(() => {
     const fetchPeople = async () => {
-      const { data } = await apiInstance.get("/friends");
+      let { data } = await apiInstance.get("/friends");
       console.log(data);
+      data = data.filter((o) => o._id !== auth.currentUser.uid);
       setSearchData(data);
       setLoading(false);
     };
@@ -55,6 +56,14 @@ const FriendsPage = () => {
     fetchRequests();
     fetchfriends();
   }, []);
+
+  const sendRequest = async (id) => {
+    const res = await apiInstance.post("/friends", {
+      targetId: auth.currentUser.uid,
+      uid: id,
+    });
+    console.log(res);
+  };
 
   console.log(friendsData);
 
@@ -87,16 +96,18 @@ const FriendsPage = () => {
               <div key={i}>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
+                    <Avatar />
                   </ListItemAvatar>
                   <ListItemText
                     primary={o.name}
                     secondary={
                       <React.Fragment>
-                        <Button variant={"contained"}>Add</Button>
+                        <Button
+                          onClick={() => sendRequest(o._id)}
+                          variant={"contained"}
+                        >
+                          Add
+                        </Button>
                       </React.Fragment>
                     }
                   />
@@ -108,6 +119,33 @@ const FriendsPage = () => {
         </div>
         <div className="requests-f">
           <h2>Requests</h2>
+          {Array.isArray(requestsData) && requestsData.length == 0 ? (
+            <>No pending requests</>
+          ) : (
+            requestsData.map((o, i) => (
+              <div key={i}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={o.name}
+                    secondary={
+                      <React.Fragment>
+                        <Button
+                          onClick={() => sendRequest(o._id)}
+                          variant={"contained"}
+                        >
+                          Accept
+                        </Button>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" />
+              </div>
+            ))
+          )}
         </div>
         <div className="my-f">
           <h2>My Friends</h2>{" "}
