@@ -3,9 +3,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import ChangePassword from "./components/ChangePassword";
 
-import MyMapPage from "./pages/Map";
-// import MyMapPage from "./pages/MyMapPage";
-
 import HomePage from "./pages/HomePage";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase";
@@ -16,6 +13,9 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ChatPage from "./pages/ChatPage";
 import ProfilePage from "./pages/ProfilePage";
+import MyMapPage from "./pages/MapPage";
+import FriendsPage from "./pages/FriendsPage";
+// import MyMapPage from "./pages/MyMapPage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -60,6 +60,10 @@ function App() {
             <Route
               path="/profile"
               element={user ? <ProfilePage /> : <Navigate to={"/login"} />}
+            />
+            <Route
+              path="/friends"
+              element={user ? <FriendsPage /> : <Navigate to={"/login"} />}
             />
           </Routes>
         </BrowserRouter>

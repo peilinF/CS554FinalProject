@@ -27,4 +27,5 @@ const MyMapPage = () => {
   );
 };
 
+
 export default MyMapPage;

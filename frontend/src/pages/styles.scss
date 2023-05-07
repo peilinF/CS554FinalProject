@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #006be0;
+  // --primary-color: #006be0;
   --bg-color: #f3f3f3;
   --font-family: "Roboto", sans-serif;
 }
@@ -10,15 +10,29 @@
   flex-direction: column;
   height: 100%;
   align-self: center;
-  color: var(--primary-color);
 }
+
 .login form,
 .register form {
   display: flex;
   flex-direction: column;
   width: 300px;
+
   div {
     margin: 10px 0;
+  }
+}
+
+.social-login {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-evenly;
+  width: 50%;
+  margin: 10px;
+
+  svg {
+    cursor: pointer;
   }
 }
 
@@ -29,6 +43,7 @@
   align-items: stretch;
   width: 100vw;
   justify-content: flex-end;
+  height: calc(100vh - 100px);
 
   .bg {
     position: absolute;
@@ -38,6 +53,7 @@
     left: 0;
     text-align: right;
   }
+
   .intro {
     display: flex;
     flex: 0.45;
@@ -48,13 +64,40 @@
   }
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* This centers the content horizontally */
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.logBook,
+.profile,
+.friendList {
+  border-radius: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--bg-color);
+  padding: 20px;
+}
+
 .profile {
+  margin: 20px;
   min-width: 400px;
   border-radius: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
   .pimage {
     width: 50%;
     height: auto;
@@ -66,6 +109,7 @@
       overflow: hidden;
       border-radius: 2em;
     }
+
     #a_icon {
       height: 100%;
       width: 100%;
@@ -73,7 +117,36 @@
   }
 }
 
+.social-page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: stretch;
+  .search-f {
+    display: flex;
+    flex-direction: column;
+    flex: 0.33;
+
+    .flist {
+      overflow: scroll;
+    }
+  }
+  .requests-f {
+    display: flex;
+    flex-direction: column;
+    flex: 0.33;
+    border-right: 1px solid lightgrey;
+    border-left: 1px solid lightgrey;
+  }
+
+  .my-f {
+    display: flex;
+    flex-direction: column;
+    flex: 0.33;
+  }
+}
 @media only screen and (max-width: 650px) {
+
   .login form,
   .register form {
     width: 90%;

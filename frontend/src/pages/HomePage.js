@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <MainLayout>
       <div className="home">
-        <img className="bg" src={run} />
+        <img alt="runningMan" className="bg" src={run} />
         <div className="intro">
           <Typography variant={"h2"}>Random Route Generator</Typography>
           <Typography variant={"p"}>

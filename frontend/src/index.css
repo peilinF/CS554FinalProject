@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+:root {
+  --header-height: "50px";
+  --footer-height: "50px";
+}
