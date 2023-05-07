@@ -10,6 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
+
     <header>
       <div className="htxt" onClick={() => navigate("/")}>
         <Typography variant={"h1"} fontStyle={"italic"}>

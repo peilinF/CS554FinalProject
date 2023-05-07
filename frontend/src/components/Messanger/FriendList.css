@@ -1,14 +1,25 @@
 .conversation {
     display: flex;
-    padding: 10px;
+    padding: 5px;
+    align-items: center;
 }
 
 .conversation:hover {
     background-color: rgb(230, 233, 232);
 }
 
+.conversationName {
+    margin-left: 10px;
+}
+
 .conversationImg {
     height: 50px;
     width: 75px;
     border-radius: 50%;
+}
+
+ul.no-bullets {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }

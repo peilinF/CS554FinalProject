@@ -1,37 +1,53 @@
 .message {
+    margin: 10px;
+}
+
+.messageContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.conversationImg {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.friendMessage {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 }
 
-.messageText {
-    width: 200px;
+.friendText {
+    background-color: #DCF8C6;
     padding: 10px;
-    border-radius: 25px;
-    background-color: rgb(228, 255, 255);
-    border-bottom: 2px
+    border-radius: 10px;
 }
 
-.messageTop {
+.ownMessage {
     display: flex;
-
-}
-
-.messageBot {
-    display: flex;
-}
-
-.messageImg {
-    height: 50px;
-    width: 75px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.message.own {
+    flex-direction: column;
     align-items: flex-end;
 }
 
-.message.own .messageText {
-    background-color: antiquewhite;
-    color: black;
+.ownText {
+    background-color: #EAEAEA;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.timeAgo {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+}
+
+.friendText,
+.ownText {
+    max-width: 250px;
+    word-wrap: break-word;
+    text-align: left;
 }

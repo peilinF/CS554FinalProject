@@ -58,6 +58,7 @@ router.route("/logout").get(async (req, res) => {
 router.route("/:userId").get(async (req, res) => {
   try {
     const userInfo = await getUserById(req.params.userId)
+    console.log(userInfo)
     res.status(200).json(userInfo);
   } catch (err) {
     res.status(500).json(err);

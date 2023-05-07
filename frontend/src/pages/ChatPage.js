@@ -8,6 +8,8 @@ import Message from "../components/Messanger/Message";
 import FriendOnline from "../components/Messanger/FriendOnline";
 import io from "socket.io-client";
 import { getAuth } from "firebase/auth";
+import MainLayout from "../layouts/MainLayout";
+import Map from "../components/YashMap";
 
 const ChatPage = () => {
   const [conversations, setConversations] = useState([]);
@@ -19,6 +21,7 @@ const ChatPage = () => {
   const socketRef = useRef();
   const auth = getAuth();
   const user = { id: auth.currentUser.uid, name: auth.currentUser.displayName };
+  const [latLng, setLatLng] = useState({ lng: -74, lat: 40.7123 });
   //connecting to socket
   useEffect(() => {
     socketRef.current = io("http://localhost:5000");
@@ -35,14 +38,12 @@ const ChatPage = () => {
       chat?.members.includes(arrivalMessage.UserId) &&
       setMessagesList((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, chat]);
-  console.log("arrivalMessage", arrivalMessage);
-  console.log("messagesList", messagesList);
   //add user to socket
   useEffect(() => {
     socketRef.current.emit("userJoined", user.id);
-    console.log("user.id", user.id);
+    // console.log("user.id", user.id);
     socketRef.current.on("returnUser", (users) => {
-      console.log("users", users);
+      // console.log("users", users);
     });
   }, []);
   //show conversations of user
@@ -126,7 +127,6 @@ const ChatPage = () => {
       scrollMessageRef.current.scrollIntoView({ behavior: "instant" });
     }
   }, [messagesList]);
-
   let friendList = [];
   if (conversations.length !== 0) {
     friendList = conversations.map((i) => (
@@ -144,48 +144,58 @@ const ChatPage = () => {
     ));
   }
   return (
-    <div className="row">
-      <div className="column left">
-        <h2>chatMenu</h2>
-        <input placeholder="Friend Search" className="FriendSearch"></input>
-        {friendList}
-      </div>
-      <div className="column middle">
-        {chat._id ? (
-          <div className="chatBox">
-            <div className="chatBoxMessages">
-              <ul>{messageList}</ul>
+    <MainLayout>
+      <Map latLng={latLng} setLatLng={setLatLng} />
+      <div className="row">
+        <div className="column left">
+          <h2>chatMenu</h2>
+          <label htmlFor="my-input">Friend Search:</label>
+          <input id="my-input" className="FriendSearch"></input>
+          {friendList}
+        </div>
+        <div className="column middle">
+          {chat._id ? (
+            <div className="chatBox">
+              <div className="chatBoxMessages">
+                <ul className="no-bullets">{messageList}</ul>
+              </div>
+              <div className="chatBoxMessageSend">
+                <form className="chatBoxForm" onSubmit={handleMessageSubmite}>
+                  <div className="messageInputContainer">
+                    <label htmlFor="newMessage">
+                      <textarea
+                        value={sendMessage}
+                        onChange={(event) => setSendMessage(event.target.value)}
+                        id="newMessage"
+                        name="newMessage"
+                        placeholder="Send Message"
+                        className="ChatMessageInput"
+                        required
+                      />
+                    </label>
+                  </div>
+                  <div className="messageSubmitContainer">
+                    <button type="submit" className="messageSubmite">
+                      Send
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-            <div className="chatBoxMessageSend">
-              <form onSubmit={handleMessageSubmite}>
-                <div className="form-group">
-                  <label>
-                    <textarea
-                      value={sendMessage}
-                      onChange={(event) => setSendMessage(event.target.value)}
-                      id="newMessage"
-                      name="newMessage"
-                      placeholder="Send Message"
-                      className="ChatMessageInpute"
-                      required
-                    />
-                  </label>
-                </div>
-                <button type="submit" className="messageSubmite">
-                  Send
-                </button>
-              </form>
-            </div>
-          </div>
-        ) : (
-          <div className="chatNotOpen">No Chat Opened</div>
-        )}
+          ) : (
+            <div className="chatNotOpen">No Chat Opened</div>
+          )}
+        </div>
+        <div className="column right">
+          <h2>Friend</h2>
+          {chat?._id ? (
+            <FriendOnline conversation={chat.members} friendId={chat._id} />
+          ) : (
+            <div>No friend Open</div>
+          )}
+        </div>
       </div>
-      <div className="column right">
-        <h2>FriendOnline</h2>
-        <FriendOnline />
-      </div>
-    </div>
+    </MainLayout>
   );
 };
 

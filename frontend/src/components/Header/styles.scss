@@ -1,9 +1,19 @@
-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
-  padding: 0 10px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-style: italic;
+  margin: 0;
+}
+
 
   h1 {
     font-size: 2em !important;
@@ -28,6 +38,4 @@ header {
 .nav-link:hover {
   text-decoration: underline;
 }
-
-
 
