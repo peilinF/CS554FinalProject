@@ -1,36 +1,41 @@
 .map-page {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    text-align: left;
-    height: 100vh;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  flex: 1;
+  height: calc(100vh - 100px);
 }
 
 .map-container {
-    height: 100vh;
-    width: 100%;
+  flex: 0.6;
+  height: calc(100vh - 100px);
+  width: 100%;
 }
 
 .input-container {
-    font-size: 20px;
-    height: 100vh;
-    width: 20%;
-    line-height: 50px;
-    margin: 10px;
+  font-size: 20px;
+  height: calc(100vh - 100px);
+  width: 20%;
+  line-height: 50px;
+  margin: 10px;
+  flex: 0.4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .input-container button {
-    width: 50%;
-    height: 40px;
-    font-size: 20px;
-    margin: 10px;
+  width: 50%;
+  height: 40px;
+  font-size: 20px;
+  margin: 10px;
 }
 
 .input-container input,
 .input-container autocomplete {
-    width: 75%;
-    font-size: 20px;
-    margin: 10px;
+  width: 75%;
+  font-size: 20px;
+  margin: 10px;
 }

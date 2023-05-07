@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #006be0;
+  // --primary-color: #006be0;
   --bg-color: #f3f3f3;
   --font-family: "Roboto", sans-serif;
 }
@@ -10,7 +10,6 @@
   flex-direction: column;
   height: 100%;
   align-self: center;
-  color: var(--primary-color);
 }
 .login form,
 .register form {
@@ -22,6 +21,18 @@
   }
 }
 
+.social-login {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-evenly;
+  width: 50%;
+  margin: 10px;
+  svg {
+    cursor: pointer;
+  }
+}
+
 .home {
   display: flex;
   flex-direction: row;
@@ -29,6 +40,7 @@
   align-items: stretch;
   width: 100vw;
   justify-content: flex-end;
+  height: calc(100vh - 100px);
 
   .bg {
     position: absolute;
