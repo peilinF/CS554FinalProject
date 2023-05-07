@@ -1,0 +1,3 @@
+const REACT_APP_GOOGLE_MAPS_API_KEY = "AIzaSyBKF_-Lj9BeBzJ1SyMRq0b5qfgdZB3je9o";
+
+export default REACT_APP_GOOGLE_MAPS_API_KEY;
