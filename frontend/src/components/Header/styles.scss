@@ -1,19 +1,11 @@
-.header {
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
-
-.header h1 {
-  font-size: 2rem;
-  font-style: italic;
-  margin: 0;
-}
-
+  width: 100vw;
 
   h1 {
     font-size: 2em !important;
@@ -30,7 +22,7 @@
 }
 
 .nav-link {
-  margin-right: 0.2rem; 
+  margin-right: 0.2rem;
   color: #006be0;
   text-decoration: none;
 }
@@ -38,4 +30,3 @@
 .nav-link:hover {
   text-decoration: underline;
 }
-
