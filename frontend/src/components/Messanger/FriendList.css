@@ -1,10 +1,15 @@
 .conversation {
     display: flex;
-    padding: 10px;
+    padding: 5px;
+    align-items: center;
 }
 
 .conversation:hover {
     background-color: rgb(230, 233, 232);
+}
+
+.conversationName {
+    margin-left: 10px;
 }
 
 .conversationImg {

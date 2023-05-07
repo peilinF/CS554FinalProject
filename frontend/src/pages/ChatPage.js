@@ -149,7 +149,8 @@ const ChatPage = () => {
       <div className="row">
         <div className="column left">
           <h2>chatMenu</h2>
-          <input placeholder="Friend Search" className="FriendSearch"></input>
+          <label htmlFor="my-input">Friend Search:</label>
+          <input id="my-input" className="FriendSearch"></input>
           {friendList}
         </div>
         <div className="column middle">
@@ -159,25 +160,25 @@ const ChatPage = () => {
                 <ul className="no-bullets">{messageList}</ul>
               </div>
               <div className="chatBoxMessageSend">
-                <form onSubmit={handleMessageSubmite}>
-                  <div className="form-group">
-                    <label>
+                <form className="chatBoxForm" onSubmit={handleMessageSubmite}>
+                  <div className="messageInputContainer">
+                    <label htmlFor="newMessage">
                       <textarea
                         value={sendMessage}
                         onChange={(event) => setSendMessage(event.target.value)}
                         id="newMessage"
                         name="newMessage"
                         placeholder="Send Message"
-                        className="ChatMessageInpute"
+                        className="ChatMessageInput"
                         required
-                        rows="4"
-                        cols="30"
                       />
                     </label>
                   </div>
-                  <button type="submit" className="messageSubmite">
-                    Send
-                  </button>
+                  <div className="messageSubmitContainer">
+                    <button type="submit" className="messageSubmite">
+                      Send
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>
@@ -190,7 +191,7 @@ const ChatPage = () => {
           {chat?._id ? (
             <FriendOnline conversation={chat.members} friendId={chat._id} />
           ) : (
-            <div>Shmallo</div>
+            <div>No friend Open</div>
           )}
         </div>
       </div>

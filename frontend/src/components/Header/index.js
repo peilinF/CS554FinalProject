@@ -9,21 +9,26 @@ const Header = () => {
   const { currentUser } = getAuth();
 
   return (
-    <header>
+    <header className="header">
       <Typography variant={"h1"} fontStyle={"italic"}>
         RunMate
       </Typography>
-
-      {currentUser ? (
-        window.location.pathname != "/profile" ? (
-          <NavLink to={"/profile"}>Profile</NavLink>
+      <nav>
+        {currentUser ? (
+          <>
+            <NavLink to={"/"}>Home</NavLink>
+            <NavLink to={"/mymap"}>Map</NavLink>
+            <NavLink to={"/chat"}>Chat</NavLink>
+            <NavLink to={"/profile"}>Profile</NavLink>
+          </>
         ) : (
-          <NavLink to={"/"}>Home</NavLink>
-        )
-      ) : (
-        <NavLink to={"/login"}>Login</NavLink>
-      )}
-      <NavLink to={"/chat"}>Chat</NavLink>
+          <>
+            <NavLink to={"/"}>Home</NavLink>
+            <NavLink to={"/mymap"}>Map</NavLink>
+            <NavLink to={"/login"}>Login</NavLink>
+          </>
+        )}
+      </nav>
     </header>
   );
 };
