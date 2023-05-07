@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { users } from "../config/mongoCollections.js";
 
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 const saltRounds = 16;
 
 export const createUser = async (name, email, _id) => {

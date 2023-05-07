@@ -1,6 +1,6 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
-
+import { useNavigate } from "react-router-dom";
 import { Typography, Button } from "@mui/material";
 
 import run from "../assets/running.svg";

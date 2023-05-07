@@ -9,15 +9,16 @@ import {
   updatePassword,
 } from "firebase/auth";
 
-async function doSocialSignIn(provider) {
+async function doSocialSignIn(provider, auth) {
   let socialProvider = null;
   if (provider === "google") {
     socialProvider = new GoogleAuthProvider();
   } else if (provider === "facebook") {
     socialProvider = new FacebookAuthProvider();
   }
-  await signInWithPopup(socialProvider);
+  await signInWithPopup(auth, socialProvider);
 }
+
 
 async function doPasswordReset(email) {
   await sendPasswordResetEmail(email);

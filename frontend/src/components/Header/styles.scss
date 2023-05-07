@@ -14,19 +14,28 @@
   margin: 0;
 }
 
-.header nav {
+
+  h1 {
+    font-size: 2em !important;
+    font-weight: bolder !important;
+  }
+  .htxt {
+    cursor: pointer;
+    z-index: 10;
+  }
+}
+
+.auth-links {
   display: flex;
-  gap: 1rem;
 }
 
-.header a {
+.nav-link {
+  margin-right: 0.2rem; 
+  color: #006be0;
   text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
 }
 
-.header a:hover {
-  background-color: #f0f0f0;
+.nav-link:hover {
+  text-decoration: underline;
 }
+

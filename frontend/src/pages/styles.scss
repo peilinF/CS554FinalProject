@@ -1,3 +1,17 @@
+:root {
+  --primary-color: #006be0;
+  --bg-color: #f3f3f3;
+  --font-family: "Roboto", sans-serif;
+}
+
+.login,
+.register {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-self: center;
+  color: var(--primary-color);
+}
 .login form,
 .register form {
   display: flex;
@@ -13,7 +27,7 @@
   flex-direction: row;
   flex: 1;
   align-items: stretch;
-  width: 100%;
+  width: 100vw;
   justify-content: flex-end;
 
   .bg {
@@ -33,6 +47,7 @@
     padding: 200px;
   }
 }
+
 .profile {
   min-width: 400px;
   border-radius: 2em;
@@ -63,4 +78,27 @@
   .register form {
     width: 90%;
   }
+}
+
+.social-login-button {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  margin: 5px 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--bg-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--primary-color);
+}
+
+.auth-links {
+  display: flex;
+  gap: 1rem;
 }
