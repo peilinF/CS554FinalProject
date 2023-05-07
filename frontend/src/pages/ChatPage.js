@@ -145,7 +145,7 @@ const ChatPage = () => {
   }
   return (
     <MainLayout>
-      <Map latLng={latLng} setLatLng={setLatLng} />
+      {/* <Map latLng={latLng} setLatLng={setLatLng} /> */}
       <div className="row">
         <div className="column left">
           <h2>chatMenu</h2>
