@@ -72,3 +72,25 @@
     width: 90%;
   }
 }
+
+.social-login-button {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  margin: 5px 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f3f3f3;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-links {
+  display: flex;
+  gap: 1rem;
+}

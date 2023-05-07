@@ -11,24 +11,27 @@ const Header = () => {
 
   return (
     <header>
-      <div className="htxt" onClick={() => navigate("/")}>
-        <Typography variant={"h1"} fontStyle={"italic"}>
-          RunMate
-        </Typography>
-      </div>
-
+    <div className="htxt" onClick={() => navigate("/")}>
+      <Typography variant={"h1"} fontStyle={"italic"}>
+        RunMate
+      </Typography>
+    </div>
+  
+    <div className="auth-links">
       {currentUser ? (
-        window.location.pathname != "/profile" ? (
-          <NavLink to={"/profile"}>Profile</NavLink>
+        window.location.pathname !== "/profile" ? (
+          <NavLink to="/profile">Profile</NavLink>
         ) : (
-          <NavLink to={"/"}>Home</NavLink>
+          <NavLink to="/">Home</NavLink>
         )
-      ) : window.location.pathname == "/register" ? (
-        <NavLink to={"/login"}>Login</NavLink>
       ) : (
-        <NavLink to={"/register"}>Sign up</NavLink>
+        <>
+          <NavLink to="/register">Sign up</NavLink>
+          <NavLink to="/login">Login</NavLink>
+        </>
       )}
-    </header>
+    </div>
+  </header>  
   );
 };
 
