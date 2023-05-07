@@ -14,6 +14,7 @@ import SignUpPage from "./pages/SignUpPage";
 import ChatPage from "./pages/ChatPage";
 import ProfilePage from "./pages/ProfilePage";
 import MyMapPage from "./pages/MapPage";
+import FriendsPage from "./pages/FriendsPage";
 // import MyMapPage from "./pages/MyMapPage";
 
 function App() {
@@ -59,6 +60,10 @@ function App() {
             <Route
               path="/profile"
               element={user ? <ProfilePage /> : <Navigate to={"/login"} />}
+            />
+            <Route
+              path="/friends"
+              element={user ? <FriendsPage /> : <Navigate to={"/login"} />}
             />
           </Routes>
         </BrowserRouter>

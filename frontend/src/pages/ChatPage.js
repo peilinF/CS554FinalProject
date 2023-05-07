@@ -10,6 +10,7 @@ import io from "socket.io-client";
 import { getAuth } from "firebase/auth";
 import MainLayout from "../layouts/MainLayout";
 import Map from "../components/YashMap";
+import { apiInstance } from "../utils/apiInstance";
 
 const ChatPage = () => {
   const [conversations, setConversations] = useState([]);
@@ -49,13 +50,14 @@ const ChatPage = () => {
   //show conversations of user
   useEffect(() => {
     const conversationsData = async () => {
-      await fetch(`/conversations/${user.id}`, {
-        method: "Get",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
+      await apiInstance
+        .get(`/conversations/${user.id}`, {
+          method: "Get",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => response.data)
         .then((data) => {
           setConversations(data);
         })
@@ -67,13 +69,14 @@ const ChatPage = () => {
   useEffect(() => {
     const conversationsData = async () => {
       if (chat._id !== null) {
-        await fetch(`/messages/${chat._id}`, {
-          method: "Get",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => response.json())
+        await apiInstance
+          .get(`/messages/${chat._id}`, {
+            method: "Get",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => response.data)
           .then((data) => {
             setMessagesList(data);
           })
@@ -102,18 +105,13 @@ const ChatPage = () => {
       text: newMessage,
     });
 
-    await fetch(`/messages`, {
-      method: "Post",
-      body: JSON.stringify({
+    await apiInstance
+      .post(`/messages`, {
         conversationId: chat._id,
         userId: user.id,
         text: newMessage,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
+      })
+      .then((response) => response.data)
       .then((data) => {
         setMessagesList([...messagesList, data]);
         setSendMessage("");

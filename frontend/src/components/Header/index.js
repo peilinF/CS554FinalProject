@@ -9,17 +9,30 @@ const Header = () => {
   const { currentUser } = getAuth();
 
   return (
-    <header className="header">
-      <Typography variant={"h1"} fontStyle={"italic"}>
-        RunMate
-      </Typography>
-      <nav>
+    <header>
+      <div className="htxt" onClick={() => navigate("/")}>
+        <Typography variant={"h1"} fontStyle={"italic"}>
+          RunMate
+        </Typography>
+      </div>
+
+      <div className="auth-links">
         {currentUser ? (
           <>
-            <NavLink to={"/"}>Home</NavLink>
-            <NavLink to={"/mymap"}>Map</NavLink>
-            <NavLink to={"/chat"}>Chat</NavLink>
-            <NavLink to={"/profile"}>Profile</NavLink>
+            {window.location.pathname !== "/friends" && (
+              <NavLink className="nav-link" to="/friends">
+                Friends
+              </NavLink>
+            )}
+            {window.location.pathname !== "/profile" ? (
+              <NavLink className="nav-link" to="/profile">
+                Profile
+              </NavLink>
+            ) : (
+              <NavLink className="nav-link" to="/">
+                Home
+              </NavLink>
+            )}
           </>
         ) : (
           <>
@@ -29,7 +42,7 @@ const Header = () => {
             <NavLink to={"/register"}>SignUp</NavLink>
           </>
         )}
-      </nav>
+      </div>
     </header>
   );
 };
