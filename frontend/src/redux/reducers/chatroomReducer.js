@@ -43,12 +43,18 @@ const chatroomReducer = (state = initialState, action) => {
       }
 
       let id = uuid();
+      const user = {
+        id: payload.id,
+        name: payload.name,
+        email: payload.email,
+        //picture: payload.picture,   no pictrue for our database
+      };
       return {
         chatrooms: [
           ...state.chatrooms,
           {
             id: id,
-            users: payload,
+            users: user,
             messages: [],
           },
         ],

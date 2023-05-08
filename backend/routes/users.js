@@ -43,6 +43,7 @@ router.route("/register").post(async (req, res) => {
     let email = req.body.email;
     let _id = req.body.uid;
     let result = await createUser(name, email, _id);
+    console.log(result);
     res.json(result);
   } catch (e) {
     res.status(400).json(e);
