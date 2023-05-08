@@ -102,26 +102,38 @@ export const acceptRequest = async (targetId, uid) => {
 
   let requests = user.requests;
   let friendList = user.friendList;
-
   let sentRequests = user1.sentRequests;
+
+  let sentRequests1 = user1.sentRequests;
   let friendList1 = user1.friendList;
+  let requests1 = user1.requests;
 
-  if (requests.includes(uid)) {
+  if (friendList.includes(uid) && friendList1.includes(targetId)) {
+    requests1.splice(requests1.indexOf(uid), 1);
     requests.splice(requests.indexOf(uid), 1);
-    friendList.push(uid);
-  } else throw "Request doesn't exist";
 
-  if (sentRequests.includes(targetId)) {
-    sentRequests.splice(requests.indexOf(targetId), 1);
-    friendList1.push(targetId);
-  } else throw "Request doesn't exist";
+    return "Already added";
+  } else {
+    if (requests.includes(uid)) {
+      requests.splice(requests.indexOf(uid), 1);
+      friendList.push(uid);
+    } else throw "Request doesn't exist";
+    if (requests1.includes(targetId)) {
+      requests1.splice(requests1.indexOf(uid), 1);
+    } else throw "Request doesn't exist";
+    if (sentRequests1.includes(targetId)) {
+      sentRequests1.splice(sentRequests1.indexOf(targetId), 1);
+      friendList1.push(targetId);
+    } else throw "Request doesn't exist";
+  }
 
   const updated1Info = await usersCollection.updateOne(
     { _id: uid },
     {
       $set: {
-        sentRequests: sentRequests,
+        sentRequests: sentRequests1,
         friendList: friendList1,
+        requests: requests1,
       },
     }
   );
@@ -132,10 +144,11 @@ export const acceptRequest = async (targetId, uid) => {
       $set: {
         requests: requests,
         friendList: friendList,
+        sentRequests: sentRequests,
       },
     }
   );
-  if (updatedInfo.modifiedCount == 0) {
+  if (updatedInfo.modifiedCount == 0 || updated1Info.modifiedCount == 0) {
     throw "Error Occurred";
   }
   return "Added";
