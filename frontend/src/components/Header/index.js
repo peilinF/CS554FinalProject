@@ -40,8 +40,13 @@ const Header = () => {
           <>
             <NavLink to={"/"}>Home</NavLink>
             <NavLink to={"/mymap"}>Map</NavLink>
-            <NavLink to={"/login"}>Login</NavLink>
-            <NavLink to={"/register"}>SignUp</NavLink>
+            {window.location.pathname !== "/login" && (
+              <NavLink to={"/login"}>Login</NavLink>
+            )}
+
+            {window.location.pathname !== "/register" && (
+              <NavLink to={"/register"}>SignUp</NavLink>
+            )}
           </>
         )}
       </div>

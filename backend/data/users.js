@@ -1,7 +1,4 @@
-import { ObjectId } from "mongodb";
 import { users } from "../config/mongoCollections.js";
-
-const saltRounds = 16;
 
 export const createUser = async (name, email, _id) => {
   const userCollection = await users();
@@ -20,23 +17,24 @@ export const createUser = async (name, email, _id) => {
     requests: [],
     logbook: [],
     routes: [],
+    sentRequests: [],
   };
   const newInsertInformation = await userCollection.insertOne(newUser);
   if (newInsertInformation.acknowledged != true) throw "Insert failed!";
   return await getUserById(newInsertInformation.insertedId);
 };
 
-export const loginUser = async (username, password) => {
-  //validation start
-  username = username;
-  password = password;
-  const userCollection = await users();
-  let usernameInfo = await userCollection.findOne({ username: username });
-  if (usernameInfo === null) throw "Either the username or password is invalid";
-  // let temp = await bcrypt.compare(password, usernameInfo.password);
-  if (temp === false) throw "Either the username or password is invalid";
-  return { id: usernameInfo._id, name: usernameInfo.name };
-};
+// export const loginUser = async (username, password) => {
+//   //validation start
+//   username = username;
+//   password = password;
+//   const userCollection = await users();
+//   let usernameInfo = await userCollection.findOne({ username: username });
+//   if (usernameInfo === null) throw "Either the username or password is invalid";
+//   // let temp = await bcrypt.compare(password, usernameInfo.password);
+//   if (temp === false) throw "Either the username or password is invalid";
+//   return { id: usernameInfo._id, name: usernameInfo.name };
+// };
 
 export const getUserById = async (id) => {
   try {

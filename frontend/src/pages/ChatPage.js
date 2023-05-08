@@ -9,7 +9,6 @@ import FriendOnline from "../components/Messanger/FriendOnline";
 import io from "socket.io-client";
 import { getAuth } from "firebase/auth";
 import MainLayout from "../layouts/MainLayout";
-import Map from "../components/YashMap";
 import { apiInstance } from "../utils/apiInstance";
 
 const ChatPage = () => {
@@ -35,9 +34,11 @@ const ChatPage = () => {
     });
   }, []);
   useEffect(() => {
-    arrivalMessage &&
-      chat?.members.includes(arrivalMessage.UserId) &&
-      setMessagesList((prev) => [...prev, arrivalMessage]);
+    if (messagesList.length !== 0) {
+      arrivalMessage &&
+        chat?.members.includes(arrivalMessage.UserId) &&
+        setMessagesList((prev) => [...prev, arrivalMessage]);
+    }
   }, [arrivalMessage, chat]);
   //add user to socket
   useEffect(() => {
