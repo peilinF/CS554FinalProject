@@ -12,7 +12,8 @@ export default function MapLocation({ navigation }) {
   const [watchPosition, setWatchPosition] = useState(null);
   const auth = getAuth();
   const user = { id: auth.currentUser.uid, email: auth.currentUser.email };
-
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [timer, setTimer] = useState(null);
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -32,6 +33,8 @@ export default function MapLocation({ navigation }) {
   }, [locationHistory]);
 
   const startTracking = async () => {
+    setElapsedTime(0);
+    setTimer(Date.now());
     let position = await Location.watchPositionAsync(
       {
         accuracy: Location.Accuracy.Highest,
@@ -49,7 +52,25 @@ export default function MapLocation({ navigation }) {
     setWatchPosition(position);
   };
 
+
+  useEffect(() => {
+    if (timer) {
+      const interval = setInterval(() => {
+        setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [timer]);
+
+  function formatTime(second){
+    const hh = Math.floor(second / 3600);
+    const mm = Math.floor((second % 3600) / 60);
+    const ss = second % 60;
+    return `${hh.toString().padStart(2, '0')}:${mm.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')}`;
+  }
+
   const stopTracking = async () => {
+    setTimer(null);
     if (watchPosition) {
       watchPosition.remove();
       setWatchPosition(null);
@@ -71,10 +92,23 @@ export default function MapLocation({ navigation }) {
         };
         await axios.post("http://192.168.194.157:4000/logbook/save-route", data)
         .then(async (res) => {
-          path = res.data;
-          console.log("path:", path);
+          const route  = res.data.route;
+          const data = {
+            userId: user.id,
+            log_info:{
+              date: new Date().toISOString().split("T")[0],
+              time: new Date().toISOString().split("T")[1].split(".")[0],
+              routeInfo: route,
+              notes: "real user path data",
+            }
+          }
+          await axios.post("http://192.168.194.157:4000/logbook/create-log", data)
+          .catch((err) => {
+            console.log(err);
+          }
+          );
         })
-        console.log("path:", path);
+        
       } catch(e){
         console.log(e);
       }
@@ -82,31 +116,12 @@ export default function MapLocation({ navigation }) {
       const log_info = {
 
         date: new Date().toISOString().split("T")[0],
-        time: new Date().toISOString().split("T")[1].split(".")[0],
+        time:elapsedTime,
         routeInfo: path,
         notes: "real user path data",
 
       };
 
-      // try {
-      //     const data = {
-      //       userId: user.id,
-      //       log_info: log_info,
-      //     }
-
-      //     console.log("log_info:", log_info);
-
-
-      //     await axios.post("http://192.168.194.157:4000/logbook/create-log", data)
-      //     .catch((err) => {
-      //       console.log(err);
-      //     }
-      //     );
-
-          
-      // } catch (e) {
-      //   console.log(e);
-      // }
 
       setLocationHistory([]);
     }
@@ -115,6 +130,9 @@ export default function MapLocation({ navigation }) {
   const logOutButton = async () => {
     try {
       await auth.signOut();
+      setCurrentLocation(null);
+      setLocationHistory([]);
+      setElapsedTime(0);
       navigation.navigate("Login");
     } catch (e) {
       console.log(e);
@@ -134,8 +152,8 @@ export default function MapLocation({ navigation }) {
             region={{
               latitude: currentLocation?.latitude || 37.78825,
               longitude: currentLocation?.longitude || -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+              latitudeDelta: 0.0005,
+              longitudeDelta: 0.005,
             }}
             showsUserLocation={true}
             followsUserLocation={true}
@@ -151,6 +169,7 @@ export default function MapLocation({ navigation }) {
               />
             )}
           </MapView>
+          <Text style={styles.timerText}>{`Elapsed Time: ${formatTime(elapsedTime)}`}</Text>
           <TouchableOpacity style={styles.closeButton} onPress={toggleMapView}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
@@ -232,5 +251,17 @@ const styles = StyleSheet.create({
   logOutButton: {
     backgroundColor: "blue",
     right: 20,
+  },
+  timerText: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
 });
