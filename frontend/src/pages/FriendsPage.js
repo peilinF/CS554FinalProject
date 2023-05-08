@@ -21,9 +21,7 @@ const FriendsPage = () => {
   const [searchData, setSearchData] = useState([]);
   const [requestsData, setRequestsData] = useState([]);
   const [friendsData, setFriendsData] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [searchQuery, setSearchQuery] = useState("");
   const auth = getAuth();
 
@@ -88,6 +86,15 @@ const FriendsPage = () => {
       receiverId: id,
     });
     console.log(conv)
+    console.log(res);
+    setPopulate(populate + 1);
+  };
+
+  const declineRequest = async (id) => {
+    const res = await apiInstance.post("/friends/declineRequest", {
+      targetId: auth.currentUser.uid,
+      uid: id,
+    });
     console.log(res);
     setPopulate(populate + 1);
   };
