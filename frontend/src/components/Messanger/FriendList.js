@@ -13,10 +13,10 @@ const Conversation = ({ conversation, userID }) => {
       }
     }).then(response => response.json())
       .then(data => {
-        console.log("data", data)
         setUser(data)
       });
   }, [])
+  console.log("user1", user)
   return (
     <div className="conversation">
       <img className="conversationImg"
