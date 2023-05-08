@@ -4,19 +4,20 @@ import React, { useEffect, useState } from "react";
 const Conversation = ({ conversation, userID }) => {
   const [user, setUser] = useState(null)
   // find friend by ID
-  useEffect(() => async () => {
-    const frinedId = conversation.find(i => i !== userID);
-    await fetch(`/users/${frinedId}`, {
-      method: 'Get',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => response.json())
-      .then(data => {
-        setUser(data)
+  useEffect(() => {
+    const fetchData = async () => {
+      const friendId = conversation.find(i => i !== userID);
+      const response = await fetch(`/users/${friendId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
-  }, [])
-  console.log("user1", user)
+      const data = await response.json();
+      setUser(data);
+    };
+    fetchData();
+  }, []);
   return (
     <div className="conversation">
       <img className="conversationImg"

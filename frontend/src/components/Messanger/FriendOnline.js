@@ -4,18 +4,22 @@ import React, { useEffect, useState } from "react";
 const FriendInfo = ({ conversation, friendId }) => {
     const [user, setUser] = useState(null)
     // find friend by ID
-    useEffect(() => async () => {
-        const frinedId = conversation.find(i => i !== friendId);
-        await fetch(`/users/${frinedId}`, {
-            method: 'Get',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-            .then(data => {
-                setUser(data)
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const friendId1 = conversation.find((i) => i !== friendId);
+            const response = await fetch(`/users/${friendId1}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
-    }, [])
+            const data = await response.json();
+            setUser(data);
+        };
+
+        fetchUserData();
+    }, []);
+
     return (
         <div className=".FriendBio">
             <ul className="no-bullets">
