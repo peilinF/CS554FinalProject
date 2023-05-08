@@ -5,6 +5,8 @@ import {
   getAllPeople,
   getRequests,
   myFriends,
+  removeFriend,
+  declineRequest
 } from "../data/friends.js";
 
 const router = express.Router();
@@ -32,11 +34,33 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.post("/declineRequest", async (req, res) => {
+  try {
+    let targetId = req.body.targetId;
+    let uid = req.body.uid;
+    const res = await declineRequest(targetId, uid);
+    res.status(200);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 router.post("/accept", async (req, res) => {
   try {
     let targetId = req.body.targetId;
     let uid = req.body.uid;
     const res = await acceptRequest(targetId, uid);
+    res.status(200);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+router.post("/removeFriend", async (req, res) => {
+  try {
+    let targetId = req.body.targetId;
+    let uid = req.body.uid;
+    const res = await removeFriend(targetId, uid);
     res.status(200);
   } catch (error) {
     res.json(error);

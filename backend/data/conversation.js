@@ -5,7 +5,8 @@ export const createConversation = async (UserId, FriendId) => {
     const conversation = await conversationCollection.findOne({ $or: [{ members: [UserId, FriendId] }, { members: [FriendId, UserId] }] })
     if (conversation !== null) throw 'Conversation already exists';
     let newConversation = {
-        members: [UserId, FriendId]
+        members: [UserId, FriendId],
+        showConversation: true
     };
     const newInsertInformation = await conversationCollection.insertOne(newConversation);
     if (newInsertInformation.insertedCount === 0) throw 'Insert failed! (Conversation)';
@@ -14,7 +15,10 @@ export const createConversation = async (UserId, FriendId) => {
 
 export const getAllConversationsByUserId = async (UserId) => {
     const conversationCollection = await conversations();
-    const conversationsOfUser = await conversationCollection.find({ members: UserId }).toArray();
+    const conversationsOfUser = await conversationCollection.find({
+        members: UserId,
+        showConversation: true
+    }).toArray();
     console.log(conversationsOfUser)
     if (conversationsOfUser.length === 0) return [];
     return conversationsOfUser
