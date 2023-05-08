@@ -367,6 +367,11 @@ const Map = () => {
             return false;
         }
 
+        time = time.split(':');
+        if (parseInt(time[0]) > 23 || parseInt(time[1]) > 59 || parseInt(time[2]) > 59) {
+            return false;
+        }
+
         return true;
 
     };
