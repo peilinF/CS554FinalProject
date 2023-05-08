@@ -34,7 +34,6 @@ const FriendsPage = () => {
           Authorization: auth.currentUser.uid,
         },
       });
-      console.log(data);
       setSearchData(data);
       setLoading(false);
     };
@@ -64,13 +63,17 @@ const FriendsPage = () => {
     fetchfriends();
   }, [populate]);
 
+  useEffect(() => {
+    setInterval(() => {
+      setPopulate(populate + 1);
+    }, 5000);
+  }, []);
+
   const sendRequest = async (id) => {
     const res = await apiInstance.post("/friends", {
       targetId: id,
       uid: auth.currentUser.uid,
     });
-    console.log(res);
-    setPopulate(populate + 1);
   };
 
   const acceptRequest = async (id) => {
@@ -83,8 +86,6 @@ const FriendsPage = () => {
     //   receiverId: id,
     // });
     // console.log(conv);
-    console.log(res);
-    setPopulate(populate + 1);
   };
 
   const declineRequest = async (id) => {
@@ -92,11 +93,8 @@ const FriendsPage = () => {
       targetId: auth.currentUser.uid,
       uid: id,
     });
-    console.log(res);
     setPopulate(populate + 1);
   };
-
-  console.log(requestsData);
 
   if (loading) return <div className="loader"></div>;
 

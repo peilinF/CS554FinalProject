@@ -15,7 +15,9 @@ export const getAllPeople = async (from) => {
       let o = people[i];
       delete o.email;
       delete o.createdDate;
-      if (fromPerson.friendList.includes(o._id)) {
+      if (fromPerson.requests.includes(o._id)) {
+        o["status"] = 0;
+      } else if (fromPerson.friendList.includes(o._id)) {
         o["status"] = 1;
       } else if (fromPerson.sentRequests.includes(o._id)) {
         o["status"] = 0;
@@ -68,15 +70,21 @@ export const myFriends = async (uid) => {
 export const addRequest = async (targetId, uid) => {
   const userCollection = await users();
   const doc = await userCollection.findOne({ _id: targetId });
+  const doc1 = await userCollection.findOne({ _id: uid });
 
   let requests = doc.requests;
+  let sentRequests = doc1.sentRequests;
   if (Array.isArray(requests)) {
     if (requests.indexOf(uid) == -1) {
       requests.push(uid);
     }
   }
-  let sentRequests = doc.sentRequests;
-  sentRequests.push(targetId);
+
+  if (Array.isArray(sentRequests)) {
+    if (sentRequests.indexOf(uid) == -1) {
+      sentRequests.push(targetId);
+    }
+  }
 
   const update1Info = await userCollection.updateOne(
     { _id: uid },
