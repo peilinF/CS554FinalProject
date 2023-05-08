@@ -1,14 +1,21 @@
 import "./map.css";
 
+import axios from "axios";
+import { apiInstance } from "../../utils/apiInstance";
+
 import React, { useState, useEffect, useRef } from "react";
 
+import { getAuth } from "firebase/auth";
+
 import Directions from "./Directions";
-import { GoogleMap, useLoadScript, MarkerF, Autocomplete } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, MarkerF, Autocomplete, DirectionsRenderer } from "@react-google-maps/api";
 
 import REACT_APP_GOOGLE_MAPS_API_KEY from "./api_key";
 const libraries = ["places"];
 
 const Map = () => {
+
+    const auth = getAuth();
 
     const [directions, setDirections] = useState(null);
     const [totalDistance, setTotalDistance] = useState(0);
@@ -23,6 +30,30 @@ const Map = () => {
     const [mapCenter, setMapCenter] = useState({ lat: 37.7749, lng: -122.4194 });
     const autocompleteRef = useRef(null);
 
+    const [showRoute, setShowRoute] = useState(false);
+    const [savedRoutes, setSavedRoutes] = useState(null);
+    const [routeIndex, setRouteIndex] = useState(0);
+
+    const getSavedRoutes = async () => {
+        try {
+            const res = await apiInstance.get("/logbook/get-all-routes", {
+                params: {
+                    userId: auth.currentUser.uid,
+                },
+            });
+
+            return res.data.routes;
+        } catch (error) {
+            console.log("Error getting all routes");
+        }
+    };
+
+    useEffect(() => {
+        getSavedRoutes().then((routes) => {
+            setSavedRoutes(routes);
+        });
+    }, []);
+
     // Google Maps API
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -33,6 +64,9 @@ const Map = () => {
 
         setDistance(0);
         setGenerater(false);
+        setShowRoute(false);
+
+        document.querySelector("#distance").value = "";
 
         if (autocompleteRef.current) {
             const place = autocompleteRef.current.getPlace();
@@ -50,6 +84,7 @@ const Map = () => {
 
         setDistance(0);
         setGenerater(false);
+        setShowRoute(false);
 
         document.querySelector(".autocomplete input").value = "";
         document.querySelector(".autocomplete input").placeholder = "Search location";
@@ -69,6 +104,7 @@ const Map = () => {
 
     const generatePath = () => {
         setGenerater(true);
+        setShowRoute(false);
     };
 
     const saveDirections = (directions) => {
@@ -85,17 +121,60 @@ const Map = () => {
                     });
                 });
             });
-    
+
             return directionsList;
         };
 
-        console.log(readDirections(directions));
-        setDirections(directions);
+        let latLngs = readDirections(directions);
+        setDirections({
+            route: latLngs,
+            ori_directions: directions,
+        });
     };
 
-    const saveDirectionsToLogbook = () => {
+    const saveDirectionsToLogbook = async () => {
 
-        console.log("save directions to user logbook");
+        try {
+            const res = await apiInstance
+                .post("/logbook/save-route", {
+                    userId: auth.currentUser.uid,
+                    directions: directions,
+                });
+            console.log(res.data);
+        } catch (error) {
+            console.log("Error saving directions to logbook");
+        }
+
+        getSavedRoutes().then((routes) => {
+            setSavedRoutes(routes);
+            console.log(savedRoutes);
+        });
+
+    };
+
+    const deleteRouteFromLogbook = async (routeId) => {
+
+        setDistance(0);
+        setGenerater(false);
+        setShowRoute(false);
+
+        try {
+            const res = await apiInstance
+                .get("/logbook/delete-route", {
+                    params: {
+                        userId: auth.currentUser.uid,
+                        routeId: routeId,
+                    },
+                });
+        } catch (error) {
+            console.log("Error deleting route from logbook");
+        }
+
+        getSavedRoutes().then((routes) => {
+            setSavedRoutes(routes);
+        });
+
+        console.log(showRoute);
 
     };
 
@@ -117,6 +196,9 @@ const Map = () => {
                     saveDirections={saveDirections}
                 />
             )}
+            {showRoute && (
+                <DirectionsRenderer directions={savedRoutes[routeIndex].ori_directions} />
+            )}
             <MarkerF
                 position={mapCenter}
                 onClick={() => {
@@ -128,6 +210,35 @@ const Map = () => {
             ))} */}
 
         </GoogleMap>
+    );
+
+    let savedRoutes_html = (
+        <div>
+            <h3>Saved routes: </h3>
+            <ul className='saved-routes-ul'>
+                {savedRoutes && savedRoutes.map((route, index) => (
+                    <div key={index}>
+                        <li
+                            className='saved-routes-li'
+                            key={index}
+                        >
+                            <p
+                                onClick={() => {
+                                    setRouteIndex(index);
+                                    setShowRoute(true);
+                                    setGenerater(false);
+                                    setDirections(route);
+                                }}
+                            >Route {index + 1}</p>
+                            <button onClick={() => {
+                                deleteRouteFromLogbook(route._id);
+                            }}>x</button>
+                        </li>
+
+                    </div>
+                ))}
+            </ul>
+        </div>
     );
 
     let input_html = (
@@ -161,6 +272,7 @@ const Map = () => {
                             placeholder="Distance (mi)"
                             onChange={(e) => {
                                 setGenerater(false);
+                                setShowRoute(false);
                                 setDistance(parseFloat(e.target.value))
                             }}
                         />
@@ -169,15 +281,13 @@ const Map = () => {
 
 
                 {!generater && (<button
-                    onClick={() => { generatePath() }}
+                    onClick={() => generatePath()}
                 >
                     Generate
                 </button>)}
                 {generater && (<button
                     onClick={() => {
-                        // document.querySelector("#distance").value = "";
                         setGenerater(false);
-                        // setDistance(0);
                         setTotalDistance(0);
                     }}
                 >
@@ -195,6 +305,8 @@ const Map = () => {
                         >Save to Logbook</button>
                     </div>
                 )}
+
+                {savedRoutes_html}
             </div>
         </div>
     );

@@ -76,7 +76,7 @@ const Directions = (props) => {
     
         let directions = null;
         const maxAttempts = 10;
-        const delayBetweenAttempts = 500; // in milliseconds
+        const delayBetweenAttempts = 50; // in milliseconds
     
         for (let i = 0; i < maxAttempts; i++) {
             const locations = generateRandomLocations();

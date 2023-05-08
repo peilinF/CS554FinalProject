@@ -48,3 +48,38 @@ h5,
 h6 {
   font-size: 24px;
 }
+
+.saved-routes-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y:scroll;
+	height: 240px;
+	border: solid 1px #ccc;
+}
+
+.saved-routes-li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-left: 30px;
+}
+
+.saved-routes-li p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.saved-routes-li button {
+  border: none;
+  background-color: transparent;
+  color: #cc0000;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.saved-routes-li button:hover {
+  color: #990000;
+}

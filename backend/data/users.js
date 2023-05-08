@@ -18,6 +18,8 @@ export const createUser = async (name, email, _id) => {
     createdDate: new Date().getTime(),
     friendList: [],
     requests: [],
+    logbook: [],
+    routes: [],
   };
   const newInsertInformation = await userCollection.insertOne(newUser);
   if (newInsertInformation.acknowledged != true) throw "Insert failed!";
