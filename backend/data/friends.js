@@ -112,7 +112,7 @@ export const acceptRequest = async (targetId, uid) => {
   } else throw "Request doesn't exist";
 
   if (sentRequests.includes(targetId)) {
-    requests.splice(requests.indexOf(targetId), 1);
+    sentRequests.splice(requests.indexOf(targetId), 1);
     friendList1.push(targetId);
   } else throw "Request doesn't exist";
 
