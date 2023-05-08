@@ -81,6 +81,7 @@ const FriendsPage = () => {
       targetId: auth.currentUser.uid,
       uid: id,
     });
+    setPopulate(populate + 1);
     // const conv = await apiInstance.post(`/conversations`, {
     //   senderId: auth.currentUser.uid,
     //   receiverId: id,
