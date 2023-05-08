@@ -117,14 +117,15 @@ export const acceptRequest = async (targetId, uid) => {
     if (requests.includes(uid)) {
       requests.splice(requests.indexOf(uid), 1);
       friendList.push(uid);
-    } else throw "Request doesn't exist";
+    }
+
     if (requests1.includes(targetId)) {
       requests1.splice(requests1.indexOf(uid), 1);
-    } else throw "Request doesn't exist";
+    }
     if (sentRequests1.includes(targetId)) {
       sentRequests1.splice(sentRequests1.indexOf(targetId), 1);
       friendList1.push(targetId);
-    } else throw "Request doesn't exist";
+    }
   }
 
   const updated1Info = await usersCollection.updateOne(
