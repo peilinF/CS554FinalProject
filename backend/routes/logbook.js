@@ -13,7 +13,6 @@ router.post("/save-route", async (req, res) => {
 
     const userId = req.body.userId;
     const directions = req.body.directions;
-
     try {
         const user_db = await getUserById(userId);
         if (!user_db) throw "User not found";
@@ -22,8 +21,8 @@ router.post("/save-route", async (req, res) => {
     }
 
     try {
+        console.log(directions);
         const route_db = await routesData.createRoute(userId, directions);
-
         res.status(200).json({message: "Route saved successfully", route: route_db});
     } catch (error) {
         res.status(500).json({error: error});
@@ -92,17 +91,16 @@ router.get("/get-logbook", async (req, res) => {
 });
 
 router.get("/create-log", async (req, res) => {
-
+    console.log("creating log");
     const userId = req.query.userId;
     const log_info = req.query.log_info;
-
     try {
         const user_db = await getUserById(userId);
         if (!user_db) throw "User not found";
     } catch (error) {
         throw error;
     }
-
+    
     let route_db = null;
     try {
         route_db = await routesData.getRouteById(userId, log_info.routeId);
@@ -121,6 +119,37 @@ router.get("/create-log", async (req, res) => {
     }
 
 });
+
+
+router.post("/create-log", async (req, res) => {
+    const userId = req.body.userId;
+    const log_info = req.body.log_info;
+    try {
+        const user_db = await getUserById(userId);
+        if (!user_db) throw "User not found";
+    } catch (error) {
+        throw error;
+    }
+    
+    // let route_db = null;
+    // try {
+    //     route_db = await routesData.getRouteById(userId, log_info.routeId);
+    //     if (!route_db) throw "Route not found";
+    // } catch (error) {
+    //     throw error;
+    // }
+
+    // log_info.routeInfo = route_db;
+
+    try {
+        const log_db = await logbookData.createLog(userId, log_info);
+        res.status(200).json({message: "Log created successfully", log: log_db});
+    } catch (error) {
+        res.status(500).json({error: error});
+    }
+
+});
+
 
 router.get("/edit-log", async (req, res) => {
 

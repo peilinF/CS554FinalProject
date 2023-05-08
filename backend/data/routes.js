@@ -22,6 +22,7 @@ const createRoute = async (userId, directions) => {
     try {
         route = utils.checkRoute(route);
     } catch (error) {
+        console.log(error);
         throw error;
     }
 
@@ -41,6 +42,7 @@ const createRoute = async (userId, directions) => {
         console.log(updateInfo);
         if (updateInfo.modifiedCount === 0) throw "Could not add log";
     } catch (error) {
+        console.log(error);
         throw error;
     }
 
