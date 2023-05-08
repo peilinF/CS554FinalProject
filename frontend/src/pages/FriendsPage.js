@@ -40,14 +40,11 @@ const FriendsPage = () => {
     };
 
     const fetchRequests = async () => {
-      const { data } = await apiInstance.get(
-        `/friends/requests/${auth.currentUser.uid}`,
-        {
-          headers: {
-            Authorization: auth.currentUser.uid,
-          },
-        }
-      );
+      const { data } = await apiInstance.get(`/friends/requests`, {
+        headers: {
+          Authorization: auth.currentUser.uid,
+        },
+      });
       setRequestsData(data);
       setLoading(false);
     };
@@ -85,7 +82,7 @@ const FriendsPage = () => {
       senderId: auth.currentUser.uid,
       receiverId: id,
     });
-    console.log(conv)
+    console.log(conv);
     console.log(res);
     setPopulate(populate + 1);
   };

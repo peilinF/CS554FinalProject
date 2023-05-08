@@ -6,7 +6,7 @@ import {
   getRequests,
   myFriends,
   removeFriend,
-  declineRequest
+  declineRequest,
 } from "../data/friends.js";
 
 const router = express.Router();
@@ -15,8 +15,8 @@ router.get("/", async (req, res) => {
   res.status(200).json(await getAllPeople(req.headers.authorization));
 });
 
-router.get("/requests/:id", async (req, res) => {
-  res.status(200).json(await getRequests(req.params.id));
+router.get("/requests", async (req, res) => {
+  res.status(200).json(await getRequests(req.headers.authorization));
 });
 
 router.get("/friends", async (req, res) => {

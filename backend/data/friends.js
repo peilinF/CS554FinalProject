@@ -17,7 +17,7 @@ export const getAllPeople = async (from) => {
       delete o.createdDate;
       if (fromPerson.friendList.includes(o._id)) {
         o["status"] = 1;
-      } else if (fromPerson.requests.includes(o._id)) {
+      } else if (fromPerson.sentRequests.includes(o._id)) {
         o["status"] = 0;
       } else o["status"] = -1;
 
@@ -26,6 +26,8 @@ export const getAllPeople = async (from) => {
   }
 
   res = res.filter((o) => o._id !== from);
+
+  console.log(res);
 
   return res;
 };
@@ -73,12 +75,20 @@ export const addRequest = async (targetId, uid) => {
       requests.push(uid);
     }
   }
+  let sentRequests = doc.sentRequests;
+  sentRequests.push(targetId);
+
+  const update1Info = await userCollection.updateOne(
+    { _id: uid },
+    { $set: { sentRequests: sentRequests } }
+  );
+
   const updateInfo = await userCollection.updateOne(
     { _id: targetId },
     { $set: { requests: requests } }
   );
 
-  if (updateInfo.modifiedCount == 0) {
+  if (updateInfo.modifiedCount == 0 || update1Info.modifiedCount == 0) {
     throw "Error";
   }
 
