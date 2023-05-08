@@ -12,15 +12,27 @@ import {
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  res.status(200).json(await getAllPeople(req.headers.authorization));
+  try {
+    res.status(200).json(await getAllPeople(req.headers.authorization));
+  } catch (error) {
+    res.status(404).json(error);
+  }
 });
 
 router.get("/requests", async (req, res) => {
-  res.status(200).json(await getRequests(req.headers.authorization));
+  try {
+    res.status(200).json(await getRequests(req.headers.authorization));
+  } catch (error) {
+    res.status(404).json(error);
+  }
 });
 
 router.get("/friends", async (req, res) => {
-  res.status(200).json(await myFriends(req.headers.authorization));
+  try {
+    res.status(200).json(await myFriends(req.headers.authorization));
+  } catch (error) {
+    res.status(404).json(error);
+  }
 });
 
 router.post("/", async (req, res) => {

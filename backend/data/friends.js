@@ -37,7 +37,10 @@ export const getAllPeople = async (from) => {
 export const getRequests = async (uid) => {
   const usersCollection = await users();
   const data = await usersCollection.findOne({ _id: uid });
-  let requests = data.requests;
+  if (data == null) {
+    throw "Invalid request";
+  }
+  let requests = data.requests ? data.requests : [];
   let result = [];
 
   for (let i = 0; i < requests.length; i++) {
@@ -53,7 +56,10 @@ export const getRequests = async (uid) => {
 export const myFriends = async (uid) => {
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: uid });
-  let flist = user.friendList;
+  if (user == null) {
+    throw "Invalid request";
+  }
+  let flist = user.friendList ? user.friendList : [];
   let result = [];
 
   for (let i = 0; i < flist.length; i++) {
@@ -106,14 +112,17 @@ export const acceptRequest = async (targetId, uid) => {
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: targetId });
   const user1 = await usersCollection.findOne({ _id: uid });
+  if (user == null || user1 == null) {
+    throw "Invalid request";
+  }
 
-  let requests = user.requests;
-  let friendList = user.friendList;
-  let sentRequests = user1.sentRequests;
+  let requests = user.requests ? user.requests : [];
+  let friendList = user.friendList ? user.friendList : [];
+  let sentRequests = user1.sentRequests ? user1.sentRequests : [];
 
-  let sentRequests1 = user1.sentRequests;
-  let friendList1 = user1.friendList;
-  let requests1 = user1.requests;
+  let sentRequests1 = user1.sentRequests ? user1.sentRequests : [];
+  let friendList1 = user1.friendList ? user1.friendList : [];
+  let requests1 = user1.requests ? user1.requests : [];
 
   if (friendList.includes(uid) && friendList1.includes(targetId)) {
     requests1.splice(requests1.indexOf(uid), 1);

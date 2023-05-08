@@ -46,9 +46,13 @@ const SignUpPage = () => {
         <h2>Registration</h2>
         <form onSubmit={(e) => handleSignUp(e)}>
           <Input placeholder="Full Name" name="name" />
-          <Input placeholder="Email" name="email" />
-          <Input placeholder="Password" name="password" />
-          <Input placeholder="Confirm Password" name="cpassword" />
+          <Input type="email" placeholder="Email" name="email" />
+          <Input type="password" placeholder="Password" name="password" />
+          <Input
+            type="password"
+            placeholder="Confirm Password"
+            name="cpassword"
+          />
           <Button type={"submit"} variant={"contained"}>
             Create Account
           </Button>

@@ -81,11 +81,20 @@ const FriendsPage = () => {
       targetId: auth.currentUser.uid,
       uid: id,
     });
+<<<<<<< HEAD
     const conv = await apiInstance.post(`/conversations`, {
       senderId: auth.currentUser.uid,
       receiverId: id,
     });
     console.log(conv);
+=======
+    setPopulate(populate + 1);
+    // const conv = await apiInstance.post(`/conversations`, {
+    //   senderId: auth.currentUser.uid,
+    //   receiverId: id,
+    // });
+    // console.log(conv);
+>>>>>>> 59b641d71e267a75be87417d7cd1222133e64c71
   };
 
   const declineRequest = async (id) => {
