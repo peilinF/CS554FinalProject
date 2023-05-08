@@ -8,7 +8,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { getAuth } from "firebase/auth";
 
 import Directions from "./Directions";
-import { GoogleMap, useLoadScript, MarkerF, Autocomplete, DirectionsRenderer } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, MarkerF, PolylineF, Autocomplete, DirectionsRenderer } from "@react-google-maps/api";
 
 import REACT_APP_GOOGLE_MAPS_API_KEY from "./api_key";
 const libraries = ["places"];
@@ -397,8 +397,17 @@ const Map = () => {
             {showRoute && (
                 <DirectionsRenderer directions={savedRoutes[routeIndex].ori_directions} />
             )}
-            {showLog && (
+            {showLog && (selectedLog.routeInfo.ori_directions !== null) && (
                 <DirectionsRenderer directions={selectedLog.routeInfo.ori_directions} />
+            )}
+            {showLog && (selectedLog.routeInfo.ori_directions === null) && (
+                <PolylineF
+                    path={selectedLog.routeInfo.route}
+                    options={{
+                        strokeColor: "#FF0000",
+                        strokeWeight: 3,
+                    }}
+                />
             )}
             <MarkerF
                 position={mapCenter}
