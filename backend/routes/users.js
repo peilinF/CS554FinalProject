@@ -16,26 +16,25 @@ router.get("/", async (req, res) => {
   }
 });
 
-
-router.route("/login").post(async (req, res) => {
-  try {
-    console.log(req.body);
-    let usernameInput = req.body.username;
-    let passwordInput = req.body.password;
-    if (req.session.user != undefined) {
-      throw res.status(403).json({ error: "User already login" });
-    }
-    let loginIn = await loginUser(usernameInput, passwordInput, nameInput);
-    req.session.user = { id: loginIn.id, userName: usernameInput };
-    res.status(200).json({
-      id: loginIn.id.toString(),
-      name: loginIn.name,
-      userName: usernameInput,
-    });
-  } catch (e) {
-    res.status(400).json({ error: e });
-  }
-});
+// router.route("/login").post(async (req, res) => {
+//   try {
+//     console.log(req.body);
+//     let usernameInput = req.body.username;
+//     let passwordInput = req.body.password;
+//     if (req.session.user != undefined) {
+//       throw res.status(403).json({ error: "User already login" });
+//     }
+//     let loginIn = await loginUser(usernameInput, passwordInput, nameInput);
+//     req.session.user = { id: loginIn.id, userName: usernameInput };
+//     res.status(200).json({
+//       id: loginIn.id.toString(),
+//       name: loginIn.name,
+//       userName: usernameInput,
+//     });
+//   } catch (e) {
+//     res.status(400).json({ error: e });
+//   }
+// });
 
 router.route("/register").post(async (req, res) => {
   try {
@@ -57,12 +56,12 @@ router.route("/logout").get(async (req, res) => {
 
 router.route("/:userId").get(async (req, res) => {
   try {
-    const userInfo = await getUserById(req.params.userId)
-    console.log(userInfo)
+    const userInfo = await getUserById(req.params.userId);
+    console.log(userInfo);
     res.status(200).json(userInfo);
   } catch (err) {
     res.status(500).json(err);
   }
-})
+});
 
 export default router;

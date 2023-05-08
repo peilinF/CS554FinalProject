@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # 暴露容器将侦听的端口
-EXPOSE 5000
+EXPOSE 4000
 
 # 启动Node.js应用程序
 CMD ["npm", "start"]

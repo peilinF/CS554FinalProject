@@ -75,7 +75,7 @@ const FriendsPage = () => {
       uid: id,
     });
     console.log(res);
-    setPopulate(2);
+    setPopulate(populate + 1);
   };
 
   const acceptRequest = async (id) => {
@@ -89,7 +89,7 @@ const FriendsPage = () => {
     });
     console.log(conv)
     console.log(res);
-    setPopulate(3);
+    setPopulate(populate + 1);
   };
 
   console.log(requestsData);
