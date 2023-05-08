@@ -9,21 +9,29 @@
 }
 
 .map-container {
-  flex: 0.6;
+  flex: 0 1 60%; /* Change the flex-basis value to 60% */
   height: calc(100vh - 100px);
   width: 100%;
 }
 
-.input-container {
+.input-container,
+.logbook-container {
   font-size: 20px;
   height: calc(100vh - 100px);
   width: 20%;
   line-height: 50px;
   margin: 10px;
-  flex: 0.4;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.input-container {
+  flex: 0 1 20%; /* Change the flex-basis value to 20% */
+}
+
+.logbook-container {
+  flex: 0 1 20%; /* Change the flex-basis value to 20% */
 }
 
 .input-container button {
@@ -82,4 +90,40 @@ h6 {
 
 .saved-routes-li button:hover {
   color: #990000;
+}
+
+.logbook-ul {
+	overflow-y:scroll;
+	height: 400px;
+	width: 350px;
+	border: solid 1px #ccc;
+}
+
+.logbook-li {
+	display: flex;
+	flex-direction: row;
+	align-items: left;
+	justify-content: space-between;
+	width: 80%;
+}
+
+.logbook-edit-form {
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+	width: 100%;
+}
+
+.logbook-edit-form input {
+	width: 100%;
+}
+
+.logbook-edit-form #notes {
+	width: 100%;
+	min-height: 100px;
+	font-size: 16px;
+	line-height: 1.5;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	resize: vertical; 
 }

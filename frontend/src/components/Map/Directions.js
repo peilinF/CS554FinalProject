@@ -128,6 +128,7 @@ const Directions = (props) => {
         }
     
         alert("No route found! Please try again.");
+        props.handleTotleDistance(0);
         return null;
     };
     

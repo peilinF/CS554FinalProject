@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { v4 as uuid } from "uuid";
 import { users } from "../config/mongoCollections.js";
 
 import { getUserById } from "./users.js";
@@ -14,31 +14,32 @@ const createLog = async (userId, log_info) => {
     }
 
     // check log
-    let { id, date, time, route, notes } = log_info;
+    let { date, time, routeInfo, notes } = log_info;
 
     try {
-        id = utils.checkId(id);
         date = utils.checkDate(date);
         time = utils.checkTime(time);
-        route = utils.checkRoute(route);
+        routeInfo.route = utils.checkRoute(routeInfo.route);
         notes = utils.checkNotes(notes);
     } catch (error) {
+        console.log(error);
         throw error;
     }
 
+
     // get other info
     let unit = 'mi';
-    let distance = utils.getDistance(route, unit);
+    let distance = utils.getDistance(routeInfo.route, unit);
     let pace = utils.getPace(distance, time, unit);
 
     // create log
     let log = {
-        _id: id,
+        _id: uuid(),
         date: date,
         time: time,
         distance: distance,
         pace: pace,
-        route: route,
+        routeInfo: routeInfo,
         notes: notes
     };
 
@@ -58,6 +59,9 @@ const createLog = async (userId, log_info) => {
 };
 
 const getLogById = async (userId, logId) => {
+
+    console.log("getLogById: ", userId, logId);
+
     let user_db = null;
     try {
         user_db = await getUserById(userId);
@@ -107,34 +111,33 @@ const updateLog = async (userId, logId, log_info) => {
 
     console.log("finish check user and log");
 
-    // check log info
-    let { date, time, notes } = log_info;
+    // check log
+    let { date, time, routeInfo, notes } = log_info;
 
     try {
         date = utils.checkDate(date);
         time = utils.checkTime(time);
+        routeInfo.route = utils.checkRoute(routeInfo.route);
         notes = utils.checkNotes(notes);
     } catch (error) {
+        console.log(error);
         throw error;
     }
 
-    // get route
-
-    let route = log_db.route;
 
     // get other info
     let unit = 'mi';
-    let distance = utils.getDistance(route, unit);
+    let distance = utils.getDistance(routeInfo.route, unit);
     let pace = utils.getPace(distance, time, unit);
 
-    // update log
+    // create log
     let log = {
-        _id: log_db._id,
+        _id: logId,
         date: date,
         time: time,
         distance: distance,
         pace: pace,
-        route: route,
+        routeInfo: routeInfo,
         notes: notes
     };
 
@@ -149,10 +152,16 @@ const updateLog = async (userId, logId, log_info) => {
         );
         if (updateInfo.modifiedCount === 0) throw "Could not update log";
     } catch (error) {
+        console.log(error);
         throw error;
     }
 
-    return await getLogById(userId, logId);
+    log_db = await getLogById(userId, logId);
+
+    if (!log_db) {
+        console.log("log_db is null");
+    }
+    return log_db;
 };
 
 const deleteLog = async (userId, logId) => {
@@ -160,11 +169,9 @@ const deleteLog = async (userId, logId) => {
     let user_db = null;
     let log_db = null;
 
-    // console.log(typeof userId, typeof logId);
-
     // check user and log
     try {
-        user_db = await usersData.getUserById(userId);
+        user_db = await getUserById(userId);
         if (!user_db) throw `User with id ${userId} does not exist`;
 
         log_db = await getLogById(userId, logId);
@@ -173,6 +180,8 @@ const deleteLog = async (userId, logId) => {
         throw error;
     }
 
+    console.log("finish check user and log");
+
     // delete log
     try {
         const userCollection = await users();
@@ -180,7 +189,7 @@ const deleteLog = async (userId, logId) => {
             { _id: userId },
             { $pull: { logbook: { _id: logId } } }
         );
-        console.log(updateInfo);
+
         if (updateInfo.modifiedCount === 0) throw "Could not delete log";
     } catch (error) {
         throw error;
