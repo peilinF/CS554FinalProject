@@ -1,4 +1,4 @@
-import { abc, users } from "../config/mongoCollections.js";
+import { users } from "../config/mongoCollections.js";
 import { getUserById } from "./users.js";
 
 export const getAllPeople = async (from) => {
@@ -154,4 +154,3 @@ export const declineRequest = async (targetId, uid) => {
 
   return "Request Removed";
 };
-

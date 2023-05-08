@@ -16,6 +16,5 @@ const users = getCollectionFn("users");
 const maps = getCollectionFn("maps");
 const conversations = getCollectionFn("conversations");
 const messages = getCollectionFn("messages");
-const abc = getCollectionFn("requests");
 
-export { abc, users, maps, conversations, messages };
+export { users, maps, conversations, messages };
