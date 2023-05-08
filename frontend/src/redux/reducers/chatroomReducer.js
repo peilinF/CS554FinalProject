@@ -29,7 +29,7 @@ const chatroomReducer = (state = initialState, action) => {
 
       if (state.chatrooms.length !== 0) {
         let chatroom = state.chatrooms.find((chatroom) => {
-          return arraysAreEqual(chatroom.users, payload);
+          return chatroom.users.id === payload.id;
         });
 
         // console.log("chatroom: ", chatroom);
