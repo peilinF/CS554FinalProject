@@ -102,7 +102,7 @@ export const acceptRequest = async (targetId, uid) => {
 
   let requests = user.requests;
   let sentRequests = user1.sentRequests;
-  let friendList1 = user.friendList;
+  let friendList1 = user1.friendList;
 
   let friendList = user.friendList;
   if (requests.includes(uid)) {
