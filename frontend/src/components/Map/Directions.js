@@ -69,22 +69,50 @@ const Directions = (props) => {
 
     };
 
+    // const generateRandomLocations = () => {
+
+    //     const startPoint = props.startPoint;
+    //     const dist = props.distance;
+        
+    //     const phi = Math.PI / 180 * ((120 - 60) * Math.random() + 60); // angle between leg1 and leg3
+    //     const scale = 0.7; // straitline_distance/actual_distance
+    //     const legDist = (scale * dist) / (2 + 2 * Math.sin(phi / 2));
+
+    //     const calculateNewPoint = (angle) => {
+    //         const lat =
+    //             startPoint.lat +
+    //             (legDist / 111.32) * Math.cos(angle) * Math.cos((startPoint.lat * Math.PI) / 180);
+    //         const lng =
+    //             startPoint.lng +
+    //             (legDist / (111.32 * Math.cos((startPoint.lat * Math.PI) / 180))) * Math.sin(angle);
+
+    //         return { lat, lng };
+    //     };
+
+    //     const theta = 2 * Math.random() * Math.PI;
+    //     const point2 = calculateNewPoint(theta);
+    //     const point3 = calculateNewPoint(theta + phi);
+
+    //     return [props.startPoint, point2, point3, props.startPoint];
+
+    // };
+
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const getDirections = async () => {
         if (!google || !directionsService.current) return;
-    
+
         let directions = null;
         const maxAttempts = 10;
         const delayBetweenAttempts = 50; // in milliseconds
-    
+
         for (let i = 0; i < maxAttempts; i++) {
             const locations = generateRandomLocations();
             const waypoints = locations.slice(1, -1).map((location) => ({
                 location: new google.maps.LatLng(location.lat, location.lng),
                 stopover: true,
             }));
-    
+
             directionsService.current.route(
                 {
                     origin: new google.maps.LatLng(locations[0].lat, locations[0].lng),
@@ -107,10 +135,10 @@ const Directions = (props) => {
                             for (let i = 0; i < myroute.legs.length; i++) {
                                 totalDistance += myroute.legs[i].distance.value;
                             }
-    
+
                             totalDistance = totalDistance / 1000.0 / 1.60934;
                             console.log(props.distance, ' ', totalDistance);
-    
+
                             if (Math.abs(props.distance - totalDistance) < (props.distance / 5)) {
                                 directions = result;
                                 props.handleTotleDistance(totalDistance);
@@ -119,19 +147,19 @@ const Directions = (props) => {
                     }
                 }
             );
-    
+
             if (directions) {
                 return directions;
             }
-    
+
             await sleep(delayBetweenAttempts);
         }
-    
+
         alert("No route found! Please try again.");
         props.handleTotleDistance(0);
         return null;
     };
-    
+
 
     useEffect(() => {
         (async () => {
@@ -144,10 +172,10 @@ const Directions = (props) => {
 
     useEffect(() => {
         if (finalDirections) {
-          console.log("rendering directions");
-          props.saveDirections(finalDirections);
+            console.log("rendering directions");
+            props.saveDirections(finalDirections);
         }
-      }, [finalDirections]);
+    }, [finalDirections]);
 
     return finalDirections ? <DirectionsRenderer directions={finalDirections} /> : null;
 };
