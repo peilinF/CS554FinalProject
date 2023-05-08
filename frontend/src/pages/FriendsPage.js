@@ -71,8 +71,8 @@ const FriendsPage = () => {
 
   const sendRequest = async (id) => {
     const res = await apiInstance.post("/friends", {
-      targetId: auth.currentUser.uid,
-      uid: id,
+      targetId: id,
+      uid: auth.currentUser.uid,
     });
     console.log(res);
     setPopulate(populate + 1);
