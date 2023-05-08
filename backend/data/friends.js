@@ -29,8 +29,6 @@ export const getAllPeople = async (from) => {
 
   res = res.filter((o) => o._id !== from);
 
-  console.log(res);
-
   return res;
 };
 
@@ -174,10 +172,26 @@ export const acceptRequest = async (targetId, uid) => {
 export const removeFriend = async (targetId, uid) => {
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: targetId });
+  const user1 = await usersCollection.findOne({ _id: uid });
+
   let friendList = user.friendList;
-  if (friendList.includes(uid)) {
+  let friendList1 = user1.friendList;
+
+  if (!friendList.includes(uid) || !friendList1.includes(targetId)) {
+    return "Not friends";
+  } else {
     friendList.splice(friendList.indexOf(uid), 1);
-  } else throw "Friend doesn't exist";
+    friendList1.splice(friendList1.indexOf(targetId), 1);
+  }
+
+  const updated1Info = await usersCollection.updateOne(
+    { _id: uid },
+    {
+      $set: {
+        friendList: friendList1,
+      },
+    }
+  );
 
   const updatedInfo = await usersCollection.updateOne(
     { _id: targetId },
@@ -187,31 +201,69 @@ export const removeFriend = async (targetId, uid) => {
       },
     }
   );
-  if (updatedInfo.modifiedCount == 0) {
+
+  if (updatedInfo.modifiedCount == 0 || updated1Info.modifiedCount == 0) {
     throw "Error Occurred";
   }
-  return "Removed";
+
+  return "Removed friend";
 };
 
 export const declineRequest = async (targetId, uid) => {
-  const userCollection = await users();
-  const doc = await userCollection.findOne({ _id: targetId });
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({ _id: targetId });
+  const user1 = await usersCollection.findOne({ _id: uid });
+  if (user == null || user1 == null) {
+    throw "Invalid request";
+  }
 
-  let requests = doc.requests;
-  if (Array.isArray(requests)) {
-    const index = requests.indexOf(uid);
-    if (index !== -1) {
-      requests.splice(index, 1);
+  let requests = user.requests ? user.requests : [];
+  let friendList = user.friendList ? user.friendList : [];
+  let sentRequests = user1.sentRequests ? user1.sentRequests : [];
+
+  let sentRequests1 = user1.sentRequests ? user1.sentRequests : [];
+  let friendList1 = user1.friendList ? user1.friendList : [];
+  let requests1 = user1.requests ? user1.requests : [];
+
+  if (friendList.includes(uid) && friendList1.includes(targetId)) {
+    requests1.splice(requests1.indexOf(uid), 1);
+    requests.splice(requests.indexOf(uid), 1);
+
+    return "Already removed";
+  } else {
+    if (requests.includes(uid)) {
+      requests.splice(requests.indexOf(uid), 1);
+    }
+
+    if (sentRequests1.includes(targetId)) {
+      sentRequests1.splice(sentRequests1.indexOf(targetId), 1);
+    }
+    if (requests1.includes(targetId)) {
+      requests1.splice(requests1.indexOf(uid), 1);
     }
   }
-  const updateInfo = await userCollection.updateOne(
-    { _id: targetId },
-    { $set: { requests: requests } }
+
+  const updated1Info = await usersCollection.updateOne(
+    { _id: uid },
+    {
+      $set: {
+        sentRequests: sentRequests1,
+        requests: requests1,
+      },
+    }
   );
 
-  if (updateInfo.modifiedCount === 0) {
-    throw "Error";
+  const updatedInfo = await usersCollection.updateOne(
+    { _id: targetId },
+    {
+      $set: {
+        requests: requests,
+        sentRequests: sentRequests,
+      },
+    }
+  );
+  if (updatedInfo.modifiedCount == 0 || updated1Info.modifiedCount == 0) {
+    throw "Error Occurred";
   }
-
-  return "Request Removed";
+  return "Removed";
 };

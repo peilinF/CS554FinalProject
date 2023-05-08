@@ -39,21 +39,21 @@ app.use((req, res, next) => {
   if (!temp.password) {
     console.log(
       req.method +
-        " " +
-        req.originalUrl +
-        " " +
-        urTrack[req.method + req.originalUrl] +
-        " " +
-        JSON.stringify(req.body)
+      " " +
+      req.originalUrl +
+      " " +
+      urTrack[req.method + req.originalUrl] +
+      " " +
+      JSON.stringify(req.body)
     );
   } else {
     console.log(
       req.method +
-        " " +
-        req.originalUrl +
-        " " +
-        urTrack[req.method + req.originalUrl] +
-        JSON.stringify(req.body.username)
+      " " +
+      req.originalUrl +
+      " " +
+      urTrack[req.method + req.originalUrl] +
+      JSON.stringify(req.body.username)
     );
   }
   next();
