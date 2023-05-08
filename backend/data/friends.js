@@ -98,7 +98,7 @@ export const addRequest = async (targetId, uid) => {
 export const acceptRequest = async (targetId, uid) => {
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: targetId });
-  const user1 = await usersCollection.findOne({ _id: targetId });
+  const user1 = await usersCollection.findOne({ _id: uid });
 
   let requests = user.requests;
   let sentRequests = user1.sentRequests;
@@ -110,9 +110,9 @@ export const acceptRequest = async (targetId, uid) => {
     friendList.push(uid);
   } else throw "Request doesn't exist";
 
-  if (sentRequests.includes(uid)) {
+  if (sentRequests.includes(targetId)) {
     requests.splice(requests.indexOf(targetId), 1);
-    friendList.push(uid);
+    friendList.push(targetId);
   } else throw "Request doesn't exist";
 
   friendList1.push(targetId);
