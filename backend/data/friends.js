@@ -37,7 +37,6 @@ export const getAllPeople = async (from) => {
 export const getRequests = async (uid) => {
   const usersCollection = await users();
   const data = await usersCollection.findOne({ _id: uid });
-
   let requests = data.requests;
   let result = [];
 
