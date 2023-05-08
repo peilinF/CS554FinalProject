@@ -58,26 +58,55 @@ export default function MapLocation({ navigation }) {
       for (let location of locationHistory) {
         route.push({ lat: location.latitude, lng: location.longitude });
       }
-      console.log(route);
-      const log_info = {
-        id: uuid.v4(),
-        date: new Date().toISOString().split("T")[0],
-        time: new Date().toISOString().split("T")[1].split(".")[0],
-        route: route,
-        notes: "This is real user route data",
-      };
-      const data = {
-        id: user.id,
-        log_info: log_info,
-      };
+      let path_id = uuid.v4();
+      let path = null;
+      try{
+        const data = {
+          userId: user.id,
+          directions:{
+            route:route,
+            ori_directions:null,
 
-      try {
-        await axios.post("http://localhost:4000/maps", data).catch((error) => {
-          console.log(error);
-        });
-      } catch (e) {
+          } ,
+        };
+        await axios.post("http://192.168.194.157:4000/logbook/save-route", data)
+        .then(async (res) => {
+          path = res.data;
+          console.log("path:", path);
+        })
+        console.log("path:", path);
+      } catch(e){
         console.log(e);
       }
+
+      const log_info = {
+
+        date: new Date().toISOString().split("T")[0],
+        time: new Date().toISOString().split("T")[1].split(".")[0],
+        routeInfo: path,
+        notes: "real user path data",
+
+      };
+
+      // try {
+      //     const data = {
+      //       userId: user.id,
+      //       log_info: log_info,
+      //     }
+
+      //     console.log("log_info:", log_info);
+
+
+      //     await axios.post("http://192.168.194.157:4000/logbook/create-log", data)
+      //     .catch((err) => {
+      //       console.log(err);
+      //     }
+      //     );
+
+          
+      // } catch (e) {
+      //   console.log(e);
+      // }
 
       setLocationHistory([]);
     }

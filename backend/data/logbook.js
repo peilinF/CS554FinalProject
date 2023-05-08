@@ -21,6 +21,7 @@ const createLog = async (userId, log_info) => {
         time = utils.checkTime(time);
         routeInfo.route = utils.checkRoute(routeInfo.route);
         notes = utils.checkNotes(notes);
+        
     } catch (error) {
         console.log(error);
         throw error;
@@ -28,11 +29,23 @@ const createLog = async (userId, log_info) => {
 
 
     // get other info
+    let distance = 0;
+    let pace = 0;
+    
     let unit = 'mi';
-    let distance = utils.getDistance(routeInfo.route, unit);
-    let pace = utils.getPace(distance, time, unit);
+    distance = utils.getDistance(routeInfo.route, unit);
+    console.log("distance: ", distance);
+    if(distance === 0) {
+        distance = 1;
+    }
+    pace = utils.getPace(distance, time, unit);
+    if (pace === 0) {
+        pace = 1;
+    }
+
 
     // create log
+
     let log = {
         _id: uuid(),
         date: date,
@@ -43,7 +56,7 @@ const createLog = async (userId, log_info) => {
         notes: notes
     };
 
-    // add log to user
+     
     try {
         const userCollection = await users();
         const updateInfo = await userCollection.updateOne(
@@ -52,6 +65,7 @@ const createLog = async (userId, log_info) => {
         );
         if (updateInfo.modifiedCount === 0) throw "Could not add log to user";
     } catch (error) {
+        console.log(error);
         throw error;
     }
 

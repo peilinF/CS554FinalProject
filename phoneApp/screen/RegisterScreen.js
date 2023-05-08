@@ -40,7 +40,7 @@ export default function RegisterScreen({ navigation }) {
         await updateProfile(auth.currentUser, { displayName: userName});
     });
 
-    await axios.post('http://192.168.194.157:5001/users/register', {
+    await axios.post('http://192.168.194.157:4000/users/register', {
           name: userName,
           email: email,
           uid: auth.currentUser.uid,
