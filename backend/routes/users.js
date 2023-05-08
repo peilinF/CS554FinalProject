@@ -1,5 +1,5 @@
 import express from "express";
-import { loginUser, createUser, getUserById } from "../data/users.js";
+import { createUser, getUserById } from "../data/users.js";
 import { users } from "../config/mongoCollections.js";
 
 const router = express.Router();
