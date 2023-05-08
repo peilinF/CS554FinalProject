@@ -98,12 +98,34 @@ export const addRequest = async (targetId, uid) => {
 export const acceptRequest = async (targetId, uid) => {
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: targetId });
+  const user1 = await usersCollection.findOne({ _id: targetId });
+
   let requests = user.requests;
+  let sentRequests = user1.sentRequests;
+  let friendList1 = user.friendList;
+
   let friendList = user.friendList;
   if (requests.includes(uid)) {
     requests.splice(requests.indexOf(uid), 1);
     friendList.push(uid);
   } else throw "Request doesn't exist";
+
+  if (sentRequests.includes(uid)) {
+    requests.splice(requests.indexOf(targetId), 1);
+    friendList.push(uid);
+  } else throw "Request doesn't exist";
+
+  friendList1.push(targetId);
+
+  const updated1Info = await usersCollection.updateOne(
+    { _id: uid },
+    {
+      $set: {
+        sentRequests: sentRequests,
+        friendList: friendList1,
+      },
+    }
+  );
 
   const updatedInfo = await usersCollection.updateOne(
     { _id: targetId },
