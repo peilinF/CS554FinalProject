@@ -29,18 +29,21 @@ const ProfilePage = () => {
           </div>
 
           <TextField
+            className="custom-textfield"
             onChange={(e) => setName(e.target.value)}
             style={{ margin: "10px", width: "70%" }}
             value={name}
             label="Name"
           />
           <TextField
+            className="custom-textfield"
             style={{ margin: "10px", width: "70%" }}
             value={email}
             label="Email"
             disabled={true}
           />
           <Button
+            className="custom-button"
             onClick={editProfile}
             disabled={auth.currentUser.displayName == name}
             variant={"contained"}

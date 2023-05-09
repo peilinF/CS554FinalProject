@@ -89,14 +89,52 @@
   padding: 20px;
 }
 
+
 .profile {
+  background-color: #fff;
   margin: 20px;
   min-width: 400px;
   border-radius: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgb(73, 73, 73) 0px 2px 8px 0px;
+
+  .custom-textfield label.Mui-focused {
+    color: #FF0000;
+  }
+
+  .custom-textfield label.MuiInputLabel-root {
+    color: #2f2f2f;
+    /* Change this to the desired label text color */
+  }
+
+  .custom-textfield .MuiInputBase-input {
+    color: #292929;
+
+  }
+
+  .custom-textfield .MuiOutlinedInput-root {
+    background-color: #FFFFFF;
+  }
+
+  .custom-textfield .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: #000000;
+  }
+
+  .custom-textfield .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #383838;
+  }
+
+  .custom-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #FF0000;
+  }
+
+  .custom-button {
+    background-color: #303030;
+    color: #FFFFFF;
+    padding: 10px 20px;
+  }
 
   .pimage {
     width: 50%;
@@ -116,6 +154,11 @@
     }
   }
 }
+
+.profile h2 {
+  color: #333;
+}
+
 
 .social-page {
   display: flex;
