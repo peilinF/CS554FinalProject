@@ -130,9 +130,6 @@ export default function MapLocation({ navigation }) {
   const logOutButton = async () => {
     try {
       await auth.signOut();
-      setCurrentLocation(null);
-      setLocationHistory([]);
-      setElapsedTime(0);
       navigation.navigate("Login");
     } catch (e) {
       console.log(e);
