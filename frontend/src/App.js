@@ -56,7 +56,10 @@ function App() {
             {/* Do not change this route 
             Make seperate route map for
             implementation or merging */}
-            <Route path="/mymap" element={<MyMapPage />} />
+            <Route
+              path="/mymap"
+              element={user ? <MyMapPage /> : <Navigate to={"/login"} />}
+            />
             <Route
               path="/profile"
               element={user ? <ProfilePage /> : <Navigate to={"/login"} />}

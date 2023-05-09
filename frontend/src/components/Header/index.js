@@ -12,6 +12,20 @@ const Header = () => {
 
   return (
     <header>
+      {/* {currentUser ? (
+        <div className="htxt" onClick={() => navigate("/")}>
+          <Typography fontSize={"2em"} variant={"h1"} fontStyle={"italic"}>
+            RunMate
+          </Typography>
+        </div>
+      ) : (
+        <div className="htxt" >
+          <Typography fontSize={"2em"} variant={"h1"} fontStyle={"italic"}>
+            RunMate
+          </Typography>
+        </div>
+      )} */}
+
       <div className="htxt" onClick={() => navigate("/")}>
         <Typography fontSize={"2em"} variant={"h1"} fontStyle={"italic"}>
           RunMate
@@ -44,7 +58,6 @@ const Header = () => {
           </>
         ) : (
           <>
-            <NavLink to={"/"}>Home</NavLink>
             {window.location.pathname !== "/login" && (
               <NavLink to={"/login"}>Login</NavLink>
             )}

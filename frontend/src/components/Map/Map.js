@@ -585,7 +585,7 @@ const Map = () => {
                     <input
                         id="time"
                         type="text"
-                        placeholder="Time"
+                        placeholder="hh:mm:ss"
                         onChange={(e) => {
                             setTime(e.target.value);
                         }}

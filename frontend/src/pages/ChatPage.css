@@ -71,9 +71,14 @@
   height: 100%;
 }
 
+.chatBoxMessageSend {
+  position: absolute;
+  bottom: 0;
+}
 
 .chatBoxMessages {
   overflow-y: auto;
+  margin-bottom: 40px;
 }
 
 /* https://getcssscan.com/css-buttons-examples */
