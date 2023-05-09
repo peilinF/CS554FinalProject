@@ -24,7 +24,7 @@ const ChatPage = () => {
   const [latLng, setLatLng] = useState({ lng: -74, lat: 40.7123 });
   //connecting to socket
   useEffect(() => {
-    socketRef.current = io("https://backend-ouqqieppnq-uc.a.run.app/");
+    socketRef.current = io("http://localhost:4000");
     socketRef.current.on("getMessage", (data) => {
       setArrivalMessage({
         UserId: data.userId,
