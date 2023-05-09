@@ -96,9 +96,15 @@ const ChatPage = () => {
   const handleMessageSubmite = async (event) => {
     event.preventDefault();
     const friendId = getFriendId(user.id);
-    const newMessage = document.getElementById("newMessage").value;
+    const newMessage = sendMessage.trim(); // trim() removes leading/trailing spaces
     console.log("user.id", user.id);
     console.log("friendId", friendId);
+
+    if (!newMessage) {
+      // if message is empty or contains only spaces
+      alert("Please enter a valid message");
+      return;
+    }
 
     socketRef.current.emit("sendMessage", {
       userId: user.id,
@@ -119,6 +125,7 @@ const ChatPage = () => {
       })
       .catch((e) => console.log(e));
   };
+
   //https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
   //current useEffect answering for scrolling down if new message coming in
   useEffect(() => {
@@ -148,8 +155,6 @@ const ChatPage = () => {
       <div className="row">
         <div className="column left">
           <h2>chatMenu</h2>
-          <label htmlFor="my-input">Friend Search:</label>
-          <input id="my-input" className="FriendSearch"></input>
           {friendList}
         </div>
         <div className="column middle">
