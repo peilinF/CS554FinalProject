@@ -37,4 +37,4 @@ Overall, RunMate is an all-in-one solution for runners looking to improve their 
 >Type **`npm start`** in frontend integrated Terminal
 
 ### Page
->Project run on http://localhost:3000
+>Project runs on http://localhost:3000
