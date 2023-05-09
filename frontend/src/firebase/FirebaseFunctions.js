@@ -10,13 +10,17 @@ import {
 } from "firebase/auth";
 
 async function doSocialSignIn(provider, auth) {
-  let socialProvider = null;
+  let providerInstance;
   if (provider === "google") {
-    socialProvider = new GoogleAuthProvider();
+    providerInstance = new GoogleAuthProvider();
   } else if (provider === "facebook") {
-    socialProvider = new FacebookAuthProvider();
+    providerInstance = new FacebookAuthProvider();
+  } else {
+    throw new Error(`Unsupported provider: ${provider}`);
   }
-  await signInWithPopup(auth, socialProvider);
+
+  const result = await signInWithPopup(auth, providerInstance);
+  return result.user;
 }
 
 
