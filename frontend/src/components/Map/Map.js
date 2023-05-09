@@ -471,7 +471,10 @@ const Map = () => {
                 }}
                 onPlaceChanged={onPlaceSelected}
             >
-                <input type="text" placeholder="Search location" />
+            <div>
+                <label htmlFor="search-location">Search location:</label>
+                <input id="search-location" type="text" placeholder="Search location" />
+            </div>
             </Autocomplete>
 
             <h2>Or use your own location: </h2>

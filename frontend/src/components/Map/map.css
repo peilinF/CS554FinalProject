@@ -1,51 +1,57 @@
 .map-page {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 100vw;
   flex: 1;
   height: calc(100vh - 100px);
+  padding: 1rem;
 }
 
 .map-container {
-  flex: 0 1 60%; /* Change the flex-basis value to 60% */
+  flex: 0 1 60%;
   height: calc(100vh - 100px);
   width: 100%;
 }
 
 .input-container,
 .logbook-container {
-  font-size: 20px;
+  font-size: 1rem;
   height: calc(100vh - 100px);
   width: 20%;
-  line-height: 50px;
-  margin: 10px;
+  line-height: 1.5;
+  margin: 0 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1rem;
 }
 
 .input-container {
-  flex: 0 1 20%; /* Change the flex-basis value to 20% */
+  flex: 0 1 20%;
 }
 
 .logbook-container {
-  flex: 0 1 20%; /* Change the flex-basis value to 20% */
+  flex: 0 1 20%;
 }
 
 .input-container button {
   width: 50%;
-  height: 40px;
-  font-size: 20px;
-  margin: 10px;
+  height: 48px;
+  font-size: 1rem;
+  margin: 10px 0;
+  border-radius: 4px;
 }
 
 .input-container input,
 .input-container autocomplete {
-  width: 75%;
-  font-size: 20px;
-  margin: 10px;
+  width: 100%;
+  font-size: 1rem;
+  margin: 10px 0;
+  border-radius: 4px;
+  padding: 6px 12px;
 }
 
 h1,
@@ -54,16 +60,19 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: 24px;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .saved-routes-ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  overflow-y:scroll;
-	height: 240px;
-	border: solid 1px #ccc;
+  overflow-y: scroll;
+  height: 240px;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
 }
 
 .saved-routes-li {
@@ -71,12 +80,18 @@ h6 {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  margin-left: 30px;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.saved-routes-li:hover {
+  background-color: #f5f5f5;
 }
 
 .saved-routes-li p {
   margin: 0;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: bold;
 }
 
@@ -84,8 +99,9 @@ h6 {
   border: none;
   background-color: transparent;
   color: #cc0000;
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: bold;
+  margin-left: 0.5rem;
 }
 
 .saved-routes-li button:hover {
@@ -93,37 +109,63 @@ h6 {
 }
 
 .logbook-ul {
-	overflow-y:scroll;
-	height: 400px;
-	width: 350px;
-	border: solid 1px #ccc;
+  overflow-y: scroll;
+  height: 400px;
+  width: 100%;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
 }
 
 .logbook-li {
-	display: flex;
-	flex-direction: row;
-	align-items: left;
-	justify-content: space-between;
-	width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.5rem;
 }
 
 .logbook-edit-form {
-	display: flex;
-	flex-direction: column;
-	align-items: left;
-	width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 100%;
 }
 
 .logbook-edit-form input {
-	width: 100%;
+  width: 100%;
+  border-radius: 4px;
+  padding: 6px 12px;
 }
 
 .logbook-edit-form #notes {
-	width: 100%;
-	min-height: 100px;
-	font-size: 16px;
-	line-height: 1.5;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	resize: vertical; 
+  width: 100%;
+  min-height: 100px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  padding: 6px 12px;
+  margin: 10px 0;
 }
+
+.input-container label,
+.logbook-container label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.input-container input:focus,
+.input-container autocomplete:focus,
+.logbook-edit-form input:focus,
+.logbook-edit-form #notes:focus {
+  outline: 2px solid #007BFF;
+  outline-offset: 2px;
+}
+
+
+
