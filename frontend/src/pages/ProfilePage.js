@@ -14,7 +14,9 @@ const ProfilePage = () => {
     auth.currentUser.email ? auth.currentUser.email : ""
   );
 
-  const editProfile = () => { };
+  const editProfile = () => {
+
+  };
   return (
     <MainLayout>
       <div className="container">
@@ -34,6 +36,10 @@ const ProfilePage = () => {
             style={{ margin: "10px", width: "70%" }}
             value={name}
             label="Name"
+            disabled={true}
+            inputProps={{
+              style: { color: 'red' },
+            }}
           />
           <TextField
             className="custom-textfield"
@@ -42,15 +48,6 @@ const ProfilePage = () => {
             label="Email"
             disabled={true}
           />
-          <Button
-            className="custom-button"
-            onClick={editProfile}
-            disabled={auth.currentUser.displayName == name}
-            variant={"contained"}
-          >
-            Edit Profile
-          </Button>
-
           <Button onClick={() => signOut(auth)}>Logout</Button>
         </div>
       </div>
