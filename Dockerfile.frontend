@@ -1,0 +1,29 @@
+# 使用 Node.js LTS (长期支持) 版本作为基础镜像
+FROM node:lts as build-stage
+
+
+WORKDIR /app
+
+
+COPY frontend/package*.json ./
+
+
+RUN npm i
+
+
+COPY frontend/ .
+
+
+RUN npm run build
+
+
+FROM nginx:stable-alpine
+
+
+COPY --from=build-stage /app/build /usr/share/nginx/html
+
+
+EXPOSE 3000
+
+
+CMD ["nginx", "-g", "daemon off;"]
