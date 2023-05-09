@@ -83,8 +83,16 @@ const FriendsPage = () => {
       senderId: auth.currentUser.uid,
       receiverId: id,
     });
-    console.log("conv", conv);
-    console.log("res", res);
+    const getConv = await apiInstance.get(`/conversations/${auth.currentUser.uid}/${id}`);
+    await apiInstance
+      .post(`/messages`, {
+        conversationId: getConv.data._id,
+        userId: id,
+        text: "Now we are friends",
+      })
+    // console.log("conv", conv);
+    // console.log("res", res);
+    // console.log("getConv", getConv.data._id)
     setPopulate(populate + 1);
   };
 
