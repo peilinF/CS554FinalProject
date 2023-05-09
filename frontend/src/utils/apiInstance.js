@@ -10,8 +10,8 @@ if (window.location.hostname === "localhost") {
 }
 
 export const url = production
-  ? "http://localhost:4000/"
-  : process.env.SERVER_URI;
+  ? "https://backend-ouqqieppnq-uc.a.run.app/"
+  : "https://backend-ouqqieppnq-uc.a.run.app/"
 export const apiInstance = axios.create({
   baseURL: url,
 });
