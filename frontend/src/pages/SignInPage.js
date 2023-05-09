@@ -6,6 +6,7 @@ import { doSocialSignIn } from "../firebase/FirebaseFunctions";
 import "./styles.scss";
 import MainLayout from "../layouts/MainLayout";
 import { Facebook, Google } from "@mui/icons-material";
+import { apiInstance } from "../utils/apiInstance";
 
 const SignInPage = () => {
   const [isSocialSignInDisabled, setIsSocialSignInDisabled] = useState(false);
@@ -29,8 +30,17 @@ const SignInPage = () => {
     setIsSocialSignInDisabled(true); // Disable the buttons
 
     try {
-      await doSocialSignIn(provider, auth);
-      if (auth.currentUser) navigate("/");
+      const { user } = await doSocialSignIn(provider, auth);
+      if (user) {
+        // Register the user in your backend after successful social login
+        apiInstance
+          .post("/users/register", {
+            name: user.displayName,
+            email: user.email,
+            uid: user.uid,
+          })
+          .then((res) => navigate("/"));
+      }
     } catch (error) {
       console.error("Social sign in error:", error);
 
@@ -43,7 +53,8 @@ const SignInPage = () => {
     } finally {
       setIsSocialSignInDisabled(false); // Enable the buttons
     }
-  };
+};
+
 
   return (
     <MainLayout>
