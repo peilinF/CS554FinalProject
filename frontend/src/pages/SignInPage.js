@@ -30,17 +30,19 @@ const SignInPage = () => {
     setIsSocialSignInDisabled(true); // Disable the buttons
 
     try {
-      const { user } = await doSocialSignIn(provider, auth);
-      if (user) {
-        // Register the user in your backend after successful social login
-        apiInstance
-          .post("/users/register", {
+      await doSocialSignIn(provider, auth)
+      .then((res) => {
+        const user = auth.currentUser;
+        apiInstance.post("/users/register", {
             name: user.displayName,
             email: user.email,
             uid: user.uid,
-          })
-          .then((res) => navigate("/"));
-      }
+        })
+        .then((res) => navigate("/"))
+        .catch((e) => navigate("/"));
+      });
+     
+      
     } catch (error) {
       console.error("Social sign in error:", error);
 
