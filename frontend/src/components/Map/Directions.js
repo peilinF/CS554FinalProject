@@ -73,7 +73,7 @@ const Directions = (props) => {
 
     //     const startPoint = props.startPoint;
     //     const dist = props.distance;
-        
+
     //     const phi = Math.PI / 180 * ((120 - 60) * Math.random() + 60); // angle between leg1 and leg3
     //     const scale = 0.7; // straitline_distance/actual_distance
     //     const legDist = (scale * dist) / (2 + 2 * Math.sin(phi / 2));
@@ -155,7 +155,7 @@ const Directions = (props) => {
             await sleep(delayBetweenAttempts);
         }
 
-        alert("No route found! Please try again.");
+        //alert("No route found! Please try again.");
         props.handleTotleDistance(0);
         return null;
     };

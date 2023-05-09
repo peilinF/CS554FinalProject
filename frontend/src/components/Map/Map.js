@@ -516,6 +516,7 @@ const Map = () => {
                 >
                     Clear path
                 </button>)}
+                <p>Some Times it take few clicks to create path</p>
 
                 <br />
                 <br />
