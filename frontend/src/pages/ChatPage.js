@@ -193,7 +193,7 @@ const ChatPage = () => {
         <div className="column right">
           <h2>Friend</h2>
           {chat?._id ? (
-            <FriendOnline conversation={chat.members} friendId={chat._id} />
+            <FriendOnline conversation={chat.members} userID={auth.currentUser.uid} />
           ) : (
             <div>No friend Open</div>
           )}

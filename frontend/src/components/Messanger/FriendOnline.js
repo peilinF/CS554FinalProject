@@ -1,24 +1,28 @@
 import "./FriendOnline.css"
 import React, { useEffect, useState } from "react";
 
-const FriendInfo = ({ conversation, friendId }) => {
+const FriendInfo = ({ conversation, userID }) => {
     const [user, setUser] = useState(null)
     // find friend by ID
+    console.log("conversation", conversation)
+    console.log("userID", userID)
     useEffect(() => {
         const fetchUserData = async () => {
-            const friendId1 = conversation.find((i) => i !== friendId);
-            const response = await fetch(`/users/${friendId1}`, {
+            const friendId = conversation.find((i) => i !== userID);
+            console.log("friendId", friendId)
+            const response = await fetch(`/users/${friendId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
             const data = await response.json();
+            console.log("data", data)
             setUser(data);
         };
 
         fetchUserData();
-    }, []);
+    }, [userID, conversation]);
 
     return (
         <div className=".FriendBio">

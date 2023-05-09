@@ -24,7 +24,9 @@ const ProfilePage = () => {
           <h2>Profile</h2>
           <div className="pimage">
             {auth.currentUser.photoURL ? (
-              <img src={auth.currentUser.photoURL} />
+              <img className="conversationImg"
+                src="https://t4.ftcdn.net/jpg/00/97/00/09/360_F_97000908_wwH2goIihwrMoeV9QF3BW6HtpsVFaNVM.jpg"
+                alt="Unknown" />
             ) : (
               <AccountCircle id="a_icon" />
             )}
