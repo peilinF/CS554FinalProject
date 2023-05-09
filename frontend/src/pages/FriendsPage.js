@@ -217,7 +217,6 @@ const FriendsPage = () => {
                       primary={o.name}
                       secondary={
                         <React.Fragment>
-                          <Button variant={"contained"}>Message</Button>
                           <Button
                             onClick={() => removeFriend(o._id)}
                             variant={"contained"}
