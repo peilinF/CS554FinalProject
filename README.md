@@ -20,6 +20,7 @@ Overall, RunMate is an all-in-one solution for runners looking to improve their 
 
 ### Deploy
 1. Docker
+2. Vercel
 
 ### Install
 1. Install tools
