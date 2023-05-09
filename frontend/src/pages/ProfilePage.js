@@ -29,29 +29,22 @@ const ProfilePage = () => {
           </div>
 
           <TextField
-            className="custom-textfield"
-            onChange={(e) => setName(e.target.value)}
-            style={{ margin: "10px", width: "70%" }}
-            value={name}
-            label="Name"
-          />
-          <TextField
-            className="custom-textfield"
-            style={{ margin: "10px", width: "70%" }}
-            value={email}
-            label="Email"
-            disabled={true}
-          />
-          <Button
-            className="custom-button"
-            onClick={editProfile}
-            disabled={auth.currentUser.displayName == name}
-            variant={"contained"}
-          >
-            Edit Profile
-          </Button>
-
-          <Button onClick={() => signOut(auth)}>Logout</Button>
+          className="custom-textfield"
+          onChange={(e) => setName(e.target.value)}
+          style={{ margin: "10px", width: "70%", color: "#292828" }}
+          value={name}
+          label="Name"
+         />
+         <Button
+          className="custom-button"
+          onClick={editProfile}
+          disabled={auth.currentUser.displayName == name}
+          variant={"contained"}
+          style={{ color: "#646464" }}
+        >
+          Edit Profile
+        </Button>
+        <Button onClick={() => signOut(auth)}>Logout</Button>
         </div>
       </div>
     </MainLayout>
