@@ -471,10 +471,10 @@ const Map = () => {
                 }}
                 onPlaceChanged={onPlaceSelected}
             >
-            <div>
-                <label htmlFor="search-location">Search location:</label>
-                <input id="search-location" type="text" placeholder="Search location" />
-            </div>
+                <div>
+                    <label htmlFor="search-location">Search location:</label>
+                    <input id="search-location" type="text" placeholder="Search location" />
+                </div>
             </Autocomplete>
 
             <h2>Or use your own location: </h2>
@@ -580,7 +580,7 @@ const Map = () => {
                     />
                 </label>
                 <label>
-                    Time:
+                    Time to finish path:
                     <input
                         id="time"
                         type="text"
@@ -639,7 +639,7 @@ const Map = () => {
                             />
                         </label>
                         <label>
-                            Time:
+                            Time to finish path:
                             <input
                                 id="time"
                                 type="text"
