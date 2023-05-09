@@ -97,7 +97,7 @@ export default function MapLocation({ navigation }) {
             userId: user.id,
             log_info:{
               date: new Date().toISOString().split("T")[0],
-              time: new Date().toISOString().split("T")[1].split(".")[0],
+              time: formatTime(elapsedTime),
               routeInfo: route,
               notes: "real user path data",
             }
