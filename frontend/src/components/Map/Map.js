@@ -463,7 +463,7 @@ const Map = () => {
 
     let input_html = (
         <div>
-            <h3>Select your start point: </h3>
+            <h1>Select your start point: </h1>
             <Autocomplete
                 className="autocomplete"
                 onLoad={(autocomplete) => {
@@ -474,7 +474,7 @@ const Map = () => {
                 <input type="text" placeholder="Search location" />
             </Autocomplete>
 
-            <h3>Or use your own location: </h3>
+            <h2>Or use your own location: </h2>
 
             <button onClick={findMe}>Find me</button>
 

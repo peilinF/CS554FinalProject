@@ -18,9 +18,6 @@ const ProfilePage = () => {
   return (
     <MainLayout>
       <div className="container">
-        <div className="logBook">
-          <h2>logBook</h2>
-        </div>
         <div className="profile">
           <h2>Profile</h2>
           <div className="pimage">
@@ -52,9 +49,6 @@ const ProfilePage = () => {
           </Button>
 
           <Button onClick={() => signOut(auth)}>Logout</Button>
-        </div>
-        <div className="friendList">
-          <h2>friendList</h2>
         </div>
       </div>
     </MainLayout>
