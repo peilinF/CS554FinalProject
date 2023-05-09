@@ -21,6 +21,12 @@ const Header = () => {
       <div className="auth-links">
         {currentUser ? (
           <>
+            <NavLink className="nav-link" to="/chat">
+              Chat
+            </NavLink>
+            <NavLink className="nav-link" to="/mymap">
+              Map
+            </NavLink>
             {window.location.pathname !== "/friends" && (
               <NavLink className="nav-link" to="/friends">
                 Friends
@@ -39,7 +45,6 @@ const Header = () => {
         ) : (
           <>
             <NavLink to={"/"}>Home</NavLink>
-            <NavLink to={"/mymap"}>Map</NavLink>
             {window.location.pathname !== "/login" && (
               <NavLink to={"/login"}>Login</NavLink>
             )}
