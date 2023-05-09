@@ -90,7 +90,7 @@ export default function MapLocation({ navigation }) {
 
           } ,
         };
-        await axios.post("http://192.168.194.157:4000/logbook/save-route", data)
+        await axios.post("https://backend-ouqqieppnq-uc.a.run.app/logbook/save-route", data)
         .then(async (res) => {
           const route  = res.data.route;
           const data = {
@@ -102,7 +102,7 @@ export default function MapLocation({ navigation }) {
               notes: "real user path data",
             }
           }
-          await axios.post("http://192.168.194.157:4000/logbook/create-log", data)
+          await axios.post("https://backend-ouqqieppnq-uc.a.run.app/logbook/create-log", data)
           .catch((err) => {
             console.log(err);
           }
