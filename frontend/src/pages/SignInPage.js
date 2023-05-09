@@ -7,6 +7,7 @@ import "./styles.scss";
 import MainLayout from "../layouts/MainLayout";
 import { Facebook, Google } from "@mui/icons-material";
 import { apiInstance } from "../utils/apiInstance";
+import { InputLabel } from "@mui/material";
 
 const SignInPage = () => {
   const [isSocialSignInDisabled, setIsSocialSignInDisabled] = useState(false);
@@ -62,14 +63,14 @@ const SignInPage = () => {
     <MainLayout>
       <div className="login">
         <h2>Login</h2>
+       <br/>
         <form onSubmit={handleLogin}>
-          <Input required placeholder="Email" name="email" />
-          <Input
-            required
-            placeholder="Password"
-            name="password"
-            type="password"
-          />
+
+        <InputLabel htmlFor="email-input">Email</InputLabel>
+        <Input id="email-input" required name="email" />
+
+        <InputLabel htmlFor="password-input">Password</InputLabel>
+        <Input id="password-input" required name="password" type="password" />
           <Button type="submit" variant="contained">
             Login
           </Button>

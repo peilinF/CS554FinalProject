@@ -1,6 +1,7 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
 import { Button, Input } from "@mui/material";
+import { InputLabel } from "@mui/material";
 
 import "./styles.scss";
 import {
@@ -44,19 +45,20 @@ const SignUpPage = () => {
     <MainLayout>
       <div className="register">
         <h2>Registration</h2>
+        <br/>
         <form onSubmit={(e) => handleSignUp(e)}>
-          <Input placeholder="Full Name" name="name" />
-          <Input type="email" placeholder="Email" name="email" />
-          <Input type="password" placeholder="Password" name="password" />
-          <Input
-            type="password"
-            placeholder="Confirm Password"
-            name="cpassword"
-          />
+          <InputLabel htmlFor="name">Full Name</InputLabel>
+          <Input id="name" name="name" />
+          <InputLabel htmlFor="email">Email</InputLabel>
+          <Input id="email" type="email" name="email" />
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <Input id="password" type="password" name="password" />
+          <InputLabel htmlFor="cpassword">Confirm Password</InputLabel>
+          <Input id="cpassword" type="password" name="cpassword" />
           <Button type={"submit"} variant={"contained"}>
-            Create Account
+              Create Account
           </Button>
-        </form>
+       </form>
       </div>
     </MainLayout>
   );
