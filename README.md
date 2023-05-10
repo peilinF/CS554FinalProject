@@ -13,19 +13,19 @@ Overall, RunMate is an all-in-one solution for runners looking to improve their 
 
 ### Technologies Used
 
-- React
-- Socket.io
-- FirebaseAuth
-- Node.js
-- Mongodb
-- Javascript
-- HTML, CSS
+ * React
+* Socket.io
+* FirebaseAuth
+* Node.js
+* Mongodb
+* Javascript
+* HTML, CSS
+* Mongodb Atlas
 
 ### Deploy
 
 1. Docker
-2. Firebase Hosting
-3. Heroku
+2. Vercel
 
 ### Install
 
@@ -52,5 +52,3 @@ Overall, RunMate is an all-in-one solution for runners looking to improve their 
 ### Page
 
 > Project runs on http://localhost:3000
-
-#Website URL : https://runn-mate.web.app/
