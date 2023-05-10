@@ -38,10 +38,10 @@ Overall, RunMate is an all-in-one solution for runners looking to improve their 
 >Type **`npm start`** in frontend integrated Terminal
 
 ### Run phoneApp
-> Search `Expo go` on app store or play store and download the app
-> **`npm i`** install package
-> **`npm start`**  to run phoneApp
-> Scan the QR code by `Expo go` to use our phone app
+1.Search `Expo go` on app store or play store and download the app
+2. Go to phoneApp terminal, **`npm i`** install package
+3. **`npm start`**  to run phoneApp
+4. Scan the QR code by `Expo go` to use our phone app
 
 
 ### Page
