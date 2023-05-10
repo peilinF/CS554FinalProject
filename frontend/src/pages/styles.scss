@@ -100,6 +100,25 @@
   align-items: center;
   box-shadow: rgb(73, 73, 73) 0px 2px 8px 0px;
 
+  .custom-textfield {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-textfield label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .custom-textfield p {
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
 
   .Mui-disabled {
     opacity: 1;

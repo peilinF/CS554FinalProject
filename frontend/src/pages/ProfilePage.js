@@ -32,24 +32,16 @@ const ProfilePage = () => {
             )}
           </div>
 
-          <TextField
-            className="custom-textfield"
-            onChange={(e) => setName(e.target.value)}
-            style={{ margin: "10px", width: "70%" }}
-            value={name}
-            label="Name"
-            disabled={true}
-            inputProps={{
-              style: { color: 'red' },
-            }}
-          />
-          <TextField
-            className="custom-textfield"
-            style={{ margin: "10px", width: "70%" }}
-            value={email}
-            label="Email"
-            disabled={true}
-          />
+          <div className="custom-textfield" style={{ margin: "10px", width: "70%" }}>
+            <label htmlFor="name">Name</label>
+            <p id="name">{name}</p>
+          </div>
+
+          <div className="custom-textfield" style={{ margin: "10px", width: "70%" }}>
+            <label htmlFor="email">Name</label>
+            <p id="email">{email}</p>
+          </div>
+
           <Button onClick={() => signOut(auth)}>Logout</Button>
         </div>
       </div>
