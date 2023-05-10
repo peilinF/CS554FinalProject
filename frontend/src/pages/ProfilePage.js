@@ -43,26 +43,6 @@ const ProfilePage = () => {
           <Button onClick={() => signOut(auth)}>Logout</Button>
 
         </div>
-
-        <TextField
-          className="custom-textfield"
-          onChange={(e) => setName(e.target.value)}
-          style={{ margin: "10px", width: "70%" }}
-          value={name}
-          label="Name"
-          disabled={true}
-          inputProps={{
-            style: { color: "red" },
-          }}
-        />
-        <TextField
-          className="custom-textfield"
-          style={{ margin: "10px", width: "70%" }}
-          value={email}
-          label="Email"
-          disabled={true}
-        />
-        <Button onClick={() => signOut(auth)}>Logout</Button>
       </div>
     </MainLayout>
   );
