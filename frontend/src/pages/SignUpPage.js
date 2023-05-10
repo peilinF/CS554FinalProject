@@ -20,11 +20,54 @@ const SignUpPage = () => {
   const handleSignUp = async (event) => {
     event.preventDefault();
     const { name, email, password, cpassword } = event.target;
-    // if (password !== cpassword) {
-    //   // setPasswordMatch("Passwords do not match");
-    //   return false;
-    // }
 
+    console.log("name", name.value)
+    console.log("email", email.value)
+    console.log("password", password.value)
+    console.log("cpassword", cpassword.value)
+    function validateName(name) {
+      const nameRegex = /^[a-zA-Z]+$/;
+      if (nameRegex.test(name) === false) {
+        alert("Name contains numbers or symbols")
+        return false;
+      }
+      return true;
+    }
+    const validateEmail = (email) => {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (emailRegex.test(email) === false) {
+        alert("Error in Email")
+        return false;
+      }
+      return true;
+    }
+    const validatePassword = (password) => {
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm;
+      if (passwordRegex.test(password) === false) {
+        alert("Password should contain at least 1 number, 1 symbol, and one capital letter. Also should be more than 6 characters")
+        return false;
+      }
+      return true;
+    };
+
+    if (validateName(name.value) === false) {
+      return false;
+    }
+    if (validateEmail(email.value) === false) {
+      return false;
+    }
+    if (validatePassword(password.value) === false) {
+      return false;
+    }
+    console.log(1)
+    if (validatePassword(cpassword.value) === false) {
+      return false;
+    }
+    if (password.value !== cpassword.value) {
+      // setPasswordMatch("Passwords do not match");
+      alert("Passwords do not match")
+      return false;
+    }
     createUserWithEmailAndPassword(auth, email.value, password.value)
       .then(async ({ user }) => {
         console.log(auth.currentUser);
@@ -45,7 +88,7 @@ const SignUpPage = () => {
     <MainLayout>
       <div className="register">
         <h2>Registration</h2>
-        <br/>
+        <br />
         <form onSubmit={(e) => handleSignUp(e)}>
           <InputLabel htmlFor="name">Full Name</InputLabel>
           <Input id="name" name="name" />
@@ -56,9 +99,9 @@ const SignUpPage = () => {
           <InputLabel htmlFor="cpassword">Confirm Password</InputLabel>
           <Input id="cpassword" type="password" name="cpassword" />
           <Button type={"submit"} variant={"contained"}>
-              Create Account
+            Create Account
           </Button>
-       </form>
+        </form>
       </div>
     </MainLayout>
   );
