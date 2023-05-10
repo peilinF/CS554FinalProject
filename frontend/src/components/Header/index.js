@@ -41,20 +41,13 @@ const Header = () => {
             <NavLink className="nav-link" to="/mymap">
               Map
             </NavLink>
-            {window.location.pathname !== "/friends" && (
-              <NavLink className="nav-link" to="/friends">
-                Friends
-              </NavLink>
-            )}
-            {window.location.pathname !== "/profile" ? (
-              <NavLink className="nav-link" to="/profile">
-                Profile
-              </NavLink>
-            ) : (
-              <NavLink className="nav-link" to="/">
-                Home
-              </NavLink>
-            )}
+            <NavLink className="nav-link" to="/friends">
+              Friends
+            </NavLink>
+
+            <NavLink className="nav-link" to="/profile">
+              Profile
+            </NavLink>
           </>
         ) : (
           <>

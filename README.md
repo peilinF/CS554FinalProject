@@ -1,4 +1,4 @@
-﻿# RunMate
+# RunMate
  
 ### Notice
 This project is tested on "Google Chrome", We highly recommend you run this project on the same browser.
@@ -20,7 +20,8 @@ Overall, RunMate is an all-in-one solution for runners looking to improve their 
 
 ### Deploy
 1. Docker
-2. Vercel
+2. Firebase Hosting
+3. Heroku
 
 ### Install
 1. Install tools
@@ -39,3 +40,5 @@ Overall, RunMate is an all-in-one solution for runners looking to improve their 
 
 ### Page
 >Project runs on http://localhost:3000
+
+#Website URL : https://runn-mate.web.app/

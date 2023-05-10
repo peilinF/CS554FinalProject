@@ -22,7 +22,7 @@ const SignInPage = () => {
       .then((res) => {
         if (auth.currentUser) navigate("/");
       })
-      .catch((e) => alert(e));
+      .catch((e) => alert("Either email or password is incorrect"));
   };
 
   const handleSocialSignIn = async (provider) => {
@@ -31,19 +31,17 @@ const SignInPage = () => {
     setIsSocialSignInDisabled(true); // Disable the buttons
 
     try {
-      await doSocialSignIn(provider, auth)
-      .then((res) => {
+      await doSocialSignIn(provider, auth).then((res) => {
         const user = auth.currentUser;
-        apiInstance.post("/users/register", {
+        apiInstance
+          .post("/users/register", {
             name: user.displayName,
             email: user.email,
             uid: user.uid,
-        })
-        .then((res) => navigate("/"))
-        .catch((e) => navigate("/"));
+          })
+          .then((res) => navigate("/"))
+          .catch((e) => navigate("/"));
       });
-     
-      
     } catch (error) {
       console.error("Social sign in error:", error);
 
@@ -56,21 +54,19 @@ const SignInPage = () => {
     } finally {
       setIsSocialSignInDisabled(false); // Enable the buttons
     }
-};
-
+  };
 
   return (
     <MainLayout>
       <div className="login">
         <h2>Login</h2>
-       <br/>
+        <br />
         <form onSubmit={handleLogin}>
+          <InputLabel htmlFor="email-input">Email</InputLabel>
+          <Input id="email-input" required name="email" />
 
-        <InputLabel htmlFor="email-input">Email</InputLabel>
-        <Input id="email-input" required name="email" />
-
-        <InputLabel htmlFor="password-input">Password</InputLabel>
-        <Input id="password-input" required name="password" type="password" />
+          <InputLabel htmlFor="password-input">Password</InputLabel>
+          <Input id="password-input" required name="password" type="password" />
           <Button type="submit" variant="contained">
             Login
           </Button>

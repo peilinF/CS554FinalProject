@@ -47,11 +47,9 @@
 
   .bg {
     position: absolute;
-    height: 300px;
-    width: 300px;
-    top: 30%;
+    height: 90%;
+    width: 50%;
     left: 0;
-    text-align: right;
   }
 
   .intro {
@@ -89,7 +87,6 @@
   padding: 20px;
 }
 
-
 .profile {
   background-color: #fff;
   margin: 20px;
@@ -119,13 +116,12 @@
     background-color: #f9f9f9;
   }
 
-
   .Mui-disabled {
     opacity: 1;
   }
 
   .custom-textfield label.Mui-focused {
-    color: #FF0000;
+    color: #ff0000;
   }
 
   .custom-textfield label.MuiInputLabel-root {
@@ -135,28 +131,31 @@
 
   .custom-textfield .MuiInputBase-input {
     color: #292929;
-
   }
 
   .custom-textfield .MuiOutlinedInput-root {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
   }
 
   .custom-textfield .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
     border-color: #000000;
   }
 
-  .custom-textfield .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  .custom-textfield
+    .MuiOutlinedInput-root:hover
+    .MuiOutlinedInput-notchedOutline {
     border-color: #383838;
   }
 
-  .custom-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: #FF0000;
+  .custom-textfield
+    .MuiOutlinedInput-root.Mui-focused
+    .MuiOutlinedInput-notchedOutline {
+    border-color: #ff0000;
   }
 
   .custom-button {
     background-color: #303030;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 10px 20px;
   }
 
@@ -182,7 +181,6 @@
 .profile h2 {
   color: #333;
 }
-
 
 .social-page {
   display: flex;
@@ -216,7 +214,6 @@
 }
 
 @media only screen and (max-width: 650px) {
-
   .login form,
   .register form {
     width: 90%;
