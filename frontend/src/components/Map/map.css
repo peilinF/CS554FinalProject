@@ -5,12 +5,12 @@
   justify-content: center;
   width: 100vw;
   flex: 1;
-  height: calc(100vh - 100px);
   padding: 1rem;
+  height: 100%;
 }
 
 .map-container {
-  flex: 0 1 60%;
+  flex: 0.5;
   height: calc(100vh - 100px);
   width: 100%;
 }
@@ -18,7 +18,6 @@
 .input-container,
 .logbook-container {
   font-size: 1rem;
-  height: calc(100vh - 100px);
   width: 20%;
   line-height: 1.5;
   margin: 0 10px;
@@ -30,11 +29,11 @@
 }
 
 .input-container {
-  flex: 0 1 20%;
+  flex: 0.25;
 }
 
 .logbook-container {
-  flex: 0 1 20%;
+  flex: 0.25;
 }
 
 .input-container button {
@@ -163,9 +162,6 @@ h6 {
 .input-container autocomplete:focus,
 .logbook-edit-form input:focus,
 .logbook-edit-form #notes:focus {
-  outline: 2px solid #007BFF;
+  outline: 2px solid #007bff;
   outline-offset: 2px;
 }
-
-
-

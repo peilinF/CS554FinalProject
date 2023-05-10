@@ -2,10 +2,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
   background-color: #fff;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  height: 70px;
+  width: 100vw;
 
   .htxt {
     cursor: pointer;
