@@ -9,24 +9,29 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [disabledRegister, setDisabledRegister] = useState(true);
-  const[avatarUrl, setAvatarUrl] = useState('');
   const [userName, setUserName] = useState('');
   const validateEmail = (email) => {
-    // Use a simple regex to validate email format
+   
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     return emailRegex.test(email);
   };
 
+  
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm;
+    return passwordRegex.test(password);
+  };
 
 
   useEffect(() => {
-    if (validateEmail(email) && password.length >= 6 && password === confirmPassword) {
+    if (validateEmail(email) && validatePassword(password) && password === confirmPassword && userName.length >= 3 ) {
       setDisabledRegister(false);
     } else {
       setDisabledRegister(true);
     }
     
   }, [password, confirmPassword,email]);
+
 
 
 
@@ -43,14 +48,12 @@ export default function RegisterScreen({ navigation }) {
     await axios.post('http://192.168.194.157:4000/users/register', {
           name: userName,
           email: email,
-          uid: auth.currentUser.uid,
-          avatarUrl: avatarUrl,
+          uid: auth.currentUser.uid
         }).catch((error) => {
         console.log(error);
       });
 
       setUserName('');
-      setAvatarUrl('');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -79,12 +82,6 @@ export default function RegisterScreen({ navigation }) {
         value={email}
         onChangeText={setEmail}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="avatarUrl (optional)"
-        value={avatarUrl}
-        onChangeText={setAvatarUrl}
-      />
       
       <TextInput
         style={styles.input}
@@ -106,9 +103,11 @@ export default function RegisterScreen({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.loginText}>Already have an account? Login</Text>
       </TouchableOpacity>
+      {userName && userName.length < 3 && (<Text style={styles.validPassword}>User name must be at least 3 characters long</Text>)}
       {email && !validateEmail(email) && (<Text style={styles.validPassword}>Please enter a valid email address</Text>)}
-      {password && password.length < 6 && (<Text style={styles.validPassword}>Password must be at least 6 characters long</Text>)}
+      {password &&!validatePassword(password) && (<Text style={styles.validPassword}>Password must has 1 uppercase,1 lowercase, 1 special character, 1 number at least 6 characters</Text>)}
       {password && password.length >= 6 && confirmPassword && password !== confirmPassword && (<Text style={styles.validPassword}>Passwords do not match</Text>)}
+      
     </View>
   );
 }

@@ -23,7 +23,8 @@ export default function LoginScreen({ navigation }) {
   };
 
   const validatePassword = (password) => {
-    return password.length >= 6;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm;
+    return passwordRegex.test(password);
   };
 
   const handleLogin = async () => {
@@ -63,7 +64,7 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       {email && !validateEmail(email) && (<Text style={styles.validInput}>Please enter a valid email address</Text>)}
-      {password && password.length < 6 && (<Text style={styles.validInput}>Password must be at least 6 characters long</Text>)}
+      {password && ! validatePassword(password) && (<Text style={styles.validInput}>Password must contains 1 uppercase, 1lowercase, 1 special characters, 1 number at least 6 characters long</Text>)}
       <TouchableOpacity onPress={() => navigation.navigate('Register')}>
         <Text style={styles.registerText}>Don't have an account? Register</Text>
       </TouchableOpacity>
